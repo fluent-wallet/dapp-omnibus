@@ -1,0 +1,37 @@
+{
+  "name": "@cfx-kit/react-utils",
+  "version": "0.0.0",
+  "type": "module",
+  "keywords": [
+    "react",
+    "utils"
+  ],
+  "homepage": "https://github.com/Conflux-Chain/dapp-omnibus#readme",
+  "license": "MIT",
+  "repository": "https://github.com/Conflux-Chain/dapp-omnibus/tree/main/packages/react-utils",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/Conflux-Chain/dapp-omnibus/issues"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@types/react": "latest",
+    "tsconfig": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "latest"
+  },
+  "scripts": {
+    "build": "pnpm lint && pnpm typecheck && tsup --dts",
+    "lint": "eslint src --ext .ts,.tsx",
+    "typecheck": "tsc --noEmit"
+  },
+  "main": "src/index.ts"
+}

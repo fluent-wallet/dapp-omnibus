@@ -1,0 +1,35 @@
+{
+  "name": "@cfx-kit/utils",
+  "version": "0.0.0",
+  "type": "module",
+  "keywords": [
+    "dapp",
+    "utils"
+  ],
+  "homepage": "https://github.com/Conflux-Chain/dapp-omnibus#readme",
+  "license": "MIT",
+  "repository": "https://github.com/Conflux-Chain/dapp-omnibus/tree/main/packages/utils",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/Conflux-Chain/dapp-omnibus/issues"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "tsconfig": "workspace:*"
+  },
+  "peerDependencies": {
+  },
+  "scripts": {
+    "build": "pnpm lint && pnpm typecheck && tsup --dts",
+    "lint": "eslint src --ext .ts,.tsx",
+    "typecheck": "tsc --noEmit"
+  },
+  "main": "src/index.ts"
+}

@@ -1,0 +1,41 @@
+{
+  "name": "@cfx-kit/ui-components",
+  "version": "0.0.0",
+  "type": "module",
+  "keywords": [
+    "react",
+    "components"
+  ],
+  "homepage": "https://github.com/Conflux-Chain/dapp-omnibus#readme",
+  "license": "MIT",
+  "repository": "https://github.com/Conflux-Chain/dapp-omnibus/tree/main/packages/ui-components",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/Conflux-Chain/dapp-omnibus/issues"
+  },
+  "dependencies": {
+    "@zag-js/accordion": "^0.10.4",
+    "@zag-js/dialog": "^0.10.4",
+    "@zag-js/react": "^0.10.4",
+    "@zag-js/toast": "^0.10.4"
+  },
+  "devDependencies": {
+    "@types/react": "latest",
+    "tsconfig": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "latest"
+  },
+  "scripts": {
+    "build": "pnpm lint && pnpm typecheck && tsup --dts",
+    "lint": "eslint src --ext .ts,.tsx",
+    "typecheck": "tsc --noEmit"
+  },
+  "main": "src/index.ts"
+}
