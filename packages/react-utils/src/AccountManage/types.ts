@@ -43,3 +43,18 @@ export interface TypedSignParams {
     EIP712Domain: Array<{ name: string; type: string }>; // This refers to the domain the contract is hosted on.
   } & Record<string, Array<{ name: string; type: string }>>;
 }
+
+export type Write<T extends object, U extends object> = Omit<T, keyof U> & U;
+export type StoreSubscribeWithSelector<T> = {
+    subscribe: {
+        (listener: (selectedState: T, previousSelectedState: T) => void): () => void;
+        <U>(
+            selector: (state: T) => U,
+            listener: (selectedState: U, previousSelectedState: U) => void,
+            options?: {
+                equalityFn?: (a: U, b: U) => boolean;
+                fireImmediately?: boolean;
+            }
+        ): () => void;
+    };
+};

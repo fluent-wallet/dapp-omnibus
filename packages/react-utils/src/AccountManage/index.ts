@@ -1,13 +1,14 @@
-import { atom, selector, useRecoilValue, type RecoilState } from 'recoil';
-import { setRecoil, getRecoil } from 'recoil-nexus';
-import { persistAtom } from '../recoilUtils';
-import type { AddChainParameter, TypedSignParams, WatchAssetParams, TransactionParameters } from './types';
+import { create, type UseBoundStore, type StoreApi } from 'zustand';
+import { subscribeWithSelector, persist, createJSONStorage } from 'zustand/middleware';
+import type { AddChainParameter, TypedSignParams, WatchAssetParams, TransactionParameters, Write, StoreSubscribeWithSelector } from './types';
 export * from './types';
 
 interface WalletProvider {
   walletName: string;
   subAccountChange: (callback: (account: string | undefined) => void) => void;
   subChainIdChange: (callback: (account: string | undefined) => void) => void;
+  getAccount: () => string | undefined;
+  getChainId: () => string | undefined;
   connect: () => Promise<unknown>;
   sendTransaction: (transaction: TransactionParameters) => Promise<string>;
   watchAsset?: (asset: WatchAssetParams) => Promise<unknown>;
@@ -15,70 +16,155 @@ interface WalletProvider {
   switchChain?: (chainId: string) => Promise<unknown>;
   typedSign?: (data: TypedSignParams) => Promise<string>;
   disconnect?: () => Promise<void> | void;
-  getAccount?: () => string | undefined;
-  getChainId?: () => string | undefined;
 }
+
+type WalletStore = UseBoundStore<
+  Write<
+    StoreApi<{
+      account: string | undefined;
+      chainId: string | undefined;
+    }>,
+    StoreSubscribeWithSelector<{
+      account: string | undefined;
+      chainId: string | undefined;
+    }>
+  >
+>;
 
 const walletsStateMap = new Map<
   string,
-  { provider: WalletProvider; accountState: RecoilState<string | undefined>; chainIdState: RecoilState<string | undefined> }
+  {
+    provider: WalletProvider;
+    walletStore: WalletStore;
+  }
 >();
-export const registerWallet = (walletProvider: WalletProvider) => {
-  const walletAccountState = atom({
-    key: `walletAccountState-${walletProvider.walletName}`,
-    default: walletProvider?.getAccount?.(),
-  });
-  const walletChainIdState = atom({
-    key: `walletChainIdState-${walletProvider.walletName}`,
-    default: walletProvider?.getChainId?.(),
-  });
+export const registerWallet = (walletProvider: WalletProvider, { persistFirst }: { persistFirst: boolean } = { persistFirst: true }) => {
+  let walletStore: WalletStore;
+  if (!persistFirst) {
+    walletStore = create(
+      subscribeWithSelector<{ account: string | undefined; chainId: string | undefined }>(() => ({
+        account: undefined,
+        chainId: undefined,
+      })),
+    );
+  } else {
+    walletStore = create(
+      subscribeWithSelector(
+        persist<{ account: string | undefined; chainId: string | undefined }>(
+          () => ({
+            account: undefined,
+            chainId: undefined,
+          }),
+          {
+            name: `AccountManage-wallet-${walletProvider.walletName}-storage`,
+            storage: createJSONStorage(() => localStorage),
+          },
+        ),
+      ),
+    );
+  }
+
   walletProvider.subAccountChange((account) => {
-    setRecoil(walletAccountState, account);
+    walletStore.setState({ account });
   });
   walletProvider.subChainIdChange((chainId) => {
-    setRecoil(walletChainIdState, chainId);
+    walletStore.setState({ chainId });
   });
-  walletsStateMap.set(walletProvider.walletName, { provider: walletProvider, accountState: walletAccountState, chainIdState: walletChainIdState });
+  if (persistFirst) {
+    setTimeout(() => {
+      const currentWalletAccount = walletProvider.getAccount?.();
+      const currentWalletChainId = walletProvider.getChainId?.();
+      const persistedAccount = walletStore.getState().account;
+      const persistedChainId = walletStore.getState().chainId;
+      if (persistedAccount !== currentWalletAccount) {
+        walletStore.setState({ account: currentWalletAccount });
+      }
+      if (persistedChainId !== currentWalletChainId) {
+        walletStore.setState({ chainId: currentWalletChainId });
+      }
+    }, 150);
+  } else {
+    walletStore.setState({ account: walletProvider.getAccount?.(), chainId: walletProvider.getChainId?.() });
+  }
+
+  walletsStateMap.set(walletProvider.walletName, { provider: walletProvider, walletStore });
+  if (walletProvider.walletName === store.getState().currentWalletName) {
+    subWallet(store.getState().currentWalletName);
+  }
 };
 
-const currentWalletNameState = atom<string | null>({
-  key: 'currentWalletNameState',
-  default: null,
-  effects: [persistAtom],
-});
+interface State {
+  currentWalletName: string | null;
+  account: string | undefined;
+  chainId: string | undefined;
+}
+export const store = create(
+  subscribeWithSelector(
+    persist<State>(
+      () => ({
+        currentWalletName: null,
+        account: undefined,
+        chainId: undefined,
+      }),
+      {
+        name: 'AccountManage-storage',
+        storage: createJSONStorage(() => localStorage),
+      },
+    ),
+  ),
+);
 
-const accountState = selector({
-  key: 'accountState',
-  get: ({ get }) => {
-    const currentWalletName = get(currentWalletNameState);
-    if (!currentWalletName) return undefined;
+let unsubAccount: VoidFunction | null = null;
+let unsubChainId: VoidFunction | null = null;
+const subWallet = (currentWalletName: string | null) => {
+  if (unsubAccount) {
+    unsubAccount?.();
+    unsubAccount = null;
+  }
+  if (unsubChainId) {
+    unsubChainId?.();
+    unsubChainId = null;
+  }
+  if (!currentWalletName) {
+    store.setState({ account: undefined, chainId: undefined });
+  } else {
     const walletState = walletsStateMap.get(currentWalletName);
-    if (!walletState) throw new Error(`CurrentWallet - ${currentWalletName} is not registered`);
-    return get(walletState.accountState);
-  },
-});
+    if (!walletState) {
+      store.setState({ account: undefined, chainId: undefined });
+    } else {
+      unsubAccount = walletState.walletStore.subscribe(
+        (state) => state.account,
+        (account) => store.setState({ account }),
+        { fireImmediately: true },
+      );
+      unsubChainId = walletState.walletStore.subscribe(
+        (state) => state.chainId,
+        (chainId) => store.setState({ chainId }),
+        { fireImmediately: true },
+      );
+    }
+  }
+};
+store.subscribe((state) => state.currentWalletName, subWallet, { fireImmediately: true });
 
-const chainIdState = selector({
-  key: 'chainIdState',
-  get: ({ get }) => {
-    const currentWalletName = get(currentWalletNameState);
-    if (!currentWalletName) return undefined;
-    const walletState = walletsStateMap.get(currentWalletName);
-    if (!walletState) throw new Error(`CurrentWallet - ${currentWalletName} is not registered`);
-    return get(walletState.chainIdState);
-  },
-});
+export const selectors = {
+  currentWalletName: (state: State) => state.currentWalletName,
+  account: (state: State) => state.account,
+  chainId: (state: State) => state.chainId,
+};
 
-export const useAccount = () => useRecoilValue(accountState);
-export const getAccount = () => getRecoil(accountState);
-export const useChainId = () => useRecoilValue(chainIdState);
-export const getChainId = () => getRecoil(chainIdState);
+export const useAccount = () => store(selectors.account);
+export const getAccount = () => store.getState().account;
+export const useChainId = () => store(selectors.chainId);
+export const getChainId = () => store.getState().chainId;
+export const useCurrentWalletName = () => store(selectors.currentWalletName);
+export const getCurrentWalletName = () => store.getState().currentWalletName;
 
 export const connect = async (walletName: string) => {
   const walletState = checkWalletState({ walletName, checkFunctionName: 'connect' });
   try {
     await walletState.provider.connect();
-    setRecoil(currentWalletNameState, walletName);
+    store.setState({ currentWalletName: walletName });
   } catch (err) {
     console.error(`Connect to ${walletName} error: `, err);
     throw err;
@@ -90,7 +176,7 @@ export const disconnect = async () => {
   const walletState = checkWalletState({ checkFunctionName: 'connect' });
   try {
     await walletState.provider.disconnect?.();
-    setRecoil(currentWalletNameState, null);
+    store.setState({ currentWalletName: null });
   } catch (err) {
     console.error('Disconnect error: ', err);
     throw err;
@@ -152,7 +238,7 @@ export const watchAsset = (params: WatchAssetParams) => {
 };
 
 function checkAccountConnected() {
-  const currentWalletName = getRecoil(currentWalletNameState);
+  const currentWalletName = getCurrentWalletName();
   if (!currentWalletName) {
     throw new Error('No account connected');
   }
@@ -160,7 +246,7 @@ function checkAccountConnected() {
 }
 
 function checkWalletState({ walletName, checkFunctionName }: { walletName?: string; checkFunctionName?: keyof WalletProvider }) {
-  const currentWalletName = walletName || (getRecoil(currentWalletNameState) as string);
+  const currentWalletName = walletName || (getCurrentWalletName() as string);
   const walletState = walletsStateMap.get(currentWalletName);
   if (!walletState) {
     throw new Error(`Wallet - ${currentWalletName} is not registered`);

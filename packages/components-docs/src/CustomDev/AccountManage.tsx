@@ -1,4 +1,4 @@
-import { useEffect, type FC } from 'react';
+import { type FC } from 'react';
 import { registerWallet, connect, useAccount, useChainId } from '@cfx-kit/react-utils/src/AccountManage';
 import { MetaMaskProvider, FluentProvider, OKXProvider } from '@cfx-kit/react-utils/src/AccountManagePlugins';
 
@@ -8,8 +8,7 @@ registerWallet(FluentProvider);
 const App: FC = () => {
   const account = useAccount();
   const chainId = useChainId();
-  console.log(account)
-  console.log(chainId)
+  console.log(account);
 
   return (
     <>
