@@ -20,6 +20,10 @@
     "url": "https://github.com/Conflux-Chain/dapp-omnibus/issues"
   },
   "dependencies": {
+    "@cfxjs/use-wallet-react": "0.0.2-2",
+    "localstorage-enhance": "^1.0.1",
+    "recoil": "^0.7.7",
+    "recoil-nexus": "^0.5.0"
   },
   "devDependencies": {
     "@types/react": "latest",

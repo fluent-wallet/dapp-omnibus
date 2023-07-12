@@ -1,5 +1,4 @@
 import { useEffect, type FC } from 'react';
-import Modal from '@cfx-kit/ui-components/src/Modal';
 import { fetchChain } from '@cfx-kit/dapp-utils/src/fetch';
 
 const App: FC = () => {
