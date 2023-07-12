@@ -21,6 +21,8 @@
   },
   "dependencies": {
     "@cfxjs/use-wallet-react": "0.0.2-2",
+    "@walletconnect/sign-client": "^2.9.0",
+    "@web3modal/standalone": "^2.4.3",
     "decimal.js": "^10.4.3",
     "localstorage-enhance": "^1.0.1",
     "recoil": "^0.7.7",
@@ -29,6 +31,7 @@
   },
   "devDependencies": {
     "@types/react": "latest",
+    "@walletconnect/types": "^2.9.0",
     "tsconfig": "workspace:*"
   },
   "peerDependencies": {

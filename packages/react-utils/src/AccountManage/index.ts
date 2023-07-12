@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { create, type UseBoundStore, type StoreApi } from 'zustand';
 import { subscribeWithSelector, persist, createJSONStorage } from 'zustand/middleware';
 import type { AddChainParameter, TypedSignParams, WatchAssetParams, TransactionParameters, Write, StoreSubscribeWithSelector } from './types';
@@ -9,11 +10,11 @@ interface WalletProvider {
   subChainIdChange: (callback: (account: string | undefined) => void) => void;
   getAccount: () => string | undefined;
   getChainId: () => string | undefined;
-  connect: () => Promise<unknown>;
+  connect: () => Promise<any>;
   sendTransaction: (transaction: TransactionParameters) => Promise<string>;
-  watchAsset?: (asset: WatchAssetParams) => Promise<unknown>;
-  addChain?: (chain: AddChainParameter) => Promise<unknown>;
-  switchChain?: (chainId: string) => Promise<unknown>;
+  watchAsset?: (asset: WatchAssetParams) => Promise<any>;
+  addChain?: (chain: AddChainParameter) => Promise<any>;
+  switchChain?: (chainId: string) => Promise<any>;
   typedSign?: (data: TypedSignParams) => Promise<string>;
   disconnect?: () => Promise<void> | void;
 }
@@ -38,6 +39,8 @@ const walletsStateMap = new Map<
     walletStore: WalletStore;
   }
 >();
+export const getRegisteredWalletsName = () => Array.from(walletsStateMap.keys())
+export const getRegisteredWallets = () => Array.from(walletsStateMap.values());;
 export const registerWallet = (walletProvider: WalletProvider, { persistFirst }: { persistFirst: boolean } = { persistFirst: true }) => {
   let walletStore: WalletStore;
   if (!persistFirst) {
