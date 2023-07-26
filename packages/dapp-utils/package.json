@@ -27,7 +27,9 @@
     "lodash-es": "^4.17.21"
   },
   "devDependencies": {
+    "@types/mersenne-twister": "^1.1.2",
     "@types/lodash-es": "^4.17.7",
+    "mersenne-twister": "^1.1.0",
     "tsconfig": "workspace:*"
   },
   "scripts": {

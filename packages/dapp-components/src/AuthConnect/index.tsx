@@ -5,7 +5,7 @@ interface Props extends ComponentProps<'div'> {
 }
 
 const Accordion: React.FC<Props> = () => {
-  return <div>123</div>;
+  return <div>234</div>;
 };
 
 export default Accordion;
