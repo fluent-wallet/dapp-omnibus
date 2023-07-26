@@ -1,0 +1,48 @@
+.ui-spin-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1em;
+  height: 1em;
+}
+
+.ui-spin {
+  width: 1em;
+  height: 1em;
+  animation: ui-spin-rotation 2s linear infinite;
+  contain: strict;
+}
+
+.ui-spin-path {
+  stroke-width: 0.3em;
+  stroke-width: clamp(2px, 0.3em, 5px);
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 4;
+  stroke: currentColor;
+  animation: ui-spin-dash 1.5s ease-in-out infinite;
+}
+
+@keyframes ui-spin-rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ui-spin-dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35px;
+  }
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124px;
+  }
+}
