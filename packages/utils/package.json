@@ -1,6 +1,6 @@
 {
   "name": "@cfx-kit/utils",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "keywords": [
     "dapp",
@@ -19,13 +19,11 @@
   "bugs": {
     "url": "https://github.com/Conflux-Chain/dapp-omnibus/issues"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "tsconfig": "workspace:*"
   },
-  "peerDependencies": {
-  },
+  "peerDependencies": {},
   "scripts": {
     "build": "pnpm lint && pnpm typecheck && tsup --dts",
     "lint": "eslint src --ext .ts,.tsx",

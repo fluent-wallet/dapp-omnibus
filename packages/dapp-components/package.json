@@ -1,6 +1,6 @@
 {
   "name": "@cfx-kit/dapp-components",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "keywords": [
     "react",
@@ -19,8 +19,7 @@
   "bugs": {
     "url": "https://github.com/Conflux-Chain/dapp-omnibus/issues"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/react": "latest",
     "tsconfig": "workspace:*"

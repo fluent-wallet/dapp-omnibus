@@ -1,4 +1,4 @@
-import AccountManage from './AccountManage';
+import Contract from './Contract';
 
 
-export default AccountManage;
+export default Contract;

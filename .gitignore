@@ -23,7 +23,6 @@ lerna-debug.log*
 
 # lock file
 yarn.lock
-pnpm-lock.yaml
 package-lock.json
 
 # local env files

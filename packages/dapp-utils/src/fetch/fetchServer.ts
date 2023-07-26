@@ -12,12 +12,12 @@ interface FetchParams {
 
 export const createFetchServer = ({
   prefixUrl,
-  handler,
+  responseHandler,
   getHandler,
   postHandler,
 }: {
   prefixUrl?: string;
-  handler?: Function;
+  responseHandler?: Function;
   getHandler?: Function;
   postHandler?: Function;
 }) => {
@@ -32,8 +32,8 @@ export const createFetchServer = ({
       .then((_res: unknown) => {
         if (isFunction(postHandler)) {
           return postHandler(_res as unknown as D) as T;
-        } else if (isFunction(handler)) {
-          return handler(_res as unknown as D) as T;
+        } else if (isFunction(responseHandler)) {
+          return responseHandler(_res as unknown as D) as T;
         }
         return _res as T;
       });
@@ -49,8 +49,8 @@ export const createFetchServer = ({
           .then((_res: unknown) => {
             if (isFunction(getHandler)) {
               return getHandler(_res as unknown as D) as T;
-            } else if (isFunction(handler)) {
-              return handler(_res as unknown as D) as T;
+            } else if (isFunction(responseHandler)) {
+              return responseHandler(_res as unknown as D) as T;
             }
             return _res as T;
           }),

@@ -6,7 +6,11 @@
     "dev:utils": "turbo run dev --scope=utils-docs",
     "dev:custom": "turbo run dev:custom --scope=components-docs",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "add": "changeset add",
+    "version": "changeset version",
+    "release": "pnpm build && pnpm release:only",
+    "release:only": "changeset publish --registry=https://registry.npmjs.com/"
   },
   "devDependencies": {
     "@turbo/gen": "latest",
@@ -18,5 +22,8 @@
     "typescript": "^5.1.6"
   },
   "packageManager": "pnpm@7.15.0",
-  "name": "dapp-omnibus"
+  "name": "dapp-omnibus",
+  "dependencies": {
+    "@changesets/cli": "^2.26.2"
+  }
 }

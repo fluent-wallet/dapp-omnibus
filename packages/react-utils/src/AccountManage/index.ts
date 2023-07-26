@@ -39,8 +39,8 @@ const walletsStateMap = new Map<
     walletStore: WalletStore;
   }
 >();
-export const getRegisteredWalletsName = () => Array.from(walletsStateMap.keys())
-export const getRegisteredWallets = () => Array.from(walletsStateMap.values());;
+export const getRegisteredWalletsName = () => Array.from(walletsStateMap.keys());
+export const getRegisteredWallets = () => Array.from(walletsStateMap.values());
 export const registerWallet = (walletProvider: WalletProvider, { persistFirst }: { persistFirst: boolean } = { persistFirst: true }) => {
   let walletStore: WalletStore;
   if (!persistFirst) {
@@ -165,6 +165,7 @@ export const getCurrentWalletName = () => store.getState().currentWalletName;
 
 export const connect = async (walletName: string) => {
   const walletState = checkWalletState({ walletName, checkFunctionName: 'connect' });
+  console.log(walletState)
   try {
     await walletState.provider.connect();
     store.setState({ currentWalletName: walletName });
