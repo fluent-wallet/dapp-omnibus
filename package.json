@@ -7,7 +7,7 @@
     "dev:custom": "turbo run dev:custom --scope=components-docs",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "add": "changeset add",
+    "add": "changeset",
     "version": "changeset version",
     "release": "pnpm build && pnpm release:only",
     "release:only": "changeset publish --registry=https://registry.npmjs.com/"

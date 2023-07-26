@@ -150,6 +150,9 @@ importers:
 
   packages/dapp-components:
     dependencies:
+      '@cfx-kit/dapp-utils':
+        specifier: workspace:*
+        version: link:../dapp-utils
       react:
         specifier: latest
         version: 18.2.0

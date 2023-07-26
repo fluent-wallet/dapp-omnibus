@@ -19,7 +19,9 @@
   "bugs": {
     "url": "https://github.com/Conflux-Chain/dapp-omnibus/issues"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@cfx-kit/dapp-utils": "workspace:*"
+  },
   "devDependencies": {
     "@types/react": "latest",
     "tsconfig": "workspace:*"
