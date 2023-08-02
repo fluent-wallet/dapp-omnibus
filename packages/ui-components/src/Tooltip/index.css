@@ -1,0 +1,11 @@
+@layer tooltip-inner {
+  .ui-tooltip [data-part='arrow'] {
+    --arrow-size: 6px;
+    --arrow-background: black;
+  }
+
+  .ui-tooltip [data-part='content'] {
+    color: white;
+    background-color: black;
+  }
+}

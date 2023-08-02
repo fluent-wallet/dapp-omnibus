@@ -2,6 +2,7 @@
 import { type AtomEffect, type MutableSnapshot } from 'recoil';
 import { LocalStorageClass } from 'localstorage-enhance';
 const RecoilPersistLocalStorage = new LocalStorageClass({ storageKey: 'recoil_persist_localStorage', capacity: 1500 });
+export * from './useAutoRefreshData';
 
 export const persistAtom: AtomEffect<any> = ({ setSelf, onSet, trigger, node: { key } }) => {
   if (trigger === 'get') {

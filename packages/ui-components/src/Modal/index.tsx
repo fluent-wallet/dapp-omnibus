@@ -1,4 +1,4 @@
-import { useId, isValidElement, cloneElement, Children, type HTMLAttributes, type ReactNode } from 'react';
+import { useEffect, useId, isValidElement, cloneElement, Children, type HTMLAttributes, type ReactNode } from 'react';
 import { machine, connect } from '@zag-js/dialog';
 import { useMachine, normalizeProps, Portal } from '@zag-js/react';
 import './index.css';
@@ -16,15 +16,24 @@ interface Props {
   onOpen?: VoidFunction;
   onClose?: VoidFunction;
   children?:
-    | (({ contentProps, closeTriggerProps }: { contentProps: HTMLAttributes<HTMLElement>; closeTriggerProps: HTMLAttributes<HTMLElement> }) => JSX.Element)
+    | (({
+        contentProps,
+        closeTriggerProps,
+        close,
+      }: {
+        contentProps: HTMLAttributes<HTMLElement>;
+        closeTriggerProps: HTMLAttributes<HTMLElement>;
+        close: VoidFunction;
+      }) => JSX.Element)
     | ReactNode;
-  trigger?: (triggerProps: HTMLAttributes<HTMLElement>) => JSX.Element;
+  trigger?: ({ triggerProps }: { triggerProps: HTMLAttributes<HTMLElement> }) => JSX.Element;
 }
 
 const Modal: React.FC<Props> = ({
   id,
-  closeOnEsc = true,
-  closeOnOutsideClick = false,
+  open,
+  closeOnEsc,
+  closeOnOutsideClick,
   modal = true,
   preventScroll = true,
   trapFocus = true,
@@ -35,17 +44,36 @@ const Modal: React.FC<Props> = ({
   ...props
 }) => {
   const uniqueId = useId();
-  const [state, send] = useMachine(machine({ id: id ?? uniqueId, closeOnEsc, closeOnOutsideClick, modal, preventScroll, trapFocus, ...props }));
+  const [state, send] = useMachine(
+    machine({
+      id: id ?? uniqueId,
+      closeOnEsc: typeof closeOnEsc === 'boolean' ? closeOnEsc : typeof open === 'boolean' ? false : true,
+      closeOnOutsideClick: typeof closeOnOutsideClick === 'boolean' ? closeOnOutsideClick : typeof open === 'boolean' ? false : true,
+      modal,
+      preventScroll,
+      trapFocus,
+      ...props,
+    }),
+  );
   const api = connect(state, send, normalizeProps);
+
+  useEffect(() => {
+    if (open === true) {
+      api.open();
+    } else {
+      api.close();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
   return (
     <>
-      {typeof trigger === 'function' ? trigger(api.triggerProps) : null}
+      {typeof trigger === 'function' ? trigger({ triggerProps: api.triggerProps }) : null}
       {api.isOpen && (
         <Portal>
-          {modal && <div className={backdropClassName} {...api.backdropProps} />}
-          <div className={containerClassName} {...api.containerProps}>
-            {typeof children === 'function' && children({ contentProps: api.contentProps, closeTriggerProps: api.closeTriggerProps })}
+          {modal && <div className={`ui-modal-backdrop${backdropClassName ? ` ${backdropClassName}` : ''}`} {...api.backdropProps} />}
+          <div className={`ui-modal${containerClassName ? ` ${containerClassName}` : ''}`} {...api.containerProps}>
+            {typeof children === 'function' && children({ contentProps: api.contentProps, closeTriggerProps: api.closeTriggerProps, close: api.close })}
             {typeof children !== 'function' ? (
               Children.count(children) === 1 && isValidElement(children) ? (
                 cloneElement(children, { ...api.contentProps })
@@ -60,5 +88,4 @@ const Modal: React.FC<Props> = ({
   );
 };
 
-export { Portal } from '@zag-js/react';
 export default Modal;

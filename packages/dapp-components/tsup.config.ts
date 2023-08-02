@@ -1,16 +1,22 @@
 import { defineConfig } from 'tsup';
 import { readdirSync, statSync } from 'fs';
 
-export const allComponentsEntry = readdirSync('./src').reduce((allComponents, component) => {
-  try {
-    if (statSync(`./src/${component}`).isDirectory() && statSync(`./src/${component}/index.tsx`).isFile()) {
-      allComponents[component] = `src/${component}/index.tsx`;
+export const allComponentsEntry = readdirSync('./src').reduce(
+  (allComponents, component) => {
+    try {
+      if (statSync(`./src/${component}`).isDirectory() && statSync(`./src/${component}/index.tsx`).isFile()) {
+        allComponents[component] = `src/${component}/index.tsx`;
+      }
+    } catch (_) {
+      /* empty */
     }
-  } catch (_) {}
-  return allComponents;
-}, {} as Record<string, string>);
+    return allComponents;
+  },
+  {} as Record<string, string>,
+);
 
 export default defineConfig({
   entry: allComponentsEntry,
-  format: 'esm'
+  format: 'esm',
+  noExternal: ['@cfx-kit/utils', '@cfx-kit/dapp-utils']
 });

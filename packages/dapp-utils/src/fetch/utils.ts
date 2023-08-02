@@ -1,4 +1,6 @@
 import { isEqual } from 'lodash-es';
+// eslint-disable-next-line @typescript-eslint/ban-types
+export const isFunction = (obj: unknown): obj is Function => typeof obj === 'function';
 const lastCache = new Map<string, { timestamp: number | null; data: unknown }>();
 const promiseCache = new Map<string, Promise<unknown>>();
 

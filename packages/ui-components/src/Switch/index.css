@@ -1,0 +1,45 @@
+@layer switch-inner {
+  .ui-switch {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 24px;
+  }
+
+  .ui-switch [data-part='control'] {
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+    justify-content: flex-start;
+    align-items: center;
+    box-sizing: content-box;
+    cursor: pointer;
+    border-radius: 9999px;
+    width: 1.75em;
+    height: 1em;
+    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+    transition-duration: 150ms;
+    background: #cbd5e0;
+    -webkit-box-pack: start;
+  }
+
+  .ui-switch [data-part='control'][data-state='checked'] {
+    background: #2ab26b;
+  }
+
+  .ui-switch [data-part='thumb'] {
+    position: absolute;
+    left: .125em;
+    background: #ffffff;
+    transition-property: transform;
+    transition-duration: 200ms;
+    border-radius: 50%;
+    width: .8em;
+    height: .8em;
+  }
+
+  .ui-switch [data-part='thumb'][data-state='checked'] {
+    transform: translateX(.7em);
+  }
+}

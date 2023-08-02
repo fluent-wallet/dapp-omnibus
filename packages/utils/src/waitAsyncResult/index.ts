@@ -1,13 +1,17 @@
-async function* poll<T>(fetcher: () => Promise<T>, interval: number): AsyncGenerator<T> {
+async function* poll<T>({ fetcher, interval, checkTimeout }: { fetcher: () => Promise<T>; interval: number; checkTimeout: () => boolean }): AsyncGenerator<T> {
   while (true) {
     try {
       const result = await fetcher();
-      if (result != undefined) {
+      if (result !== undefined) {
         yield result;
+        break;
       }
     } catch (err) {
       // console.error('Error in fetcher:', err);
       // break;
+    }
+    if (checkTimeout()) {
+      break;
     }
     await new Promise((resolve) => setTimeout(resolve, interval));
   }
@@ -16,13 +20,13 @@ async function* poll<T>(fetcher: () => Promise<T>, interval: number): AsyncGener
 const asyncResultCache = new Map<string, ReturnType<typeof waitAsyncResult>>();
 const waitAsyncResult = <T>({
   fetcher,
-  maxWaitTime = 60,
+  maxWaitTime = 4,
   interval = 3,
   key,
 }: {
   fetcher: () => Promise<T>;
-  maxWaitTime: number;
-  interval: number;
+  maxWaitTime?: number;
+  interval?: number;
   key?: string;
 }): Readonly<{
   promise: Promise<T>;
@@ -53,18 +57,26 @@ const waitAsyncResult = <T>({
   const endTime = Date.now() + maxWaitTime * 1000;
 
   (async () => {
-    for await (const result of poll(fetcher, interval * 1000)) {
-      if (result != undefined) {
+    for await (const result of poll({
+      fetcher,
+      interval,
+      checkTimeout: () => {
+        if (maxWaitTime <= 0) return false;
+        if (Date.now() > endTime) {
+          status = 'rejected';
+          reject(new Error('Wait async timeout'));
+          if (typeof key === 'string' && !!key) {
+            asyncResultCache.delete(key);
+          }
+          return true;
+        } else {
+          return false;
+        }
+      },
+    })) {
+      if (result !== undefined) {
         status = 'fullfilled';
         resolve(result);
-      }
-      if (Date.now() > endTime) {
-        status = 'rejected';
-        reject(new Error('Wait async timeout'));
-        if (typeof key === 'string' && !!key) {
-          asyncResultCache.delete(key);
-        }
-        break;
       }
     }
   })();

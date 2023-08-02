@@ -1,5 +1,5 @@
 import { type MutableRefObject, type RefCallback } from 'react';
-export function composeRef<T>(refs: Array<MutableRefObject<T | null> | RefCallback<T>>): React.RefCallback<T> {
+function composeRef<T>(refs: Array<MutableRefObject<T | null> | RefCallback<T>>): React.RefCallback<T> {
   return (value) => {
     refs.forEach((ref) => {
       if (typeof ref === 'function') {
@@ -10,3 +10,4 @@ export function composeRef<T>(refs: Array<MutableRefObject<T | null> | RefCallba
     });
   };
 }
+export default composeRef;

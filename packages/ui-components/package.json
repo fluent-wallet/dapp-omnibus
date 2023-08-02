@@ -1,6 +1,6 @@
 {
   "name": "@cfx-kit/ui-components",
-  "version": "0.0.1",
+  "version": "0.0.13",
   "type": "module",
   "keywords": [
     "react",
@@ -10,8 +10,10 @@
   "license": "MIT",
   "repository": "https://github.com/Conflux-Chain/dapp-omnibus/tree/main/packages/ui-components",
   "sideEffects": false,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist/"
   ],
   "publishConfig": {
     "access": "public"
@@ -19,23 +21,27 @@
   "bugs": {
     "url": "https://github.com/Conflux-Chain/dapp-omnibus/issues"
   },
-  "dependencies": {
-    "@zag-js/accordion": "^0.10.4",
-    "@zag-js/dialog": "^0.10.4",
-    "@zag-js/react": "^0.10.4",
-    "@zag-js/toast": "^0.10.4"
-  },
   "devDependencies": {
     "@types/react": "latest",
     "tsconfig": "workspace:*"
   },
   "peerDependencies": {
-    "react": "latest"
+    "@zag-js/accordion": "^0.16.0",
+    "@zag-js/checkbox": "^0.16.0",
+    "@zag-js/dialog": "^0.16.0",
+    "@zag-js/popover": "^0.16.0",
+    "@zag-js/react": "^0.16.0",
+    "@zag-js/select": "^0.16.0",
+    "@zag-js/switch": "^0.16.0",
+    "@zag-js/tooltip": "^0.16.0",
+    "@zag-js/pagination": "^0.16.0",
+    "@zag-js/toast": "^0.16.0",
+    "react": "^18.0.0"
   },
   "scripts": {
     "build": "pnpm lint && pnpm typecheck && tsup --dts",
     "lint": "eslint src --ext .ts,.tsx",
     "typecheck": "tsc --noEmit"
   },
-  "main": "src/index.ts"
+  "dependencies": {}
 }

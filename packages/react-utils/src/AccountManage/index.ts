@@ -160,12 +160,15 @@ export const useAccount = () => store(selectors.account);
 export const getAccount = () => store.getState().account;
 export const useChainId = () => store(selectors.chainId);
 export const getChainId = () => store.getState().chainId;
-export const useCurrentWalletName = () => store(selectors.currentWalletName);
+export const useCurrentWalletName = () => {
+  const account = useAccount();
+  const currentWalletName = store(selectors.currentWalletName);
+  return account ? currentWalletName : null;
+};
 export const getCurrentWalletName = () => store.getState().currentWalletName;
 
 export const connect = async (walletName: string) => {
   const walletState = checkWalletState({ walletName, checkFunctionName: 'connect' });
-  console.log(walletState)
   try {
     await walletState.provider.connect();
     store.setState({ currentWalletName: walletName });
@@ -194,7 +197,7 @@ export const switchChain = async (
     addChainCallback,
     cancleAddCallback,
     cancelSwitchCallback,
-  }: { addChainParams?: AddChainParameter; addChainCallback?: VoidFunction; cancleAddCallback?: VoidFunction; cancelSwitchCallback?: VoidFunction },
+  }: { addChainParams?: AddChainParameter; addChainCallback?: VoidFunction; cancleAddCallback?: VoidFunction; cancelSwitchCallback?: VoidFunction } = {},
 ) => {
   checkAccountConnected();
   const walletState = checkWalletState({ checkFunctionName: 'switchChain' });

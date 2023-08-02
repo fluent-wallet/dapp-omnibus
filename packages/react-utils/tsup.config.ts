@@ -1,14 +1,19 @@
 import { defineConfig } from 'tsup';
 import { readdirSync, statSync } from 'fs';
 
-export const allUtilsEntry = readdirSync('./src').reduce((allUtils, util) => {
-  try {
-    if (statSync(`./src/${util}`).isDirectory() && statSync(`./src/${util}/index.ts`).isFile()) {
-      allUtils[util] = `src/${util}/index.ts`;
+export const allUtilsEntry = readdirSync('./src').reduce(
+  (allUtils, util) => {
+    try {
+      if (statSync(`./src/${util}`).isDirectory() && statSync(`./src/${util}/index.ts`).isFile()) {
+        allUtils[util] = `src/${util}/index.ts`;
+      }
+    } catch (_) {
+      /* empty */
     }
-  } catch (_) {}
-  return allUtils;
-}, {} as Record<string, string>);
+    return allUtils;
+  },
+  {} as Record<string, string>,
+);
 
 export default defineConfig({
   entry: allUtilsEntry,

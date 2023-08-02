@@ -1,4 +1,4 @@
-import Contract from './Contract';
+import Popover from './Popover';
 
 
-export default Contract;
+export default Popover;

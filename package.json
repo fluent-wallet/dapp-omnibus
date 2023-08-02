@@ -2,14 +2,16 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
+    "build:lib": "turbo run build  --scope=ui-components --scope=dapp-components --scope=dapp-utils --scope=react-utils --scope=utils",
+    "build:ui": "turbo run build  --scope=ui-components",
     "dev:components": "turbo run dev --scope=components-docs",
     "dev:utils": "turbo run dev --scope=utils-docs",
     "dev:custom": "turbo run dev:custom --scope=components-docs",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "add": "changeset",
+    "changeset": "changeset",
     "version": "changeset version",
-    "release": "pnpm build && pnpm release:only",
+    "release": "pnpm build:lib && pnpm release:only",
     "release:only": "changeset publish --registry=https://registry.npmjs.com/"
   },
   "devDependencies": {

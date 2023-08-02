@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-types */
 import ky, { Options } from 'ky';
-import { fetchBase } from './utils';
-import { isFunction } from '@cfx-kit/utils/src/is';
+import { fetchBase, isFunction } from './utils';
 
 interface FetchParams {
   url: string;
@@ -25,7 +25,7 @@ export const createFetchServer = ({
     prefixUrl,
   });
 
-  const postServer = async <T, D>(url: string, data: object): Promise<T> =>
+  const postServer = async <T, D = any>(url: string, data: object): Promise<T> =>
     original
       .post(url, { json: data })
       .json()
@@ -38,12 +38,12 @@ export const createFetchServer = ({
         return _res as T;
       });
 
-  const fetchServer = async <T, D>({ url, key, throttle, options }: FetchParams): Promise<T> => {
+  const fetchServer = async <T, D = any>({ url, key, throttle, options }: FetchParams): Promise<T> => {
     return fetchBase({
       key: key ?? url,
       throttle,
       fetcher: () =>
-        ky
+        original
           .get(url, options)
           .json()
           .then((_res: unknown) => {

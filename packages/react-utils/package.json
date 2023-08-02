@@ -1,6 +1,6 @@
 {
   "name": "@cfx-kit/react-utils",
-  "version": "0.0.1",
+  "version": "0.0.7",
   "type": "module",
   "keywords": [
     "react",
@@ -10,8 +10,10 @@
   "license": "MIT",
   "repository": "https://github.com/Conflux-Chain/dapp-omnibus/tree/main/packages/react-utils",
   "sideEffects": false,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist/"
   ],
   "publishConfig": {
     "access": "public"
@@ -35,12 +37,11 @@
     "tsconfig": "workspace:*"
   },
   "peerDependencies": {
-    "react": "latest"
+    "react": "^18.0.0"
   },
   "scripts": {
     "build": "pnpm lint && pnpm typecheck && tsup --dts",
     "lint": "eslint src --ext .ts,.tsx",
     "typecheck": "tsc --noEmit"
-  },
-  "main": "src/index.ts"
+  }
 }

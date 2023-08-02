@@ -1,0 +1,25 @@
+@layer checkbox-inner {
+  .ui-checkbox {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .ui-checkbox [data-part='control'] {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 6px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #a0aec0;
+    color: #ffffff;
+  }
+
+  .ui-checkbox [data-part='control'][data-state='checked'] {
+    border-color: #3182ce;
+    background-color: #3182ce;
+  }
+}
