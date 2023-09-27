@@ -1,5 +1,5 @@
 import { useId, forwardRef, type ComponentProps } from 'react';
-import { machine, connect, type PublicApi } from '@zag-js/accordion';
+import { machine, connect, type Api } from '@zag-js/accordion';
 import { useMachine, normalizeProps } from '@zag-js/react';
 
 interface Props extends Omit<ComponentProps<'div'>, 'children'> {
@@ -12,9 +12,9 @@ interface Props extends Omit<ComponentProps<'div'>, 'children'> {
     getTriggerProps,
     getContentProps,
   }: {
-    getItemProps: PublicApi['getItemProps'];
-    getTriggerProps: PublicApi['getTriggerProps'];
-    getContentProps: PublicApi['getContentProps'];
+    getItemProps: Api['getItemProps'];
+    getTriggerProps: Api['getTriggerProps'];
+    getContentProps: Api['getContentProps'];
   }) => JSX.Element | Array<JSX.Element>;
 }
 

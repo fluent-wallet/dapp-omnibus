@@ -1,10 +1,19 @@
-import { useState, useEffect, useRef, useCallback, startTransition } from 'react';
-import { useRecoilRefresher_UNSTABLE, useRecoilValueLoadable, type RecoilValue } from 'recoil';
+import { useEffect, useLayoutEffect, useRef, startTransition } from 'react';
+import { atomFamily, useRecoilState, useRecoilRefresher_UNSTABLE, useRecoilValueLoadable, type RecoilValue } from 'recoil';
 
 const isPromise = <T>(obj: unknown): obj is Promise<T> =>
   !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof (obj as Promise<unknown>)?.then === 'function';
 const keyMap = new Map<string, boolean>();
-const pageInitPendingMap = new Map<string, boolean>();
+
+const inFetchAtom = atomFamily<boolean, string>({
+  key: `inFetchAtom`,
+  default: false,
+});
+
+const isInitPendingAtom = atomFamily<boolean, string>({
+  key: `isInitPendingAtom`,
+  default: true,
+});
 
 /**
  * This hooks is used to help the selector/selectorFamily that fetches remote data to automatically poll for updated data.
@@ -38,20 +47,29 @@ export const useAutoRefreshData = <T>({
   interval?: number;
   refreshImmediately?: boolean;
 }) => {
-  const [inFetch, setInFetch] = useState(() => refreshImmediately);
-
-  const fetcher = useCallback(async () => {
-    if (!_fetcher) return undefined;
-    const p = _fetcher();
-    if (isPromise(p)) {
-      setInFetch(true);
-      p.finally(() => setInFetch(false));
-    }
-    return p;
-  }, [_fetcher]);
-
   const refresh = useRecoilRefresher_UNSTABLE(recoilValue);
+  const [inFetch, setInFetch] = useRecoilState(inFetchAtom(recoilValue.key));
   const { state, contents } = useRecoilValueLoadable(recoilValue);
+  const [isInitPending, setIsInitPending] = useRecoilState(isInitPendingAtom(recoilValue.key));
+  const isPending = inFetch || state === 'loading';
+
+  useLayoutEffect(() => {
+    const hasRunningAutoRefresh = keyMap.has(recoilValue.key);
+    if (hasRunningAutoRefresh) return;
+    setInFetch(refreshImmediately);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [recoilValue.key]);
+
+  useEffect(() => {
+    if (isInitPending === false) {
+      return;
+    }
+    if (isPending === false) {
+      setIsInitPending(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPending]);
+
   const recoilValueRef = useRef<T | undefined>(undefined);
   useEffect(() => {
     recoilValueRef.current = contents as T;
@@ -61,6 +79,16 @@ export const useAutoRefreshData = <T>({
     const hasRunningAutoRefresh = keyMap.has(recoilValue.key);
     if (hasRunningAutoRefresh) return;
     keyMap.set(recoilValue.key, true);
+
+    const fetcher = async () => {
+      if (!_fetcher) return undefined;
+      const p = _fetcher();
+      if (isPromise(p)) {
+        setInFetch(true);
+        p.finally(() => setInFetch(false));
+      }
+      return p;
+    };
 
     const exec = () => {
       if (fetcher) {
@@ -87,28 +115,11 @@ export const useAutoRefreshData = <T>({
       clearInterval(timer);
       keyMap.delete(recoilValue.key);
     };
-  }, [fetcher, refresh, interval, refreshImmediately, recoilValue.key]);
-
-  const isPending = inFetch || state === 'loading';
-  const [isInitPending, setIsInitPending] = useState<'PageInit' | boolean>(() => {
-    const hasPageInit = pageInitPendingMap.has(recoilValue.key);
-    if (!hasPageInit) {
-      pageInitPendingMap.set(recoilValue.key, true);
-    }
-    return hasPageInit ? true : 'PageInit';
-  });
-  useEffect(() => {
-    if (isInitPending === false) {
-      return;
-    }
-    if (isPending === false) {
-      setIsInitPending(false);
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isPending]);
+  }, [recoilValue.key, _fetcher, interval]);
 
   return {
-    isInitPending: !!contents && isInitPending,
+    isInitPending,
     isPending,
     refresh,
   } as const;

@@ -13,15 +13,15 @@ async function* poll<T>({ fetcher, interval, checkTimeout }: { fetcher: () => Pr
     if (checkTimeout()) {
       break;
     }
-    await new Promise((resolve) => setTimeout(resolve, interval));
+    await new Promise((resolve) => setTimeout(resolve, interval * 1000));
   }
 }
 
 const asyncResultCache = new Map<string, ReturnType<typeof waitAsyncResult>>();
 const waitAsyncResult = <T>({
   fetcher,
-  maxWaitTime = 4,
-  interval = 3,
+  maxWaitTime = 60,
+  interval = 2,
   key,
 }: {
   fetcher: () => Promise<T>;

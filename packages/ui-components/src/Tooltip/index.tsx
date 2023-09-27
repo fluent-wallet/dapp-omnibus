@@ -17,7 +17,7 @@ interface Props {
   onClose?: VoidFunction;
   containerClassName?: string;
   children?: (({ contentProps }: { contentProps: HTMLAttributes<HTMLElement> }) => JSX.Element) | ReactNode;
-  trigger?: ({ triggerProps }: { triggerProps: HTMLAttributes<HTMLElement> }) => JSX.Element;
+  trigger?: ({ triggerProps }: { triggerProps: Omit<HTMLAttributes<HTMLElement>, 'color'> }) => JSX.Element;
 }
 
 const Tooltip: React.FC<Props> = ({

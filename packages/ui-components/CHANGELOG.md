@@ -1,5 +1,29 @@
 # @cfx-kit/ui-components
 
+## 0.0.17
+
+### Patch Changes
+
+- update pagination
+
+## 0.0.16
+
+### Patch Changes
+
+- update dependecne
+
+## 0.0.15
+
+### Patch Changes
+
+- update zagjs
+
+## 0.0.14
+
+### Patch Changes
+
+- Update ts
+
 ## 0.0.13
 
 ### Patch Changes

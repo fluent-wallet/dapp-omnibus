@@ -1,5 +1,24 @@
 # @cfx-kit/dapp-utils
 
+## 0.0.14
+
+### Patch Changes
+
+- fetch export withInitCache
+
+## 0.0.13
+
+### Patch Changes
+
+- wq!
+
+## 0.0.12
+
+### Patch Changes
+
+- Updated dependencies
+  - @cfx-kit/utils@0.0.4
+
 ## 0.0.11
 
 ### Patch Changes

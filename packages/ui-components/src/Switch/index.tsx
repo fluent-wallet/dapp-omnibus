@@ -59,7 +59,7 @@ const Switch = forwardRef<HTMLInputElement, Props>(
 
     return (
       <label className={`ui-switch${className ? ` ${className}` : ''}`} {...api.rootProps} {...props}>
-        <input {...api.inputProps} ref={_forwardRef} />
+        <input {...api.hiddenInputProps} ref={_forwardRef} />
         {!!children &&
           labelPlacement === 'start' &&
           (typeof children === 'function' ? children({ labelProps: api.labelProps, isChecked: api.isChecked }) : children)}

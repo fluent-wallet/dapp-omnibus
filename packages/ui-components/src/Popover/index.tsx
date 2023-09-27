@@ -25,7 +25,7 @@ interface Props {
         close: VoidFunction;
       }) => JSX.Element)
     | ReactNode;
-  trigger?: ({ triggerProps, isOpen }: { triggerProps: HTMLAttributes<HTMLElement>; isOpen: boolean }) => JSX.Element;
+  trigger?: ({ triggerProps, isOpen }: { triggerProps: Omit<HTMLAttributes<HTMLElement>, 'color'>; isOpen: boolean }) => JSX.Element;
 }
 
 const Popover: React.FC<Props> = ({

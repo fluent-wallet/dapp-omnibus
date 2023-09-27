@@ -1,6 +1,6 @@
 {
   "name": "@cfx-kit/ui-components",
-  "version": "0.0.13",
+  "version": "0.0.17",
   "type": "module",
   "keywords": [
     "react",
@@ -26,16 +26,16 @@
     "tsconfig": "workspace:*"
   },
   "peerDependencies": {
-    "@zag-js/accordion": "^0.16.0",
-    "@zag-js/checkbox": "^0.16.0",
-    "@zag-js/dialog": "^0.16.0",
-    "@zag-js/popover": "^0.16.0",
-    "@zag-js/react": "^0.16.0",
-    "@zag-js/select": "^0.16.0",
-    "@zag-js/switch": "^0.16.0",
-    "@zag-js/tooltip": "^0.16.0",
-    "@zag-js/pagination": "^0.16.0",
-    "@zag-js/toast": "^0.16.0",
+    "@zag-js/accordion": "^0.19.1",
+    "@zag-js/checkbox": "^0.19.1",
+    "@zag-js/dialog": "^0.19.1",
+    "@zag-js/popover": "^0.19.1",
+    "@zag-js/react": "^0.19.1",
+    "@zag-js/select": "^0.19.1",
+    "@zag-js/switch": "^0.19.1",
+    "@zag-js/tooltip": "^0.19.1",
+    "@zag-js/pagination": "^0.19.1",
+    "@zag-js/toast": "^0.19.1",
     "react": "^18.0.0"
   },
   "scripts": {

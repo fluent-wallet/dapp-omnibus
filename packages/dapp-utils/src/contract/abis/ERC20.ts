@@ -17,7 +17,7 @@ const ERC20ABI = [
     name: 'approve',
     outputs: [{ name: '', type: 'bool' }],
     payable: false,
-    stateMutability: 'nonpayable',
+    stateMutability: 'view',
     type: 'function',
   },
   {

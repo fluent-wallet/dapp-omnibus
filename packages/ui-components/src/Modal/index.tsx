@@ -26,7 +26,7 @@ interface Props {
         close: VoidFunction;
       }) => JSX.Element)
     | ReactNode;
-  trigger?: ({ triggerProps }: { triggerProps: HTMLAttributes<HTMLElement> }) => JSX.Element;
+  trigger?: ({ triggerProps }: { triggerProps: Omit<HTMLAttributes<HTMLElement>, 'color'> }) => JSX.Element;
 }
 
 const Modal: React.FC<Props> = ({
