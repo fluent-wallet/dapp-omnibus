@@ -1,1 +1,3 @@
-export * from './ethereum';
+export * from './convertAddress';
+export * from './shortenAddress';
+export * from './validateAddress';

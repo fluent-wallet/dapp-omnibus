@@ -1,5 +1,11 @@
 # @cfx-kit/dapp-utils
 
+## 0.0.15
+
+### Patch Changes
+
+- add address Utils
+
 ## 0.0.14
 
 ### Patch Changes

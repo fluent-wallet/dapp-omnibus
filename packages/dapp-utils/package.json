@@ -1,6 +1,6 @@
 {
   "name": "@cfx-kit/dapp-utils",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "type": "module",
   "keywords": [
     "dapp",
@@ -25,12 +25,13 @@
     "@cfx-kit/utils": "workspace:*",
     "abitype": "^0.9.5",
     "ethers": "^6.6.4",
+    "jsbi": "^4.3.0",
     "ky": "^0.33.3",
     "lodash-es": "^4.17.21"
   },
   "devDependencies": {
-    "@types/mersenne-twister": "^1.1.2",
     "@types/lodash-es": "^4.17.7",
+    "@types/mersenne-twister": "^1.1.2",
     "mersenne-twister": "^1.1.0",
     "tsconfig": "workspace:*"
   },
