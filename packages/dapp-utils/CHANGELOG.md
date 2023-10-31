@@ -1,5 +1,11 @@
 # @cfx-kit/dapp-utils
 
+## 0.0.16
+
+### Patch Changes
+
+- Update Contract type
+
 ## 0.0.15
 
 ### Patch Changes

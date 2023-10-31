@@ -8,6 +8,7 @@ type FunctionNames<T extends Abi> = ExtractAbiFunctionNames<T, 'pure' | 'view' |
 type InputTypes<T extends Abi, N extends FunctionNames<T>> = AbiParametersToPrimitiveTypes<ExtractAbiFunction<T, N>['inputs'], 'inputs'>;
 type OutputTypes<T extends Abi, N extends FunctionNames<T>> = AbiParametersToPrimitiveTypes<ExtractAbiFunction<T, N>['outputs'], 'outputs'>;
 
+
 export const Provider = new JsonRpcProvider('https://evmtestnet.confluxrpc.com');
 
 export const createContract = <T extends Abi>({ address, ABI }: { address: string; ABI: T }) => {
