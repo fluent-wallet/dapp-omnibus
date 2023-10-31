@@ -4,7 +4,7 @@ import type { Abi, AbiParametersToPrimitiveTypes, ExtractAbiFunction, ExtractAbi
 export { default as MulticallABI } from './abis/Multicall';
 export { default as ERC20ABI } from './abis/ERC20';
 
-type FunctionNames<T extends Abi> = ExtractAbiFunctionNames<T, 'pure' | 'view'>;
+type FunctionNames<T extends Abi> = ExtractAbiFunctionNames<T, 'pure' | 'view' | 'nonpayable' | 'payable'>;
 type InputTypes<T extends Abi, N extends FunctionNames<T>> = AbiParametersToPrimitiveTypes<ExtractAbiFunction<T, N>['inputs'], 'inputs'>;
 type OutputTypes<T extends Abi, N extends FunctionNames<T>> = AbiParametersToPrimitiveTypes<ExtractAbiFunction<T, N>['outputs'], 'outputs'>;
 
