@@ -21,7 +21,7 @@ const asyncResultCache = new Map<string, ReturnType<typeof waitAsyncResult>>();
 const waitAsyncResult = <T>({
   fetcher,
   maxWaitTime = 60,
-  interval = 2,
+  interval = 3,
   key,
 }: {
   fetcher: () => Promise<T>;
