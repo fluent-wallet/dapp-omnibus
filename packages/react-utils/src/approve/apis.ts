@@ -1,5 +1,5 @@
-import { fetchChain } from '@cfx-kit/dapp-utils/dist/fetch';
-import { createEnhanceERC20Contract } from '@cfx-kit/dapp-utils/dist/contract';
+import { fetchChain } from '@cfx-kit/dapp-utils/src/fetch';
+import { createEnhanceERC20Contract } from '@cfx-kit/dapp-utils/src/contract';
 import { Unit } from '@cfxjs/use-wallet-react/ethereum';
 import { sendTransaction } from '../AccountManage';
 import { waitTransactionReceipt } from './utils';

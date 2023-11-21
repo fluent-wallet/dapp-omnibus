@@ -1,5 +1,5 @@
-import waitAsyncResult from '@cfx-kit/utils/dist/waitAsyncResult';
-import { fetchChain } from '@cfx-kit/dapp-utils/dist/fetch';
+import waitAsyncResult from '@cfx-kit/utils/src/waitAsyncResult';
+import { fetchChain } from '@cfx-kit/dapp-utils/src/fetch';
 
 const isTransactionReceipt = async (txHash: string, rpcUrl: string) => {
   const txReceipt: { blockNumber: string; blockHash: string; transactionHash: string; from: string; to: string; status: '0x0' | '0x1' } = await fetchChain({
