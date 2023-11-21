@@ -19,4 +19,5 @@ export default defineConfig({
   entry: allUtilsEntry,
   format: 'esm',
   target: 'es2022',
+  noExternal: ['@cfx-kit/utils', '@cfx-kit/dapp-utils'],
 });
