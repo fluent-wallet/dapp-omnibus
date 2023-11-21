@@ -1,8 +1,10 @@
 import { Contract, JsonRpcProvider, type InterfaceAbi, type BytesLike } from 'ethers';
 import ERC20ABI from './abis/ERC20';
+import EnhanceERC20ABI from './abis/EnhanceERC20';
 import type { Abi, AbiParametersToPrimitiveTypes, ExtractAbiFunction, ExtractAbiFunctionNames } from 'abitype';
 export { default as MulticallABI } from './abis/Multicall';
 export { default as ERC20ABI } from './abis/ERC20';
+export { default as EnhanceERC20ABI } from './abis/EnhanceERC20';
 
 type FunctionNames<T extends Abi> = ExtractAbiFunctionNames<T, 'pure' | 'view' | 'nonpayable' | 'payable'>;
 type InputTypes<T extends Abi, N extends FunctionNames<T>> = AbiParametersToPrimitiveTypes<ExtractAbiFunction<T, N>['inputs'], 'inputs'>;
@@ -28,3 +30,4 @@ export const createContract = <T extends Abi>({ address, ABI }: { address: strin
 };
 
 export const createERC20Contract = (tokenAddress: string) => createContract({ address: tokenAddress, ABI: ERC20ABI });
+export const createEnhanceERC20Contract = (tokenAddress: string) => createContract({ address: tokenAddress, ABI: EnhanceERC20ABI });
