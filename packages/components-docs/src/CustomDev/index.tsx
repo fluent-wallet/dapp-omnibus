@@ -1,4 +1,4 @@
-import Popover from './Popover';
+import Approve from './Approve';
 
 
-export default Popover;
+export default Approve;

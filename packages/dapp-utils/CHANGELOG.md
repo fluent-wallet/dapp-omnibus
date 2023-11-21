@@ -1,5 +1,11 @@
 # @cfx-kit/dapp-utils
 
+## 0.0.18
+
+### Patch Changes
+
+- add approve logic
+
 ## 0.0.17
 
 ### Patch Changes
