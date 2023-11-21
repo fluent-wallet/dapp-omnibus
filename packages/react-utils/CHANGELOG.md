@@ -1,5 +1,13 @@
 # @cfx-kit/react-utils
 
+## 0.0.10
+
+### Patch Changes
+
+- add approve logic
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.0.18
+
 ## 0.0.9
 
 ### Patch Changes
