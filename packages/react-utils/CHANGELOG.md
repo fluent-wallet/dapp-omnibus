@@ -1,5 +1,11 @@
 # @cfx-kit/react-utils
 
+## 0.0.11
+
+### Patch Changes
+
+- add ethers peerDependency
+
 ## 0.0.10
 
 ### Patch Changes
