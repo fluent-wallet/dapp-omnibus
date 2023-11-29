@@ -23,9 +23,6 @@
   },
   "dependencies": {
     "@cfx-kit/utils": "workspace:*",
-    "@ethersproject/abi": "^5.7.0",
-    "@ethersproject/bignumber": "^5.7.0",
-    "@ethersproject/units": "^5.7.0",
     "abitype": "^0.9.5",
     "ethers": "^6.6.4",
     "jsbi": "^4.3.0",
