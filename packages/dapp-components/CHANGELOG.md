@@ -1,5 +1,12 @@
 # @cfx-kit/dapp-components
 
+## 0.0.19
+
+### Patch Changes
+
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.0.19
+
 ## 0.0.18
 
 ### Patch Changes

@@ -1,4 +1,4 @@
-import Approve from './Approve';
+import fetchChain from './fetchChain';
 
 
-export default Approve;
+export default fetchChain;
