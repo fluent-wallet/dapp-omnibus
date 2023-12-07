@@ -75,7 +75,6 @@ export const createFetchChain =
   <T>(params: Omit<Params, 'url'>) =>
     fetchChain<T>({ url, ...params });
 
-    
 export function fetchChainBatch<T extends Array<any>>(
   params: Pick<Params, 'key' | 'options' | 'responseHandler' | 'throttle' | 'url'> & { rpcs: Array<Pick<Params, 'method' | 'params'>> },
 ): Promise<T>;
@@ -153,9 +152,9 @@ interface FetchChainMulticallParams {
 interface Data {
   contractAddress: string;
   encodedData: string;
-  decodeFunc: (res: string) => any;
+  decodeFunc?: (res: string) => any;
 }
-type ReturnTypeOfDecodeFunc<T> = T extends Data & { decodeFunc: (res: string) => infer R } ? (R extends readonly [infer U] ? U : R) : unknown;
+type ReturnTypeOfDecodeFunc<T> = T extends Data & { decodeFunc: (res: string) => infer R } ? (R extends readonly [infer U] ? U : R) : string;
 
 export const fetchChainMulticall = <T extends Array<Data> | Record<string, Data>>({
   url,
@@ -186,7 +185,7 @@ export const fetchChainMulticall = <T extends Array<Data> | Record<string, Data>
   }).then((_res) => {
     const res = multicallContract.decodeFunctionResult('aggregate', _res as string) as [bigint, string[]];
     const result = res?.[1]?.map((item, index) => {
-      const itemRes = typeof _data[index]?.decodeFunc === 'function' ? _data[index]?.decodeFunc(item) : undefined;
+      const itemRes = typeof _data[index]?.decodeFunc === 'function' ? _data[index]?.decodeFunc?.(item) : item;
       if (Array.isArray(itemRes) && itemRes.length === 1) {
         return itemRes[0];
       }
