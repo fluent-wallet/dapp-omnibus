@@ -1,6 +1,6 @@
 {
   "name": "@cfx-kit/dapp-utils",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "type": "module",
   "keywords": [
     "dapp",
@@ -28,7 +28,7 @@
     "jsbi": "^4.3.0",
     "ky": "^0.33.3",
     "lodash-es": "^4.17.21",
-    "localstorage-enhance": "^1.0.6"
+    "localstorage-enhance": "^1.0.8"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.7",
