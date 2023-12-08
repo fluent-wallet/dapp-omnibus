@@ -1,5 +1,11 @@
 # @cfx-kit/dapp-utils
 
+## 0.0.21
+
+### Patch Changes
+
+- update LocalStorage-Enhance
+
 ## 0.0.20
 
 ### Patch Changes
