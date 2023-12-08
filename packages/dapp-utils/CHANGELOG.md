@@ -1,5 +1,11 @@
 # @cfx-kit/dapp-utils
 
+## 0.0.20
+
+### Patch Changes
+
+- q
+
 ## 0.0.19
 
 ### Patch Changes

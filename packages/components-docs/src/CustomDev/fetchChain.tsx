@@ -96,17 +96,18 @@ export function fetchContractAsset({ networkType, endpoint, account, contractAdd
 
 (function () {
 
-  fetchChainBatch<[string, string]>({
+  fetchChainMulticall({
       url: 'https://evmtestnet.confluxrpc.com',
-      rpcs: [{
-          method: 'eth_getTransactionReceipt',
-          params: ['0xea29089e7aeead5ae2d30ba7ffe260679a9abd4100614aee897baeea69560479'],
+      multicallContractAddress: '123',
+      data: [{
+          contractAddress: '0xea29089e7aeead5ae2d30ba7ffe260679a9abd4100614aee897baeea69560479',
+          encodedData: '0x70a08231000000000000000000000000cbea6b5c7f4b5b5e4bc5c5af5b5e4bc5c5af5b',
         },
         {
-          method: 'eth_getBalance',
-          params: ['0x00'],
+          contractAddress: '0xea29089e7aeead5ae2d30ba7ffe260679a9abd4100614aee897baeea69560479',
+          encodedData: '0x70a08231000000000000000000000000cbea6b5c7f4b5b5e4bc5c5af5b5e4bc5c5af5b',
         },    
-      ]
+      ] as const
     }).then((res) => {
       console.log(res);
     });
