@@ -145,6 +145,7 @@ export function fetchChainBatch<T>({
 }
 
 interface FetchChainMulticallParams {
+  key?: string;
   url: string;
   method?: 'cfx_call' | 'eth_call';
   multicallContractAddress: string;
@@ -157,6 +158,7 @@ interface Data {
 type ReturnTypeOfDecodeFunc<T> = T extends Data & { decodeFunc: (res: string) => infer R } ? (R extends readonly [infer U] ? U : R) : string;
 
 export const fetchChainMulticall = <T extends Array<Data> | Record<string, Data>>({
+  key,
   url,
   method,
   multicallContractAddress,
@@ -173,6 +175,7 @@ export const fetchChainMulticall = <T extends Array<Data> | Record<string, Data>
   }
 
   return fetchChain({
+    key,
     url,
     method: _method,
     params: [

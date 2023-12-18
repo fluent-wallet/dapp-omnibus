@@ -1,5 +1,11 @@
 # @cfx-kit/dapp-utils
 
+## 0.0.23
+
+### Patch Changes
+
+- fetchChainMulticall add key param
+
 ## 0.0.22
 
 ### Patch Changes
