@@ -1,3 +1,5 @@
+import type { Unit, useStatus } from '@cfxjs/use-wallet-react/ethereum';
+
 export interface AddChainParameter {
   chainId: string; // A 0x-prefixed hexadecimal string
   chainName: string;
@@ -39,22 +41,50 @@ export interface TypedSignParams {
   };
   message: Record<string, unknown>;
   primaryType: string; // This refers to the keys of the following types object.
-  types: {
-    EIP712Domain: Array<{ name: string; type: string }>; // This refers to the domain the contract is hosted on.
-  } & Record<string, Array<{ name: string; type: string }>>;
+  types: (
+    | {
+        EIP712Domain: Array<{ name: string; type: string }>; // This refers to the domain the contract is hosted on.
+      }
+    | {
+        CIP23Domain: Array<{ name: string; type: string }>; // This refers to the domain the contract is hosted on.
+      }
+  ) &
+    Record<string, Array<{ name: string; type: string }>>;
 }
 
 export type Write<T extends object, U extends object> = Omit<T, keyof U> & U;
 export type StoreSubscribeWithSelector<T> = {
-    subscribe: {
-        (listener: (selectedState: T, previousSelectedState: T) => void): () => void;
-        <U>(
-            selector: (state: T) => U,
-            listener: (selectedState: U, previousSelectedState: U) => void,
-            options?: {
-                equalityFn?: (a: U, b: U) => boolean;
-                fireImmediately?: boolean;
-            }
-        ): () => void;
-    };
+  subscribe: {
+    (listener: (selectedState: T, previousSelectedState: T) => void): () => void;
+    <U>(
+      selector: (state: T) => U,
+      listener: (selectedState: U, previousSelectedState: U) => void,
+      options?: {
+        equalityFn?: (a: U, b: U) => boolean;
+        fireImmediately?: boolean;
+      },
+    ): () => void;
+  };
 };
+
+export type Status = ReturnType<typeof useStatus>;
+
+export interface WalletProvider {
+  walletName: string;
+  subAccountChange: (callback: (account: string | undefined) => void) => void;
+  subChainIdChange: (callback: (chainId: string | undefined) => void) => void;
+  subBalanceChange?: (callback: (balance: Unit | undefined) => void) => void;
+  subStatusChange?: (callback: (status: Status | undefined) => void) => void;
+  getAccount: () => string | undefined;
+  getChainId: () => string | undefined;
+  getBalance?: () => Unit | undefined;
+  getStatus?: () => Status | undefined;
+  connect: () => Promise<unknown>;
+  sendTransaction: (transaction: TransactionParameters) => Promise<string>;
+  watchAsset?: (asset: WatchAssetParams) => Promise<unknown>;
+  addChain?: (chain: AddChainParameter) => Promise<unknown>;
+  switchChain?: (chainId: string) => Promise<unknown>;
+  typedSign?: (data: TypedSignParams) => Promise<string>;
+  disconnect?: () => Promise<void> | void;
+  BalanceTracker?: React.FC;
+}

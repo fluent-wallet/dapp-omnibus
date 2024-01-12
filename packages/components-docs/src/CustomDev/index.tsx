@@ -1,4 +1,4 @@
-import fetchChain from './fetchChain';
+import AccountManage from './AccountManage';
 
 
-export default fetchChain;
+export default AccountManage;

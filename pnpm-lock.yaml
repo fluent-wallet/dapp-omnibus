@@ -185,8 +185,8 @@ importers:
         specifier: ^0.33.3
         version: 0.33.3
       localstorage-enhance:
-        specifier: ^1.0.6
-        version: 1.0.6
+        specifier: ^1.0.8
+        version: 1.0.8
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
@@ -228,8 +228,8 @@ importers:
         specifier: ^6.6.4
         version: 6.6.4
       localstorage-enhance:
-        specifier: ^1.0.6
-        version: 1.0.6
+        specifier: ^1.0.8
+        version: 1.0.8
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
@@ -3681,7 +3681,7 @@ packages:
     peerDependencies:
       react: '*'
     dependencies:
-      '@types/react': 18.2.42
+      '@types/react': 18.2.47
       prop-types: 15.8.1
       react: 18.2.0
 
@@ -6501,6 +6501,13 @@ packages:
 
   /@types/react@18.2.42:
     resolution: {integrity: sha512-c1zEr96MjakLYus/wPnuWDo1/zErfdU9rNsIGmE+NV71nx88FG9Ttgo5dqorXTu/LImX2f63WBP986gJkMPNbA==}
+    dependencies:
+      '@types/prop-types': 15.7.5
+      '@types/scheduler': 0.16.3
+      csstype: 3.1.2
+
+  /@types/react@18.2.47:
+    resolution: {integrity: sha512-xquNkkOirwyCgoClNk85BjP+aqnIS+ckAJ8i37gAbDs14jfW/J23f2GItAf33oiUPQnqNMALiFeoM9Y5mbjpVQ==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.3
@@ -12160,8 +12167,8 @@ packages:
     engines: {node: '>= 12.13.0'}
     dev: false
 
-  /localstorage-enhance@1.0.6:
-    resolution: {integrity: sha512-eXgCzM+pEoC7nNxmyx5bh8YiDweqFGhW4umwTA+OHtOVzVPPIms7U0tYdH8VeQJYM9lpgQkLxUA32zopxdrPcA==}
+  /localstorage-enhance@1.0.8:
+    resolution: {integrity: sha512-IX4M2Mz6np3aGEwMEgh9pa6aUw08F3UJuq0mCFpl/ZXdqrrmU8DOitJsgU4e1krm1wI1fJ+CGXoNk1vvxNocIw==}
     dependencies:
       lodash-es: 4.17.21
     dev: false
