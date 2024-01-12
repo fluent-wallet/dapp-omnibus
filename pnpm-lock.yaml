@@ -78,8 +78,8 @@ importers:
         specifier: workspace:*
         version: link:../utils
       '@cfxjs/use-wallet-react':
-        specifier: 0.0.2-2
-        version: 0.0.2-2(decimal.js@10.4.3)(react-dom@18.2.0)(react@18.2.0)(zustand@4.3.9)
+        specifier: 0.0.2-5
+        version: 0.0.2-5(decimal.js@10.4.3)(react-dom@18.2.0)(react@18.2.0)(zustand@4.3.9)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -185,8 +185,8 @@ importers:
         specifier: ^0.33.3
         version: 0.33.3
       localstorage-enhance:
-        specifier: ^1.0.6
-        version: 1.0.6
+        specifier: ^1.0.8
+        version: 1.0.8
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
@@ -213,8 +213,8 @@ importers:
         specifier: workspace:*
         version: link:../utils
       '@cfxjs/use-wallet-react':
-        specifier: 0.0.2-2
-        version: 0.0.2-2(decimal.js@10.4.3)(react-dom@18.2.0)(react@18.2.0)(zustand@4.3.9)
+        specifier: 0.0.2-5
+        version: 0.0.2-5(decimal.js@10.4.3)(react-dom@18.2.0)(react@18.2.0)(zustand@4.3.9)
       '@walletconnect/sign-client':
         specifier: ^2.9.0
         version: 2.9.0
@@ -228,8 +228,8 @@ importers:
         specifier: ^6.6.4
         version: 6.6.4
       localstorage-enhance:
-        specifier: ^1.0.6
-        version: 1.0.6
+        specifier: ^1.0.8
+        version: 1.0.8
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
@@ -2928,8 +2928,8 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@cfxjs/use-wallet-react@0.0.2-2(decimal.js@10.4.3)(react-dom@18.2.0)(react@18.2.0)(zustand@4.3.9):
-    resolution: {integrity: sha512-lP9/DUyYXojeQRhnKliIZoIgVo7LdXJY/68E61xE9t3iZPBBIQntrcEUodzPpFhcREOIIphmTJlwEqcazqg9mg==}
+  /@cfxjs/use-wallet-react@0.0.2-5(decimal.js@10.4.3)(react-dom@18.2.0)(react@18.2.0)(zustand@4.3.9):
+    resolution: {integrity: sha512-rHAMzdmU6DI/1bs3PvT2wrYddUPN5F0D6zNWVO5KFO+l7Catc0TiyKR+OYchNPf7PqfccLpntocEllNMTmkx3g==}
     peerDependencies:
       decimal.js: ^10.3.1
       react: '>=16.8'
@@ -3681,7 +3681,7 @@ packages:
     peerDependencies:
       react: '*'
     dependencies:
-      '@types/react': 18.2.42
+      '@types/react': 18.2.47
       prop-types: 15.8.1
       react: 18.2.0
 
@@ -6501,6 +6501,13 @@ packages:
 
   /@types/react@18.2.42:
     resolution: {integrity: sha512-c1zEr96MjakLYus/wPnuWDo1/zErfdU9rNsIGmE+NV71nx88FG9Ttgo5dqorXTu/LImX2f63WBP986gJkMPNbA==}
+    dependencies:
+      '@types/prop-types': 15.7.5
+      '@types/scheduler': 0.16.3
+      csstype: 3.1.2
+
+  /@types/react@18.2.47:
+    resolution: {integrity: sha512-xquNkkOirwyCgoClNk85BjP+aqnIS+ckAJ8i37gAbDs14jfW/J23f2GItAf33oiUPQnqNMALiFeoM9Y5mbjpVQ==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.3
@@ -12160,8 +12167,8 @@ packages:
     engines: {node: '>= 12.13.0'}
     dev: false
 
-  /localstorage-enhance@1.0.6:
-    resolution: {integrity: sha512-eXgCzM+pEoC7nNxmyx5bh8YiDweqFGhW4umwTA+OHtOVzVPPIms7U0tYdH8VeQJYM9lpgQkLxUA32zopxdrPcA==}
+  /localstorage-enhance@1.0.8:
+    resolution: {integrity: sha512-IX4M2Mz6np3aGEwMEgh9pa6aUw08F3UJuq0mCFpl/ZXdqrrmU8DOitJsgU4e1krm1wI1fJ+CGXoNk1vvxNocIw==}
     dependencies:
       lodash-es: 4.17.21
     dev: false
