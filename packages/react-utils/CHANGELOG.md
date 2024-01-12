@@ -1,5 +1,11 @@
 # @cfx-kit/react-utils
 
+## 0.0.19
+
+### Patch Changes
+
+- devDependencies
+
 ## 0.0.18
 
 ### Patch Changes
