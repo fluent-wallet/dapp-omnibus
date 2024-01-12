@@ -1,4 +1,15 @@
-import { store, connect, sendTransaction, watchAsset, addChain, switchChain, typedSign, Unit, useBalance } from '@cfxjs/use-wallet-react/conflux/Fluent';
+import {
+  store,
+  connect,
+  sendTransaction,
+  watchAsset,
+  addChain,
+  switchChain,
+  typedSign,
+  Unit,
+  startTrackBalance,
+  stopTrackBalance,
+} from '@cfxjs/use-wallet-react/conflux/Fluent';
 import { WalletProvider, Status } from '../../AccountManage/types';
 
 const walletProvider = {
@@ -45,10 +56,8 @@ const walletProvider = {
   getChainId: () => store.getState().chainId,
   getBalance: () => store.getState().balance,
   getStatus: () => store.getState().status,
-  BalanceTracker: () => {
-    useBalance();
-    return null;
-  },
+  startTrackBalance,
+  stopTrackBalance,
 } as WalletProvider;
 
 export default walletProvider;

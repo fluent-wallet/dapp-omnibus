@@ -86,5 +86,6 @@ export interface WalletProvider {
   switchChain?: (chainId: string) => Promise<unknown>;
   typedSign?: (data: TypedSignParams) => Promise<string>;
   disconnect?: () => Promise<void> | void;
-  BalanceTracker?: React.FC;
+  startTrackBalance?: (interval?: number) => void;
+  stopTrackBalance?: () => void;
 }

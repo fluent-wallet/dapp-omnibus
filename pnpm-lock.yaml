@@ -78,8 +78,8 @@ importers:
         specifier: workspace:*
         version: link:../utils
       '@cfxjs/use-wallet-react':
-        specifier: 0.0.2-2
-        version: 0.0.2-2(decimal.js@10.4.3)(react-dom@18.2.0)(react@18.2.0)(zustand@4.3.9)
+        specifier: 0.0.2-5
+        version: 0.0.2-5(decimal.js@10.4.3)(react-dom@18.2.0)(react@18.2.0)(zustand@4.3.9)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -213,8 +213,8 @@ importers:
         specifier: workspace:*
         version: link:../utils
       '@cfxjs/use-wallet-react':
-        specifier: 0.0.2-2
-        version: 0.0.2-2(decimal.js@10.4.3)(react-dom@18.2.0)(react@18.2.0)(zustand@4.3.9)
+        specifier: 0.0.2-5
+        version: 0.0.2-5(decimal.js@10.4.3)(react-dom@18.2.0)(react@18.2.0)(zustand@4.3.9)
       '@walletconnect/sign-client':
         specifier: ^2.9.0
         version: 2.9.0
@@ -2928,8 +2928,8 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@cfxjs/use-wallet-react@0.0.2-2(decimal.js@10.4.3)(react-dom@18.2.0)(react@18.2.0)(zustand@4.3.9):
-    resolution: {integrity: sha512-lP9/DUyYXojeQRhnKliIZoIgVo7LdXJY/68E61xE9t3iZPBBIQntrcEUodzPpFhcREOIIphmTJlwEqcazqg9mg==}
+  /@cfxjs/use-wallet-react@0.0.2-5(decimal.js@10.4.3)(react-dom@18.2.0)(react@18.2.0)(zustand@4.3.9):
+    resolution: {integrity: sha512-rHAMzdmU6DI/1bs3PvT2wrYddUPN5F0D6zNWVO5KFO+l7Catc0TiyKR+OYchNPf7PqfccLpntocEllNMTmkx3g==}
     peerDependencies:
       decimal.js: ^10.3.1
       react: '>=16.8'

@@ -1,8 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { create, type UseBoundStore, type StoreApi } from 'zustand';
 import { subscribeWithSelector, persist, createJSONStorage } from 'zustand/middleware';
-import type { AddChainParameter, TypedSignParams, WatchAssetParams, TransactionParameters, Write, StoreSubscribeWithSelector, WalletProvider, Status } from './types';
+import type {
+  AddChainParameter,
+  TypedSignParams,
+  WatchAssetParams,
+  TransactionParameters,
+  Write,
+  StoreSubscribeWithSelector,
+  WalletProvider,
+  Status,
+} from './types';
 import { Unit } from '@cfxjs/use-wallet-react/ethereum';
+import { useEffect } from 'react';
 export * from './types';
 
 interface WalletState {
@@ -12,12 +22,7 @@ interface WalletState {
   balance?: Unit;
 }
 
-type WalletStore = UseBoundStore<
-  Write<
-    StoreApi<WalletState>,
-    StoreSubscribeWithSelector<WalletState>
-  >
->;
+type WalletStore = UseBoundStore<Write<StoreApi<WalletState>, StoreSubscribeWithSelector<WalletState>>>;
 
 const walletsStateMap = new Map<
   string,
@@ -52,10 +57,7 @@ export const registerWallet = (walletProvider: WalletProvider, { persistFirst }:
           {
             name: `AccountManage-wallet-${walletProvider.walletName}-storage`,
             storage: createJSONStorage(() => localStorage),
-            partialize: (state) =>
-              Object.fromEntries(
-                Object.entries(state).filter(([key]) => !['balance'].includes(key)),
-              ) as Omit<WalletState, 'balance'>,
+            partialize: (state) => Object.fromEntries(Object.entries(state).filter(([key]) => !['balance'].includes(key))) as Omit<WalletState, 'balance'>,
           },
         ),
       ),
@@ -98,7 +100,12 @@ export const registerWallet = (walletProvider: WalletProvider, { persistFirst }:
       }
     }, 150);
   } else {
-    walletStore.setState({ account: walletProvider.getAccount?.(), chainId: walletProvider.getChainId?.(), balance: walletProvider.getBalance?.(), status: walletProvider.getStatus?.() });
+    walletStore.setState({
+      account: walletProvider.getAccount?.(),
+      chainId: walletProvider.getChainId?.(),
+      balance: walletProvider.getBalance?.(),
+      status: walletProvider.getStatus?.(),
+    });
   }
 
   walletsStateMap.set(walletProvider.walletName, { provider: walletProvider, walletStore });
@@ -127,10 +134,7 @@ export const store = create(
       {
         name: 'AccountManage-storage',
         storage: createJSONStorage(() => localStorage),
-        partialize: (state) =>
-          Object.fromEntries(
-            Object.entries(state).filter(([key]) => !['balance'].includes(key)),
-          ) as Omit<State, 'balance'>,
+        partialize: (state) => Object.fromEntries(Object.entries(state).filter(([key]) => !['balance'].includes(key))) as Omit<State, 'balance'>,
       },
     ),
   ),
@@ -201,8 +205,6 @@ export const useAccount = () => store(selectors.account);
 export const getAccount = () => store.getState().account;
 export const useChainId = () => store(selectors.chainId);
 export const getChainId = () => store.getState().chainId;
-export const useBalance = () => store(selectors.balance);
-export const getBalance = () => store.getState().balance;
 export const useStatus = () => store(selectors.status);
 export const getStatus = () => store.getState().status;
 export const useCurrentWalletName = () => {
@@ -212,14 +214,24 @@ export const useCurrentWalletName = () => {
 };
 export const getCurrentWalletName = () => store.getState().currentWalletName;
 
-export const useBalanceTracker = () => {
-  const account = useAccount();
-  const currentWalletName = store(selectors.currentWalletName) as string;
-  const walletState = walletsStateMap.get(currentWalletName);
-  if (!account || !walletState?.provider.BalanceTracker) {
-    return (() => null) as React.FC;
-  }
-  return walletState.provider.BalanceTracker;
+let referenceCount = 0;
+export const useBalance = () => {
+  const currentWalletName = useCurrentWalletName();
+  const walletState = currentWalletName ? walletsStateMap.get(currentWalletName) : null;
+  const provider = walletState?.provider;
+  useEffect(() => {
+    if (++referenceCount === 1) {
+      provider?.startTrackBalance?.();
+    }
+
+    return () => {
+      if (--referenceCount === 0) {
+        provider?.stopTrackBalance?.();
+      }
+    };
+  }, [provider]);
+
+  return store(selectors.balance);
 };
 
 export const connect = async (walletName: string) => {
