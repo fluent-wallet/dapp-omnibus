@@ -1,5 +1,11 @@
 # @cfx-kit/react-utils
 
+## 0.0.20
+
+### Patch Changes
+
+- Restore wallet-connect build config
+
 ## 0.0.19
 
 ### Patch Changes
