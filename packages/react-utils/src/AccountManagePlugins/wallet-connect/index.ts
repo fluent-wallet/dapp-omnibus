@@ -2,7 +2,7 @@
 import SignClient from '@walletconnect/sign-client';
 import { Web3Modal } from '@web3modal/standalone';
 import { type SessionTypes } from '@walletconnect/types';
-import { TransactionParameters, WatchAssetParams, TypedSignParams } from '../../AccountManage/types';
+import { TransactionParameters, WatchAssetParams, TypedSignParams, WalletProvider } from '../../AccountManage/types';
 
 const createWalletConnectProvider = ({ projectId, targetChainId }: { projectId: string; targetChainId: string }) => {
   const web3Modal = new Web3Modal({
@@ -196,7 +196,7 @@ const createWalletConnectProvider = ({ projectId, targetChainId }: { projectId: 
       const { chainId } = getAccountAndChainIdFromSession(session);
       return chainId;
     },
-  } as const;
+  } as WalletProvider;
 };
 
 export default createWalletConnectProvider;

@@ -1,5 +1,66 @@
 # @cfx-kit/react-utils
 
+## 0.0.20
+
+### Patch Changes
+
+- Restore wallet-connect build config
+
+## 0.0.19
+
+### Patch Changes
+
+- devDependencies
+
+## 0.0.18
+
+### Patch Changes
+
+- bundle wallet-connect
+
+## 0.0.17
+
+### Patch Changes
+
+- account-manage support balance & status
+
+## 0.0.16
+
+### Patch Changes
+
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.0.23
+
+## 0.0.14
+
+### Patch Changes
+
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.0.22
+
+# @cfx-kit/react-utils
+
+## 0.0.14
+
+### Patch Changes
+
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.0.21
+
+## 0.0.13
+
+### Patch Changes
+
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.0.20
+
+## 0.0.12
+
+### Patch Changes
+
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.0.19
+
 ## 0.0.11
 
 ### Patch Changes

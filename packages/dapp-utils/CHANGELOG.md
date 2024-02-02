@@ -1,5 +1,37 @@
 # @cfx-kit/dapp-utils
 
+## 0.0.23
+
+### Patch Changes
+
+- fetchChainMulticall add key param
+
+## 0.0.22
+
+### Patch Changes
+
+- update LocalStorage-Enhance
+
+# @cfx-kit/dapp-utils
+
+## 0.0.21
+
+### Patch Changes
+
+- update LocalStorage-Enhance
+
+## 0.0.20
+
+### Patch Changes
+
+- q
+
+## 0.0.19
+
+### Patch Changes
+
+- fetch util add fetchChainBatch & fetchChainMulticall
+
 ## 0.0.18
 
 ### Patch Changes

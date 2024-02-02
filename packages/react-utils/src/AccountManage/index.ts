@@ -1,36 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { create, type UseBoundStore, type StoreApi } from 'zustand';
 import { subscribeWithSelector, persist, createJSONStorage } from 'zustand/middleware';
-import type { AddChainParameter, TypedSignParams, WatchAssetParams, TransactionParameters, Write, StoreSubscribeWithSelector } from './types';
+import type {
+  AddChainParameter,
+  TypedSignParams,
+  WatchAssetParams,
+  TransactionParameters,
+  Write,
+  StoreSubscribeWithSelector,
+  WalletProvider,
+  Status,
+} from './types';
+import { Unit } from '@cfxjs/use-wallet-react/ethereum';
+import { useEffect } from 'react';
 export * from './types';
 
-interface WalletProvider {
-  walletName: string;
-  subAccountChange: (callback: (account: string | undefined) => void) => void;
-  subChainIdChange: (callback: (account: string | undefined) => void) => void;
-  getAccount: () => string | undefined;
-  getChainId: () => string | undefined;
-  connect: () => Promise<any>;
-  sendTransaction: (transaction: TransactionParameters) => Promise<string>;
-  watchAsset?: (asset: WatchAssetParams) => Promise<any>;
-  addChain?: (chain: AddChainParameter) => Promise<any>;
-  switchChain?: (chainId: string) => Promise<any>;
-  typedSign?: (data: TypedSignParams) => Promise<string>;
-  disconnect?: () => Promise<void> | void;
+interface WalletState {
+  account: string | undefined;
+  chainId: string | undefined;
+  status: Status | undefined;
+  balance?: Unit;
 }
 
-type WalletStore = UseBoundStore<
-  Write<
-    StoreApi<{
-      account: string | undefined;
-      chainId: string | undefined;
-    }>,
-    StoreSubscribeWithSelector<{
-      account: string | undefined;
-      chainId: string | undefined;
-    }>
-  >
->;
+type WalletStore = UseBoundStore<Write<StoreApi<WalletState>, StoreSubscribeWithSelector<WalletState>>>;
 
 const walletsStateMap = new Map<
   string,
@@ -45,22 +37,27 @@ export const registerWallet = (walletProvider: WalletProvider, { persistFirst }:
   let walletStore: WalletStore;
   if (!persistFirst) {
     walletStore = create(
-      subscribeWithSelector<{ account: string | undefined; chainId: string | undefined }>(() => ({
+      subscribeWithSelector<WalletState>(() => ({
         account: undefined,
         chainId: undefined,
+        status: undefined,
+        balance: undefined,
       })),
     );
   } else {
     walletStore = create(
       subscribeWithSelector(
-        persist<{ account: string | undefined; chainId: string | undefined }>(
+        persist<WalletState>(
           () => ({
             account: undefined,
             chainId: undefined,
+            status: undefined,
+            balance: undefined,
           }),
           {
             name: `AccountManage-wallet-${walletProvider.walletName}-storage`,
             storage: createJSONStorage(() => localStorage),
+            partialize: (state) => Object.fromEntries(Object.entries(state).filter(([key]) => !['balance'].includes(key))) as Omit<WalletState, 'balance'>,
           },
         ),
       ),
@@ -73,21 +70,42 @@ export const registerWallet = (walletProvider: WalletProvider, { persistFirst }:
   walletProvider.subChainIdChange((chainId) => {
     walletStore.setState({ chainId });
   });
+  walletProvider.subBalanceChange?.((balance) => {
+    walletStore.setState({ balance });
+  });
+  walletProvider.subStatusChange?.((status) => {
+    walletStore.setState({ status });
+  });
   if (persistFirst) {
     setTimeout(() => {
       const currentWalletAccount = walletProvider.getAccount?.();
       const currentWalletChainId = walletProvider.getChainId?.();
+      const currentBalance = walletProvider.getBalance?.();
+      const currentStatus = walletProvider.getStatus?.();
       const persistedAccount = walletStore.getState().account;
       const persistedChainId = walletStore.getState().chainId;
+      const persistedBalance = walletStore.getState().balance;
+      const persistedStatus = walletStore.getState().status;
       if (persistedAccount !== currentWalletAccount) {
         walletStore.setState({ account: currentWalletAccount });
       }
       if (persistedChainId !== currentWalletChainId) {
         walletStore.setState({ chainId: currentWalletChainId });
       }
+      if (persistedBalance !== currentBalance) {
+        walletStore.setState({ balance: currentBalance });
+      }
+      if (persistedStatus !== currentBalance) {
+        walletStore.setState({ status: currentStatus });
+      }
     }, 150);
   } else {
-    walletStore.setState({ account: walletProvider.getAccount?.(), chainId: walletProvider.getChainId?.() });
+    walletStore.setState({
+      account: walletProvider.getAccount?.(),
+      chainId: walletProvider.getChainId?.(),
+      balance: walletProvider.getBalance?.(),
+      status: walletProvider.getStatus?.(),
+    });
   }
 
   walletsStateMap.set(walletProvider.walletName, { provider: walletProvider, walletStore });
@@ -100,6 +118,8 @@ interface State {
   currentWalletName: string | null;
   account: string | undefined;
   chainId: string | undefined;
+  status: Status | undefined;
+  balance?: Unit | undefined;
 }
 export const store = create(
   subscribeWithSelector(
@@ -108,10 +128,13 @@ export const store = create(
         currentWalletName: null,
         account: undefined,
         chainId: undefined,
+        status: undefined,
+        balance: undefined,
       }),
       {
         name: 'AccountManage-storage',
         storage: createJSONStorage(() => localStorage),
+        partialize: (state) => Object.fromEntries(Object.entries(state).filter(([key]) => !['balance'].includes(key))) as Omit<State, 'balance'>,
       },
     ),
   ),
@@ -119,6 +142,8 @@ export const store = create(
 
 let unsubAccount: VoidFunction | null = null;
 let unsubChainId: VoidFunction | null = null;
+let unsubBalance: VoidFunction | null = null;
+let unsubStatus: VoidFunction | null = null;
 const subWallet = (currentWalletName: string | null) => {
   if (unsubAccount) {
     unsubAccount?.();
@@ -128,12 +153,20 @@ const subWallet = (currentWalletName: string | null) => {
     unsubChainId?.();
     unsubChainId = null;
   }
+  if (unsubBalance) {
+    unsubBalance?.();
+    unsubBalance = null;
+  }
+  if (unsubStatus) {
+    unsubStatus?.();
+    unsubStatus = null;
+  }
   if (!currentWalletName) {
-    store.setState({ account: undefined, chainId: undefined });
+    store.setState({ account: undefined, chainId: undefined, balance: undefined, status: undefined });
   } else {
     const walletState = walletsStateMap.get(currentWalletName);
     if (!walletState) {
-      store.setState({ account: undefined, chainId: undefined });
+      store.setState({ account: undefined, chainId: undefined, balance: undefined, status: undefined });
     } else {
       unsubAccount = walletState.walletStore.subscribe(
         (state) => state.account,
@@ -145,6 +178,16 @@ const subWallet = (currentWalletName: string | null) => {
         (chainId) => store.setState({ chainId }),
         { fireImmediately: true },
       );
+      unsubBalance = walletState.walletStore.subscribe(
+        (state) => state.balance,
+        (balance) => store.setState({ balance }),
+        { fireImmediately: true },
+      );
+      unsubStatus = walletState.walletStore.subscribe(
+        (state) => state.status,
+        (status) => store.setState({ status }),
+        { fireImmediately: true },
+      );
     }
   }
 };
@@ -154,18 +197,42 @@ export const selectors = {
   currentWalletName: (state: State) => state.currentWalletName,
   account: (state: State) => state.account,
   chainId: (state: State) => state.chainId,
+  balance: (state: State) => state.balance,
+  status: (state: State) => state.status,
 };
 
 export const useAccount = () => store(selectors.account);
 export const getAccount = () => store.getState().account;
 export const useChainId = () => store(selectors.chainId);
 export const getChainId = () => store.getState().chainId;
+export const useStatus = () => store(selectors.status);
+export const getStatus = () => store.getState().status;
 export const useCurrentWalletName = () => {
   const account = useAccount();
   const currentWalletName = store(selectors.currentWalletName);
   return account ? currentWalletName : null;
 };
 export const getCurrentWalletName = () => store.getState().currentWalletName;
+
+let referenceCount = 0;
+export const useBalance = () => {
+  const currentWalletName = useCurrentWalletName();
+  const walletState = currentWalletName ? walletsStateMap.get(currentWalletName) : null;
+  const provider = walletState?.provider;
+  useEffect(() => {
+    if (++referenceCount === 1) {
+      provider?.startTrackBalance?.();
+    }
+
+    return () => {
+      if (--referenceCount === 0) {
+        provider?.stopTrackBalance?.();
+      }
+    };
+  }, [provider]);
+
+  return store(selectors.balance);
+};
 
 export const connect = async (walletName: string) => {
   const walletState = checkWalletState({ walletName, checkFunctionName: 'connect' });

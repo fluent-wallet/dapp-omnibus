@@ -1,4 +1,4 @@
-import Approve from './Approve';
+import AccountManage from './AccountManage';
 
 
-export default Approve;
+export default AccountManage;
