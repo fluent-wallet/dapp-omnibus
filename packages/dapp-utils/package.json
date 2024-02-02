@@ -28,6 +28,9 @@
     "jsbi": "^4.3.0",
     "ky": "^0.33.3",
     "lodash-es": "^4.17.21",
+    "@ethersproject/abi": "^5.7.0",
+    "@ethersproject/bignumber": "^5.7.0",
+    "@ethersproject/units": "^5.7.0",
     "localstorage-enhance": "^1.0.8"
   },
   "devDependencies": {
