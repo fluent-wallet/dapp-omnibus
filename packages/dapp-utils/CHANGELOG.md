@@ -1,5 +1,11 @@
 # @cfx-kit/dapp-utils
 
+## 0.1.0
+
+### Minor Changes
+
+- In order to accommodate multiple clients when parsing actions, the UI is passed in from the client.
+
 ## 0.0.23
 
 ### Patch Changes
