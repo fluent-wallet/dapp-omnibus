@@ -1,5 +1,11 @@
 # @cfx-kit/dapp-utils
 
+## 0.1.1
+
+### Patch Changes
+
+- fix fetchChain error handle
+
 ## 0.1.0
 
 ### Minor Changes
