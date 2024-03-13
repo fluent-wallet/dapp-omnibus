@@ -58,14 +58,17 @@ export const fetchChain = <T>({ url, key, method, params, options, throttle, res
         })
         .json()
         .then((_res) => {
-          const res = _res as { id: number; result: T; jsonrpc: string };
-          if (res?.id === currentId && res?.result !== '0x') {
+          const res = _res as { id: number; result: T; jsonrpc: string; error?: { code: number; meesage: string } };
+          if (res?.error) {
+            throw res.error;
+          } else if (res?.id === currentId && res?.result !== '0x') {
             if (isFunction(responseHandler)) {
               return responseHandler(res?.result) as unknown as T;
             }
             return res?.result;
+          } else {
+            throw new Error('Invalid response');
           }
-          throw new Error('Invalid response');
         }),
   });
 };
