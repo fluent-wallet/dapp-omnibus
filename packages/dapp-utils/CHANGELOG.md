@@ -1,5 +1,11 @@
 # @cfx-kit/dapp-utils
 
+## 0.1.2
+
+### Patch Changes
+
+- add fetchNFTMetadata
+
 ## 0.1.1
 
 ### Patch Changes
