@@ -4,11 +4,8 @@ import { fetchChain, createFetchServer } from '../fetch';
 interface MetadataOptions {
   /** default for unknown: call 721 and 1155 contract to get metadata */
   contractType?: 'unknown' | '721' | '1155';
-  /** required while no fetchServer */
   rpcServer: string;
-  /** required while no fetchServer */
   nftAddress: string;
-  /** required while no fetchServer */
   tokenId: string | number | bigint;
   /** default for https://nftstorage.link/ */
   ipfsGateway?: string;

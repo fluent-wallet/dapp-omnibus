@@ -2,19 +2,19 @@ import { useEffect, type FC } from 'react';
 import { createFetchServer } from '@cfx-kit/dapp-utils/src/fetch';
 import { fetchNFTMetadata } from '@cfx-kit/dapp-utils/src/metadata';
 
-export interface MetadataAttribute {
+interface MetadataAttribute {
   trait_type: string;
   value: string;
 }
 
-export interface MetadataPresented {
+interface MetadataPresented {
   index: number;
   image: string;
   name: string;
   link?: string;
 }
 
-export interface MetadataSlider {
+interface MetadataSlider {
   index: number;
   value: string;
 }
@@ -34,7 +34,7 @@ interface NFTMetadata {
   label?: string[];
 }
 
-export interface NFTTokenInfo {
+interface NFTTokenInfo {
   detail?: {
     metadata?: NFTMetadata;
   };
@@ -50,7 +50,7 @@ const { fetchServer: fetchScanAPI } = createFetchServer({
     }
   },
 });
-export const _fetchNFTTokenInfo = async ({ address, tokenId }: { address: string; tokenId: string }) =>
+const _fetchNFTTokenInfo = async ({ address, tokenId }: { address: string; tokenId: string }) =>
   fetchScanAPI<NFTTokenInfo>({
     url: `stat/nft/checker/preview?contractAddress=${address}&tokenId=${tokenId}`,
   });
