@@ -1,5 +1,13 @@
 # @cfx-kit/react-utils
 
+## 0.0.25
+
+### Patch Changes
+
+- return undefined while get tokenuri failed
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.1.4
+
 ## 0.0.24
 
 ### Patch Changes

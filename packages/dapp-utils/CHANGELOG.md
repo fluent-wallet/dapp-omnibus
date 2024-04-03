@@ -1,5 +1,11 @@
 # @cfx-kit/dapp-utils
 
+## 0.1.4
+
+### Patch Changes
+
+- return undefined while get tokenuri failed
+
 ## 0.1.3
 
 ### Patch Changes
