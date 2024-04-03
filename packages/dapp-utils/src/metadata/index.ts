@@ -111,7 +111,7 @@ const getTokenURIBy1155Contract = async <T>(options: MetadataOptions<T>) => {
     throw error;
   }
 };
-const fetchMetadataByContract = async <T>(options: MetadataOptions<T>): Promise<T> => {
+const fetchMetadataByContract = async <T>(options: MetadataOptions<T>): Promise<T | undefined> => {
   const { contractType = 'unknown', tokenId, ipfsGateway = 'https://nftstorage.link/', formatContractMetadata } = options;
   const promises: Promise<string>[] = [];
   if (contractType === 'unknown' || contractType === '721') {
@@ -123,8 +123,8 @@ const fetchMetadataByContract = async <T>(options: MetadataOptions<T>): Promise<
   const responseList = await Promise.allSettled(promises);
   const tokenURIResponse = responseList.find((a) => a.status === 'fulfilled');
   if (!tokenURIResponse) {
-    console.error('721 and 1155 responses: ', responseList);
-    throw new Error('both 721 and 1155 contract get token uri error');
+    console.error('get contract token uri failed', responseList);
+    return undefined;
   } else {
     try {
       const tokenURI = (tokenURIResponse as PromiseFulfilledResult<string>).value;
