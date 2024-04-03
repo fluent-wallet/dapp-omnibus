@@ -1,5 +1,11 @@
 # @cfx-kit/dapp-utils
 
+## 0.1.5
+
+### Patch Changes
+
+- support method
+
 ## 0.1.4
 
 ### Patch Changes
