@@ -1,5 +1,13 @@
 # @cfx-kit/dapp-components
 
+## 0.0.27
+
+### Patch Changes
+
+- optimize fetchNFTMetadata
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.1.3
+
 ## 0.0.26
 
 ### Patch Changes

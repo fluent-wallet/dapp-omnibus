@@ -1,5 +1,13 @@
 # @cfx-kit/react-utils
 
+## 0.0.24
+
+### Patch Changes
+
+- optimize fetchNFTMetadata
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.1.3
+
 ## 0.0.23
 
 ### Patch Changes
