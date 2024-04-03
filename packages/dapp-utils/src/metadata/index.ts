@@ -1,7 +1,7 @@
 import { createERC721Contract, createERC1155Contract } from '../contract';
 import { fetchChain, createFetchServer } from '../fetch';
 
-interface MetadataOptions {
+interface MetadataOptions<T> {
   /** default for unknown: call 721 and 1155 contract to get metadata */
   contractType?: 'unknown' | '721' | '1155';
   rpcServer: string;
@@ -9,9 +9,11 @@ interface MetadataOptions {
   tokenId: string | number | bigint;
   /** default for https://nftstorage.link/ */
   ipfsGateway?: string;
+  formatContractMetadata?: (metadata: object) => T;
 }
-interface ServerOptions<T> extends Partial<MetadataOptions> {
-  fetchServer: () => Promise<T>;
+interface ServerOptions<T, P> extends Partial<MetadataOptions<P>> {
+  fetchServer: () => T | Promise<T>;
+  formatServerError?: (error: unknown, metadata?: P) => T | P | undefined;
 }
 
 const { fetchServer: fetch } = createFetchServer({});
@@ -79,7 +81,7 @@ const getMetadataByURI = async (rawURI: string, ipfsGateway: string) => {
   return normalizeMeta(meta, ipfsGateway);
 };
 
-const getTokenURIBy721Contract = async (options: MetadataOptions) => {
+const getTokenURIBy721Contract = async <T>(options: MetadataOptions<T>) => {
   const { nftAddress, tokenId, rpcServer } = options;
   try {
     const contract = createERC721Contract(nftAddress);
@@ -94,7 +96,7 @@ const getTokenURIBy721Contract = async (options: MetadataOptions) => {
     throw error;
   }
 };
-const getTokenURIBy1155Contract = async (options: MetadataOptions) => {
+const getTokenURIBy1155Contract = async <T>(options: MetadataOptions<T>) => {
   const { nftAddress, tokenId, rpcServer } = options;
   try {
     const contract = createERC1155Contract(nftAddress);
@@ -109,8 +111,8 @@ const getTokenURIBy1155Contract = async (options: MetadataOptions) => {
     throw error;
   }
 };
-const fetchMetadataByContract = async <T extends object>(options: MetadataOptions) => {
-  const { contractType = 'unknown', tokenId, ipfsGateway = 'https://nftstorage.link/' } = options;
+const fetchMetadataByContract = async <T>(options: MetadataOptions<T>): Promise<T> => {
+  const { contractType = 'unknown', tokenId, ipfsGateway = 'https://nftstorage.link/', formatContractMetadata } = options;
   const promises: Promise<string>[] = [];
   if (contractType === 'unknown' || contractType === '721') {
     promises.push(getTokenURIBy721Contract(options));
@@ -130,11 +132,7 @@ const fetchMetadataByContract = async <T extends object>(options: MetadataOption
       const rawURI = tokenURI.replace('{id}', paddingId(tokenId));
       console.log('rawURI', rawURI);
       const metadata = await getMetadataByURI(rawURI, ipfsGateway);
-      return {
-        detail: {
-          metadata: metadata as T,
-        },
-      };
+      return formatContractMetadata ? formatContractMetadata(metadata) : (metadata as T);
     } catch (error) {
       console.error('get metadata by tokenURI error: ', error);
       throw error;
@@ -142,37 +140,23 @@ const fetchMetadataByContract = async <T extends object>(options: MetadataOption
   }
 };
 
-export function fetchNFTMetadata<T, P extends object>(
-  options: ServerOptions<T>,
-): Promise<
-  | T
-  | {
-      detail: {
-        metadata: P;
-      };
-    }
-  | undefined
->;
-export function fetchNFTMetadata<P extends object>(
-  options: MetadataOptions,
-): Promise<
-  | {
-      detail: {
-        metadata: P;
-      };
-    }
-  | undefined
->;
-export async function fetchNFTMetadata<T = undefined, P extends object = object>(options: ServerOptions<T> | MetadataOptions) {
+export function fetchNFTMetadata<T, P>(options: ServerOptions<T, P> & { formatContractMetadata: (metadata: object) => P }): Promise<T | P | undefined>;
+export function fetchNFTMetadata<P>(options: MetadataOptions<P> & { formatContractMetadata: (metadata: object) => P }): Promise<P | undefined>;
+export function fetchNFTMetadata<P extends object>(options: MetadataOptions<P>): Promise<P | undefined>;
+export function fetchNFTMetadata<T, P extends object>(options: ServerOptions<T, P>): Promise<T | P | undefined>;
+export async function fetchNFTMetadata<T, P>(options: ServerOptions<T, P> | MetadataOptions<P>) {
   if ('fetchServer' in options) {
-    const { fetchServer, nftAddress, tokenId, rpcServer } = options;
+    const { fetchServer, nftAddress, tokenId, rpcServer, formatServerError } = options;
     try {
       const result = await fetchServer();
       return result;
     } catch (error) {
       console.warn('fetch server metadata error: ', error);
       if (nftAddress && tokenId && rpcServer) {
-        return fetchMetadataByContract<P>(options as MetadataOptions);
+        const metadata = await fetchMetadataByContract<P>(options as MetadataOptions<P>);
+        return formatServerError ? formatServerError(error, metadata) : metadata;
+      } else if (formatServerError) {
+        return formatServerError(error);
       } else {
         throw error;
       }

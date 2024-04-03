@@ -55,12 +55,14 @@ const _fetchNFTTokenInfo = async ({ address, tokenId }: { address: string; token
     url: `stat/nft/checker/preview?contractAddress=${address}&tokenId=${tokenId}`,
   });
 const fetchNFTTokenInfo = ({ address, tokenId }: { address: string; tokenId: string }) =>
-  fetchNFTMetadata<NFTTokenInfo, NFTMetadata>({
+  fetchNFTMetadata({
     fetchServer: () => _fetchNFTTokenInfo({ address, tokenId }),
     nftAddress: address,
     tokenId,
     rpcServer: import.meta.env.VITE_ESpaceRpcUrl,
     contractType: '721',
+    formatContractMetadata: (metadata) => ({ detail: { metadata } }),
+    formatServerError: (e, m) => m,
   }).catch(() => null);
 
 const App: FC = () => {
@@ -69,6 +71,7 @@ const App: FC = () => {
       address: '0xdedd1e39e27e8f19ba93bb7dbb22b8eb040c8230',
       tokenId: '123',
     }).then((res) => {
+      console.log('res?.detail?.metadata', res?.detail?.metadata);
       console.log(res);
     });
   }, []);
