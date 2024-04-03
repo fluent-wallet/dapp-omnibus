@@ -4,6 +4,7 @@ import { fetchChain, createFetchServer } from '../fetch';
 interface MetadataOptions<T> {
   /** default for unknown: call 721 and 1155 contract to get metadata */
   contractType?: 'unknown' | '721' | '1155';
+  method?: string;
   rpcServer: string;
   nftAddress: string;
   tokenId: string | number | bigint;
@@ -82,12 +83,13 @@ const getMetadataByURI = async (rawURI: string, ipfsGateway: string) => {
 };
 
 const getTokenURIBy721Contract = async <T>(options: MetadataOptions<T>) => {
-  const { nftAddress, tokenId, rpcServer } = options;
+  const { nftAddress, tokenId, rpcServer, method } = options;
   try {
     const contract = createERC721Contract(nftAddress);
     const fetchRes = await fetchChain<string>({
       url: rpcServer,
-      params: [{ data: contract.encodeFunctionData('tokenURI', [BigInt(tokenId)]), to: contract.address }, 'latest'],
+      method,
+      params: [{ data: contract.encodeFunctionData('tokenURI', [BigInt(tokenId)]), to: contract.address }],
     });
     const tokenURI = contract.decodeFunctionResult('tokenURI', fetchRes)[0];
     return tokenURI;
@@ -97,12 +99,13 @@ const getTokenURIBy721Contract = async <T>(options: MetadataOptions<T>) => {
   }
 };
 const getTokenURIBy1155Contract = async <T>(options: MetadataOptions<T>) => {
-  const { nftAddress, tokenId, rpcServer } = options;
+  const { nftAddress, tokenId, rpcServer, method } = options;
   try {
     const contract = createERC1155Contract(nftAddress);
     const fetchRes = await fetchChain<string>({
       url: rpcServer,
-      params: [{ data: contract.encodeFunctionData('uri', [BigInt(tokenId)]), to: contract.address }, 'latest'],
+      method,
+      params: [{ data: contract.encodeFunctionData('uri', [BigInt(tokenId)]), to: contract.address }],
     });
     const tokenURI = contract.decodeFunctionResult('uri', fetchRes)[0];
     return tokenURI;
@@ -135,7 +138,7 @@ const fetchMetadataByContract = async <T>(options: MetadataOptions<T>): Promise<
       return formatContractMetadata ? formatContractMetadata(metadata) : (metadata as T);
     } catch (error) {
       console.error('get metadata by tokenURI error: ', error);
-      throw error;
+      return undefined;
     }
   }
 };
