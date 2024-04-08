@@ -1,5 +1,11 @@
 # @cfx-kit/dapp-utils
 
+## 0.1.6
+
+### Patch Changes
+
+- feat: add useClickAway
+
 ## 0.1.5
 
 ### Patch Changes
