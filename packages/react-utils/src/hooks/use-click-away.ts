@@ -4,7 +4,7 @@ type RefObject = MutableRefObject<HTMLElement | null>;
 
 export const useClickAway = (refs: RefObject | Array<RefObject>, handler: (event: Event) => void) => {
   useEffect(() => {
-    const callback = (event: MouseEvent) => {
+    const callback = (event: Event) => {
       let refsArray = Array.isArray(refs) ? refs : [refs];
       let isAway = true;
       while (refsArray.length) {
