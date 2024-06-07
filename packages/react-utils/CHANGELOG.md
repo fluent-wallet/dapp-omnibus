@@ -1,5 +1,11 @@
 # @cfx-kit/react-utils
 
+## 0.0.29
+
+### Patch Changes
+
+- fix useClickAway hook
+
 ## 0.0.28
 
 ### Patch Changes
