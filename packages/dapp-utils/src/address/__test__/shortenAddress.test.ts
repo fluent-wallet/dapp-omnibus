@@ -21,16 +21,16 @@ describe('shortenAddress', () => {
   });
 
   test('base32 address', () => {
-    expect(shortenAddress('cfxtest:aams3mmwmg5pfknjxjzmws828vvd0u1pt674af1fex')).toBe('cfxtest:aam...74af1fex');
+    expect(shortenAddress('cfxtest:aams3mmwmg5pfknjxjzmws828vvd0u1pt674af1fex')).toBe('cfxtest:aam...1fex');
     expect(shortenAddress('cfx:aams3mmwmg5pfknjxjzmws828vvd0u1pt61vxzvta3')).toBe('cfx:aam...1vxzvta3');
-    expect(shortenAddress('net10086:aaag4wt2mbmbb44sp6szd783ry0jtad5benr1ap5gp')).toBe('net10086:aaa...nr1ap5gp');
-    expect(shortenAddress('net7876:aamue88kha4th1am7t3uvt94kr18t02xhac258u0wc')).toBe('net7876:aam...c258u0wc');
+    expect(shortenAddress('net10086:aaag4wt2mbmbb44sp6szd783ry0jtad5benr1ap5gp')).toBe('net10086:aaa...p5gp');
+    expect(shortenAddress('net7876:aamue88kha4th1am7t3uvt94kr18t02xhac258u0wc')).toBe('net7876:aam...u0wc');
 
     expect(shortenAddress('cfx:aams3mmwmg5pfknjxjzmws828vvd0u1pt61vxzvta3', { prefixLength: 4, suffixLength: 8, ellipsis: '...' })).toBe('cfx:aams...1vxzvta3');
 
     expect(shortenAddress('cfx:aams3mmwmg5pfknjxjzmws828vvd0u1pt61vxzvta3', { prefixLength: 4, suffixLength: 8, ellipsis: 'xxxx' })).toBe(
       'cfx:aamsxxxx1vxzvta3',
     );
-    expect(shortenAddress('cfx:aams3mmwmg5pfknjxjzmws828vvd0u1pt61vxzvta3', { prefixLength: 1, suffixLength: 1, ellipsis: 'xxxx' })).toBe('cfx:cfx:axxxx3');
+    expect(shortenAddress('cfx:aams3mmwmg5pfknjxjzmws828vvd0u1pt61vxzvta3', { prefixLength: 1, suffixLength: 1, ellipsis: 'xxxx' })).toBe('cfx:axxxx3');
   });
 });
