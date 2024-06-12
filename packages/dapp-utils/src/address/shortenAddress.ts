@@ -1,5 +1,6 @@
-import { Base32Address, isBase32Address } from './isBase32Address';
-import { HexAddress, isHexAddress } from './isHexAddress';
+import { isBase32Address } from './isBase32Address';
+import { isHexAddress } from './isHexAddress';
+import { Base32Address, HexAddress } from './types';
 
 export type TruncateOptions = {
   prefixLength?: number | undefined;
