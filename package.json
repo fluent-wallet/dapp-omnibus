@@ -12,7 +12,8 @@
     "changeset": "changeset",
     "version": "changeset version",
     "release": "pnpm build:lib && pnpm release:only",
-    "release:only": "changeset publish --registry=https://registry.npmjs.com/"
+    "release:only": "changeset publish --registry=https://registry.npmjs.com/",
+    "test": "vitest test"
   },
   "devDependencies": {
     "@turbo/gen": "latest",
@@ -21,7 +22,8 @@
     "prettier": "latest",
     "tsup": "^7.1.0",
     "turbo": "latest",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "vitest": "^1.6.0"
   },
   "packageManager": "pnpm@7.15.0",
   "name": "dapp-omnibus",
