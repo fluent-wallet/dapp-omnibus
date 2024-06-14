@@ -9,7 +9,7 @@ export type TruncateOptions = {
 };
 
 export function truncate(str: string, { prefixLength = 4, suffixLength = 4, ellipsis = '...' }: TruncateOptions = {}) {
-  if (str.length < prefixLength + suffixLength) {
+  if (str.length <= prefixLength + suffixLength) {
     return str;
   }
   return str.substring(0, prefixLength) + ellipsis + str.substring(str.length - suffixLength);
