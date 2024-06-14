@@ -1,6 +1,6 @@
 import { test, expect } from 'vitest';
 
-import { checksumHexAddress } from '../checksumHexAddres';
+import { checksumHexAddress } from '../checksumHexAddress';
 
 test('checksum address', () => {
   expect(checksumHexAddress('0xed5030fbf195d8a71ccd644fce98c3c32d8ee24c')).toBe('0xEd5030Fbf195d8a71CCd644fCE98C3c32d8Ee24C');

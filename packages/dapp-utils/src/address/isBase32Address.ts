@@ -1,7 +1,6 @@
 import { LruMap } from '../utils/lru';
-import { convertCfxToHex } from './convertAddress';
+import { convertBase32ToHex } from './convertAddress';
 import { Base32Address } from './types';
-
 
 /**
  *  check if address is base32
@@ -15,7 +14,7 @@ export function isBase32Address(address: string): address is Base32Address {
   const result = (() => {
     if (address.toLowerCase() !== address && address.toUpperCase() !== address) return false;
     try {
-      const addr = convertCfxToHex(address);
+      const addr = convertBase32ToHex(address as Base32Address);
       return !!addr;
     } catch (error) {
       return false;

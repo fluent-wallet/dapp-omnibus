@@ -1,4 +1,4 @@
-import { checksumHexAddress } from './checksumHexAddres';
+import { checksumHexAddress } from './checksumHexAddress';
 import { HexAddress } from './types';
 
 const addressRegex = /^0x[a-fA-F0-9]{40}$/;
