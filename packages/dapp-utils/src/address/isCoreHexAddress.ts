@@ -12,8 +12,8 @@ import { HexAddress } from './types';
  * isCoreAddress("0x18E2aD4E486F483EAC134d497Fae1C7Cd2e36EB7") // true
  * ```
  */
-export function isCoreAddress(address: HexAddress) {
-  if (!address.startsWith('0x') && address.length !== 42) {
+export function isCoreHexAddress(address: HexAddress) {
+  if (!address.startsWith('0x') || address.length !== 42) {
     return false;
   }
 

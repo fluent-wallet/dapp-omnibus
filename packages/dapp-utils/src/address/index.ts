@@ -6,7 +6,7 @@ export { checksumHexAddress } from './checksumHexAddress';
 
 export { isBase32Address } from './isBase32Address';
 
-export { isCoreAddress } from './isCoreAddress';
+export { isCoreHexAddress as isCoreAddress } from './isCoreHexAddress';
 
 export { isHexAddress } from './isHexAddress';
 
