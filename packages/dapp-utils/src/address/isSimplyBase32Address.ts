@@ -20,7 +20,7 @@ export function isSimplyBase32Address(address: Base32Address) {
 
   if (!isBase32Address(address)) return false;
 
-  const [, netName, shouldHaveType, payload, checksum] = address.toUpperCase().match(/^([^:]+):(.+:)?(.{34})(.{8})$/) || ['', '', '', '', ''];
+  const [, netName, , payload, checksum] = address.toUpperCase().match(/^([^:]+):(.+:)?(.{34})(.{8})$/) || ['', '', '', '', ''];
 
   return address.toLowerCase() === `${netName}:${payload}${checksum}`.toLowerCase();
 }
