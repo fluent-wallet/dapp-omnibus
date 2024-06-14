@@ -9,7 +9,7 @@ import { HexAddress } from './types';
  * @example
  *
  * ```ts
- * isCoreAddress("0x18E2aD4E486F483EAC134d497Fae1C7Cd2e36EB7") // true
+ * isCoreHexAddress("0x18E2aD4E486F483EAC134d497Fae1C7Cd2e36EB7") // true
  * ```
  */
 export function isCoreHexAddress(address: HexAddress) {

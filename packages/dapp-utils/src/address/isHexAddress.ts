@@ -8,9 +8,17 @@ export type Options = {
 };
 
 /**
- * simple check if address is hex, this function is not verified the checksum of address
+ * check the address is valid hex address
  * @param address - hex string
  * @returns true if address is hex
+ *
+ * @example
+ *
+ * ```ts
+ * isHexAddress("0x025Db49c8d920AE82283602f22EeAEeab6b28b46") // true
+ * // not verify checksum
+ * isHexAddress("0x025Db49c8d920AE82283602f22EeAEeab6b28b46", {strict: false}) // true
+ * ```
  */
 export function isHexAddress(address: string, { strict = true }: Options = {}): address is HexAddress {
   if (!addressRegex.test(address)) return false;
