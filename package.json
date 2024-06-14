@@ -16,12 +16,12 @@
     "test": "vitest test"
   },
   "devDependencies": {
-    "@turbo/gen": "latest",
+    "@turbo/gen": "1.13.3",
     "eslint": "8.51.0",
     "eslint-config-custom": "workspace:*",
     "prettier": "latest",
     "tsup": "^7.1.0",
-    "turbo": "latest",
+    "turbo": "1.13.3",
     "typescript": "^5.1.6",
     "vitest": "^1.6.0"
   },
