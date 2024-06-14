@@ -20,6 +20,6 @@ export function isCoreAddress(address: HexAddress) {
   if (!isHexAddress(address)) {
     return false;
   }
-
-  return address.startsWith('0x00') || address.startsWith('0x8') || address.startsWith('0x1');
+  // 0x00   0x08                           0x8                        0x1
+  return address.startsWith('0x0') || address.startsWith('0x8') || address.startsWith('0x1');
 }
