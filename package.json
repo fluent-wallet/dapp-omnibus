@@ -28,6 +28,7 @@
   "packageManager": "pnpm@7.15.0",
   "name": "dapp-omnibus",
   "dependencies": {
-    "@changesets/cli": "^2.26.2"
+    "@changesets/cli": "^2.26.2",
+    "eslint-plugin-turbo": "^2.0.3"
   }
 }
