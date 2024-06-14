@@ -1,5 +1,11 @@
 # @cfx-kit/dapp-utils
 
+## 0.1.7
+
+### Patch Changes
+
+- 7e26b49: feat: update shortenAddress
+
 ## 0.1.6
 
 ### Patch Changes
