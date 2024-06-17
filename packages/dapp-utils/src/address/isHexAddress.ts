@@ -32,5 +32,5 @@ export function isHexAddress(address: string, { strict = true, useCache = true }
     return true;
   })();
   isHexAddressCache.set(address, result);
-  return true;
+  return result;
 }

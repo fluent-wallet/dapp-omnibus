@@ -1,5 +1,11 @@
 # @cfx-kit/dapp-utils
 
+## 0.1.9
+
+### Patch Changes
+
+- b0589df: add getCoreHexAddressType function to get core hex address type
+
 ## 0.1.8
 
 ### Patch Changes
