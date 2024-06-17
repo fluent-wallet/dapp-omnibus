@@ -8,9 +8,10 @@ import { Base32Address } from './types';
  * @returns true if address is base32
  */
 export const isBase32AddressCache = /*#__PURE__*/ new LruMap<boolean>(4096);
+export type IsBase32AddressOption = { useCache?: boolean | undefined };
 
-export function isBase32Address(address: string): address is Base32Address {
-  if (isBase32AddressCache.has(address)) return isBase32AddressCache.get(address)!;
+export function isBase32Address(address: string, { useCache = true }: IsBase32AddressOption = {}): address is Base32Address {
+  if (isBase32AddressCache.has(address) && useCache) return isBase32AddressCache.get(address)!;
   const result = (() => {
     if (address.toLowerCase() !== address && address.toUpperCase() !== address) return false;
     try {

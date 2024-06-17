@@ -1,12 +1,13 @@
 export * from './convertAddress';
 export * from './shortenAddress';
 export * from './validateAddress';
+export type * from './types';
 
 export { checksumHexAddress } from './checksumHexAddress';
 
 export { isBase32Address } from './isBase32Address';
 
-export { isCoreHexAddress as isCoreAddress } from './isCoreHexAddress';
+export { isCoreHexAddress } from './isCoreHexAddress';
 
 export { isHexAddress } from './isHexAddress';
 

@@ -1,5 +1,3 @@
-import { HexAddress } from './types';
-
 /**
  * check hex address is valid pos address
  * this function only check the length of address
@@ -12,7 +10,7 @@ import { HexAddress } from './types';
  *
  * ```
  */
-export function isPosAddress(address: HexAddress) {
+export function isPosAddress(address: string) {
   try {
     return address.startsWith('0x') && address.length === 66;
   } catch (e) {

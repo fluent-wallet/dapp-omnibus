@@ -1,5 +1,4 @@
 import { isHexAddress } from './isHexAddress';
-import { HexAddress } from './types';
 
 /**
  * check hex address is valid core address
@@ -12,7 +11,7 @@ import { HexAddress } from './types';
  * isCoreHexAddress("0x18E2aD4E486F483EAC134d497Fae1C7Cd2e36EB7") // true
  * ```
  */
-export function isCoreHexAddress(address: HexAddress) {
+export function isCoreHexAddress(address: string) {
   if (!address.startsWith('0x') || address.length !== 42) {
     return false;
   }
