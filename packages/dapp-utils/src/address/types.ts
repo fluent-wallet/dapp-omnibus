@@ -14,3 +14,5 @@ type AddressType = 'builtin' | 'user' | 'contract';
 export type Base32Address = `${NetworkPrefix}:${string}` | `${NetworkPrefix<true>}:TYPE.${Uppercase<AddressType>}:${string}`;
 
 export type HexAddress = `0x${string}`;
+
+export type Hex = `0x${string}`;

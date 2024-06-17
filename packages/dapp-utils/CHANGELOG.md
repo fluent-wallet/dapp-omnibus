@@ -1,5 +1,11 @@
 # @cfx-kit/dapp-utils
 
+## 0.1.8
+
+### Patch Changes
+
+- 2e2562c: add result cache to isBase32Address isHexAddress encode decode function
+
 ## 0.1.7
 
 ### Patch Changes
