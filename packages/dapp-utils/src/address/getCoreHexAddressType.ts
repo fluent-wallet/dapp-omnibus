@@ -2,6 +2,7 @@ import { hexToBytes } from '@noble/hashes/utils';
 import { Base32AddressType } from './types';
 import { InvalidCoreHexAddressError } from '../error/address';
 
+export { InvalidCoreHexAddressError };
 export function getCoreHexAddressType(address: string): Base32AddressType {
   const byteAddress = hexToBytes(address.startsWith('0x') ? address.slice(2) : address);
   switch (byteAddress[0] & 0xf0) {
