@@ -16,3 +16,10 @@ export type Base32Address = `${NetworkPrefix}:${string}` | `${NetworkPrefix<true
 export type HexAddress = `0x${string}`;
 
 export type Hex = `0x${string}`;
+
+export type AddressTypeUser = 'user';
+export type AddressTypeContract = 'contract';
+export type AddressTypeBuiltin = 'builtin';
+export type AddressTypeNull = 'null';
+
+export type Base32AddressType = AddressTypeUser | AddressTypeContract | AddressTypeBuiltin | AddressTypeNull;

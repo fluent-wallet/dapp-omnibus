@@ -16,3 +16,11 @@ export class InvalidNetworkError extends BaseError {
     super(message);
   }
 }
+
+export type InvalidCoreHexAddressErrorType = { name: 'InvalidCoreHexAddressError' } & InvalidCoreHexAddressError;
+export class InvalidCoreHexAddressError extends BaseError {
+  override name = 'InvalidCoreHexAddressError';
+  constructor(message: string) {
+    super(message);
+  }
+}
