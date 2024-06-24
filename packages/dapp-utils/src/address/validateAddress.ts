@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import JSBI from 'jsbi';
 import { Buffer } from 'buffer';
+import { LruMap } from '../utils/lru';
 
 const ALPHABET = 'ABCDEFGHJKMNPRSTUVWXYZ0123456789';
 const VERSION_BYTE = 0;
@@ -166,7 +167,17 @@ function polyMod(buffer: any) {
   return JSBI.bitwiseXor(checksumBigInt, BIGINT_1);
 }
 
-export function encode(_hexAddress: string, netId: number = 1029, verbose = false) {
+export const encodeCache = /*#__PURE__*/ new LruMap<string>(2048);
+
+export type EncodeOptions = {
+  useCache?: boolean;
+};
+
+export function encode(_hexAddress: string, netId: number = 1029, verbose = false, { useCache = true }: EncodeOptions = {}) {
+  const cacheKey = `${_hexAddress}-${netId}-${verbose}`;
+
+  if (encodeCache.has(cacheKey) && useCache) return encodeCache.get(cacheKey)!;
+
   let hexAddress!: any;
   if (validateHexAddress(_hexAddress)) {
     hexAddress = Buffer.from(_hexAddress.slice(2), 'hex');
@@ -191,18 +202,29 @@ export function encode(_hexAddress: string, netId: number = 1029, verbose = fals
   const payload = payload5Bits.map((byte) => ALPHABET[byte]).join('');
   const checksum = checksum5Bits.map((byte) => ALPHABET[byte]).join('');
 
-  return verbose ? `${netName}:TYPE.${addressType}:${payload}${checksum}` : `${netName}:${payload}${checksum}`.toLowerCase();
+  const result = verbose ? `${netName}:TYPE.${addressType}:${payload}${checksum}` : `${netName}:${payload}${checksum}`.toLowerCase();
+
+  encodeCache.set(cacheKey, result);
+
+  return result;
 }
 
-export function decode(cfxAdress: string) {
+export const decodeCache = /*#__PURE__*/ new LruMap<{ hexAddress: Buffer; netId: number; type: string }>(2048);
+
+export type DecodeOptions = {
+  useCache?: boolean | undefined;
+};
+export function decode(base32Address: string, { useCache = true }: DecodeOptions = {}) {
+  if (decodeCache.has(base32Address) && useCache) return decodeCache.get(base32Address)!;
+
   // don't allow mixed case
-  const lowered = cfxAdress.toLowerCase();
-  const uppered = cfxAdress.toUpperCase();
-  if (cfxAdress !== lowered && cfxAdress !== uppered) {
-    throw new Error('Mixed-case address ' + cfxAdress);
+  const lowered = base32Address.toLowerCase();
+  const uppered = base32Address.toUpperCase();
+  if (base32Address !== lowered && base32Address !== uppered) {
+    throw new Error('Mixed-case address ' + base32Address);
   }
 
-  const [, netName, shouldHaveType, payload, checksum] = cfxAdress.toUpperCase().match(/^([^:]+):(.+:)?(.{34})(.{8})$/) as any;
+  const [, netName, shouldHaveType, payload, checksum] = base32Address.toUpperCase().match(/^([^:]+):(.+:)?(.{34})(.{8})$/) as any;
 
   const prefix5Bits = Buffer.from(netName).map((byte) => byte & 0b11111);
   const payload5Bits = [];
@@ -229,9 +251,9 @@ export function decode(cfxAdress: string) {
 
   const bigInt = polyMod([...prefix5Bits, 0, ...payload5Bits, ...checksum5Bits]);
   if (JSBI.toNumber(bigInt)) {
-    throw new Error(`Invalid checksum for ${cfxAdress}`);
+    throw new Error(`Invalid checksum for ${base32Address}`);
   }
-
+  decodeCache.set(base32Address, { hexAddress, netId, type });
   return { hexAddress, netId, type };
 }
 

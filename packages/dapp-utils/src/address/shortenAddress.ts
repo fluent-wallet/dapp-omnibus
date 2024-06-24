@@ -1,50 +1,61 @@
-import { validateHexAddress, validateConfluxAddress, decode } from './validateAddress';
+import { isBase32Address } from './isBase32Address';
+import { isHexAddress } from './isHexAddress';
+import { Base32Address, HexAddress } from './types';
 
-const CFX_MAINNET_NETID = 1029;
-const isNegative = (x: number) => typeof x === 'number' && x < 0;
-const isString = (x: string) => typeof x === 'string';
-
-const getEllipsStr = (str: string, frontNum: number, endNum: number) => {
-  if (!isString(str) || isNegative(frontNum) || isNegative(endNum)) {
-    throw new Error('Invalid args');
-  }
-  const length = str.length;
-  if (frontNum + endNum >= length) {
-    return str.substring(0, length);
-  }
-  return str.substring(0, frontNum) + '...' + str.substring(length - endNum, length);
+export type TruncateOptions = {
+  prefixLength?: number | undefined;
+  suffixLength?: number | undefined;
+  ellipsis?: string | undefined;
 };
 
-export const shortenConfluxAddress = (address: string) => {
-  if (!validateConfluxAddress(address)) {
-    throw new Error('Invalid conflux address');
+export function truncate(str: string, { prefixLength = 4, suffixLength = 4, ellipsis = '...' }: TruncateOptions = {}) {
+  if (str.length <= prefixLength + suffixLength) {
+    return str;
   }
-  const arr = address.split(':');
-  if (arr.length !== 2) {
-    throw new Error('Only shorten the conflux address not containing type');
-  }
-  const { netId } = decode(address);
-  const secondStr = getEllipsStr(arr[1], 3, netId === CFX_MAINNET_NETID ? 8 : 4);
+  return str.substring(0, prefixLength) + ellipsis + str.substring(str.length - suffixLength);
+}
 
-  return `${arr[0]}:${secondStr}`;
-};
-
-export const shortenEthereumAddress = (address?: string | null) => {
+/**
+ * this is shorten address
+ * @param address - hex or base32 address
+ * @param options {@link TruncateOptions}
+ * @returns string
+ *
+ * @example
+ * ```ts
+ * shortenAddress('0x1234567891234567891234567891234567891234')) // 0x1234...1234
+ * shortenAddress('cfxtest:aams3mmwmg5pfknjxjzmws828vvd0u1pt674af1fex')) // cfxtest:aam...74af1fex
+ *
+ * // with option
+ *  shortenAddress('cfx:aams3mmwmg5pfknjxjzmws828vvd0u1pt61vxzvta3', { prefixLength: 4, suffixLength: 8, ellipsis: '...' })) // cfx:aams...1vxzvta3'
+ *  shortenAddress('0x1234567891234567891234567891234567891234', { prefixLength: 5, suffixLength: 4, ellipsis: 'xxxx' })) // 0x12345xxxx1234
+ * ```
+ *
+ */
+export const shortenAddress = (address?: string | null, options: TruncateOptions = {}) => {
   if (typeof address !== 'string' || !address) return '';
-  if (address.startsWith('0x')) {
-    if (!validateHexAddress(address)) {
-      throw new Error('Invalid ethereum address');
-    }
-    return getEllipsStr(address, 6, 4);
+  if (isHexAddress(address)) {
+    return shortenHexAddress(address, options);
+  } else if (isBase32Address(address)) {
+    return shortenBase32Address(address, { prefixLength: 3, ellipsis: '...', ...options }).toLowerCase();
   }
-  return '';
+
+  return truncate(address, options);
 };
 
-export const shortenHexAddress = shortenEthereumAddress;
+const shortenHexAddress = (address: HexAddress, options?: TruncateOptions) => {
+  return `0x${truncate(address.slice(2), options)}`;
+};
 
-export const shortenAddress = (address?: string | null) => {
-  if (typeof address !== 'string' || !address) return '';
-  if (address.startsWith('0x')) return shortenEthereumAddress(address);
-  else if (address.startsWith('cfx') || address.startsWith('net8888')) return shortenConfluxAddress(address);
-  return '';
+export const shortenBase32Address = (address: Base32Address, options?: TruncateOptions) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [, netName, _shouldHaveType, payload, checksum] = address.toUpperCase().match(/^([^:]+):(.+:)?(.{34})(.{8})$/) || ['', '', '', '', ''];
+
+  const defaultSuffixLength = netName.toLowerCase() === 'cfx' ? 8 : 4;
+
+  const addr = `${payload}${checksum}`;
+
+  const shortStr = truncate(addr, { suffixLength: defaultSuffixLength, ...options });
+
+  return `${netName}:${shortStr}`;
 };

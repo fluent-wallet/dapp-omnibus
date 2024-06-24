@@ -1,5 +1,84 @@
 # @cfx-kit/react-utils
 
+## 0.0.32
+
+### Patch Changes
+
+- Updated dependencies [b0589df]
+  - @cfx-kit/dapp-utils@0.1.9
+
+## 0.0.31
+
+### Patch Changes
+
+- Updated dependencies [2e2562c]
+  - @cfx-kit/dapp-utils@0.1.8
+
+## 0.0.30
+
+### Patch Changes
+
+- Updated dependencies [7e26b49]
+  - @cfx-kit/dapp-utils@0.1.7
+
+## 0.0.29
+
+### Patch Changes
+
+- fix useClickAway hook
+
+## 0.0.28
+
+### Patch Changes
+
+- feat: add hooks/index.ts
+
+## 0.0.27
+
+### Patch Changes
+
+- feat: add useClickAway
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.1.6
+
+## 0.0.26
+
+### Patch Changes
+
+- support method
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.1.5
+
+## 0.0.25
+
+### Patch Changes
+
+- return undefined while get tokenuri failed
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.1.4
+
+## 0.0.24
+
+### Patch Changes
+
+- optimize fetchNFTMetadata
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.1.3
+
+## 0.0.23
+
+### Patch Changes
+
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.1.2
+
+## 0.0.22
+
+### Patch Changes
+
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.1.1
+
 ## 0.0.21
 
 ### Patch Changes

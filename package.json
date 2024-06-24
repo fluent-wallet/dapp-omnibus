@@ -12,20 +12,23 @@
     "changeset": "changeset",
     "version": "changeset version",
     "release": "pnpm build:lib && pnpm release:only",
-    "release:only": "changeset publish --registry=https://registry.npmjs.com/"
+    "release:only": "changeset publish --registry=https://registry.npmjs.com/",
+    "test": "vitest test"
   },
   "devDependencies": {
-    "@turbo/gen": "latest",
+    "@turbo/gen": "1.13.3",
     "eslint": "8.51.0",
     "eslint-config-custom": "workspace:*",
     "prettier": "latest",
     "tsup": "^7.1.0",
-    "turbo": "latest",
-    "typescript": "^5.1.6"
+    "turbo": "1.13.3",
+    "typescript": "^5.1.6",
+    "vitest": "^1.6.0"
   },
   "packageManager": "pnpm@7.15.0",
   "name": "dapp-omnibus",
   "dependencies": {
-    "@changesets/cli": "^2.26.2"
+    "@changesets/cli": "^2.26.2",
+    "eslint-plugin-turbo": "^2.0.3"
   }
 }

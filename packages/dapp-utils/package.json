@@ -1,6 +1,6 @@
 {
   "name": "@cfx-kit/dapp-utils",
-  "version": "0.1.0",
+  "version": "0.1.9",
   "type": "module",
   "keywords": [
     "dapp",
@@ -23,15 +23,16 @@
   },
   "dependencies": {
     "@cfx-kit/utils": "workspace:*",
+    "@ethersproject/abi": "^5.7.0",
+    "@ethersproject/bignumber": "^5.7.0",
+    "@ethersproject/units": "^5.7.0",
+    "@noble/hashes": "^1.4.0",
     "abitype": "^0.9.5",
     "ethers": "^6.6.4",
     "jsbi": "^4.3.0",
     "ky": "^0.33.3",
-    "lodash-es": "^4.17.21",
-    "@ethersproject/abi": "^5.7.0",
-    "@ethersproject/bignumber": "^5.7.0",
-    "@ethersproject/units": "^5.7.0",
-    "localstorage-enhance": "^1.0.8"
+    "localstorage-enhance": "^1.0.8",
+    "lodash-es": "^4.17.21"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.7",

@@ -1,5 +1,59 @@
 # @cfx-kit/dapp-utils
 
+## 0.1.9
+
+### Patch Changes
+
+- b0589df: add getCoreHexAddressType function to get core hex address type
+
+## 0.1.8
+
+### Patch Changes
+
+- 2e2562c: add result cache to isBase32Address isHexAddress encode decode function
+
+## 0.1.7
+
+### Patch Changes
+
+- 7e26b49: feat: update shortenAddress
+
+## 0.1.6
+
+### Patch Changes
+
+- feat: add useClickAway
+
+## 0.1.5
+
+### Patch Changes
+
+- support method
+
+## 0.1.4
+
+### Patch Changes
+
+- return undefined while get tokenuri failed
+
+## 0.1.3
+
+### Patch Changes
+
+- optimize fetchNFTMetadata
+
+## 0.1.2
+
+### Patch Changes
+
+- add fetchNFTMetadata
+
+## 0.1.1
+
+### Patch Changes
+
+- fix fetchChain error handle
+
 ## 0.1.0
 
 ### Minor Changes
