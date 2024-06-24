@@ -1,5 +1,11 @@
 # @cfx-kit/dapp-utils
 
+## 0.2.0
+
+### Minor Changes
+
+- Update transaction action
+
 ## 0.1.9
 
 ### Patch Changes
