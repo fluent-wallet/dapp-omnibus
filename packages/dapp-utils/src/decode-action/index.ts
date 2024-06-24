@@ -576,9 +576,9 @@ export const decodeData = (
             const eventContent: any = [];
 
             event.forEach((e: EventList) => {
-                const evnetHash = Array.isArray(e.topics) && e.topics.length > 0 ? e.topics[0] : null;
-                if (customUI && evnetHash && EventTranslate[evnetHash]) {
-                    const eResult = EventTranslate[evnetHash]({
+                const eventHash = Array.isArray(e.topics) && e.topics.length > 0 ? e.topics[0] : null;
+                if (customUI && eventHash && EventTranslate[eventHash]) {
+                    const eResult = EventTranslate[eventHash]({
                         token: customInfo,
                         ...e,
                     });
@@ -642,9 +642,9 @@ export const decodeData = (
                     if (!(e.topics[1] === EventZero || e.topics[2] === EventZero)) {
                         return;
                     }
-                    const evnetHash = e.topics[0];
-                    if (EventTranslate[evnetHash]) {
-                        const eResult = EventTranslate[evnetHash]({
+                    const eventHash = e.topics[0];
+                    if (EventTranslate[eventHash]) {
+                        const eResult = EventTranslate[eventHash]({
                             token: customInfo,
                             ...e,
                         });
