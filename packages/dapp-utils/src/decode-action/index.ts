@@ -576,7 +576,7 @@ export const decodeData = (
 
             event.forEach((e: EventList) => {
                 const evnetHash = e.topics[0];
-                if (customUI && EventTranslate[evnetHash]) {
+                if (customUI && evnetHash && EventTranslate[evnetHash]) {
                     const eResult = EventTranslate[evnetHash]({
                         token: customInfo,
                         ...e,
@@ -627,7 +627,7 @@ export const decodeData = (
                     '0x4a39dc06d4c0dbc64b70af90fd698a233a518aa5d07e595d983b8c0526c8f7fb',
                 ];
 
-                if (EventWihtelist.includes(e.topics[0])) {
+                if (e.topics[0] && EventWihtelist.includes(e.topics[0])) {
                     // 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef maybe ERC20, filter out these transactions.
                     if (
                         [
