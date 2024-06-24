@@ -3,8 +3,8 @@ import { Interface } from '@ethersproject/abi';
 import { formatUnits } from '@ethersproject/units';
 import { BigNumber } from '@ethersproject/bignumber';
 import { ERC20_ABI, ERC721_ABI, ERC1155_ABI } from './abi';
-import { Translation, TranslationArgs, TranslationEvent, EventList, TokenInfo, CustomInfo, MultiAction, DecodeDataReturnType } from './type';
-export type { Translation, TranslationArgs, TranslationEvent, EventList, TokenInfo, CustomInfo, MultiAction, DecodeDataReturnType };
+import { Translation, TranslationArgs, TranslationEvent, EventList, TokenInfo, CustomInfo, MultiAction, DecodeDataReturnType, TransactionActionProps, AddressNameTagContainerProps } from './type';
+export type { Translation, TranslationArgs, TranslationEvent, EventList, TokenInfo, CustomInfo, MultiAction, DecodeDataReturnType, TransactionActionProps, AddressNameTagContainerProps };
 
 // eslint-disable-next-line react-refresh/only-export-components
 const Zero = '0x0000000000000000000000000000000000000000';
