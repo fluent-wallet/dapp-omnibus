@@ -1,16 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { BigNumber } from '@ethersproject/bignumber';
 
+export interface AddressNameTagContainerProps {
+  value: string;
+}
+
+export interface TransactionActionProps {
+  transaction: TranslationArgs;
+  event: EventList[];
+  customInfo: CustomInfo;
+}
+
 export interface TokenInfo {
   token: {
-      address: string;
-      [key: string]: any;
+    address: string;
+    [key: string]: any;
   };
   [key: string]: any;
 }
 
-export interface Result extends ReadonlyArray<unknown> {
-  readonly [key: string]: unknown;
+export interface Result extends ReadonlyArray<any> {
+  readonly [key: string]: any;
 }
 export interface ReturnType {
   type: string;
@@ -18,14 +28,14 @@ export interface ReturnType {
   value?: string | undefined;
   title: string;
   args: string[] | Result | undefined;
-  content?: unknown;
+  content?: [];
 }
 export interface Translation {
   [hash: string]: (args: TranslationArgs) => ReturnType;
 }
 export interface DecodeDataReturnType {
   args?: string[] | Result;
-  content?: unknown;
+  content?: [];
 }
 export interface Token {
   icon?: string;

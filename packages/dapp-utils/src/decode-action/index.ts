@@ -2,8 +2,9 @@
 import { Interface } from '@ethersproject/abi';
 import { formatUnits } from '@ethersproject/units';
 import { BigNumber } from '@ethersproject/bignumber';
-import { ERC20_ABI, ERC721_ABI, ERC1155_ABI } from './abi'
-import { Translation, TranslationArgs, TranslationEvent, EventList, TokenInfo, CustomInfo, MultiAction, DecodeDataReturnType } from './type'
+import { ERC20_ABI, ERC721_ABI, ERC1155_ABI } from './abi';
+import { Translation, TranslationArgs, TranslationEvent, EventList, TokenInfo, CustomInfo, MultiAction, DecodeDataReturnType, TransactionActionProps, AddressNameTagContainerProps } from './type';
+export type { Translation, TranslationArgs, TranslationEvent, EventList, TokenInfo, CustomInfo, MultiAction, DecodeDataReturnType, TransactionActionProps, AddressNameTagContainerProps };
 
 // eslint-disable-next-line react-refresh/only-export-components
 const Zero = '0x0000000000000000000000000000000000000000';
@@ -575,9 +576,9 @@ export const decodeData = (
             const eventContent: any = [];
 
             event.forEach((e: EventList) => {
-                const evnetHash = e.topics[0];
-                if (customUI && EventTranslate[evnetHash]) {
-                    const eResult = EventTranslate[evnetHash]({
+                const eventHash = Array.isArray(e.topics) && e.topics.length > 0 ? e.topics[0] : null;
+                if (customUI && eventHash && EventTranslate[eventHash]) {
+                    const eResult = EventTranslate[eventHash]({
                         token: customInfo,
                         ...e,
                     });
@@ -627,7 +628,7 @@ export const decodeData = (
                     '0x4a39dc06d4c0dbc64b70af90fd698a233a518aa5d07e595d983b8c0526c8f7fb',
                 ];
 
-                if (EventWihtelist.includes(e.topics[0])) {
+                if (Array.isArray(e.topics) && e.topics.length > 0 && EventWihtelist.includes(e.topics[0])) {
                     // 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef maybe ERC20, filter out these transactions.
                     if (
                         [
@@ -641,9 +642,9 @@ export const decodeData = (
                     if (!(e.topics[1] === EventZero || e.topics[2] === EventZero)) {
                         return;
                     }
-                    const evnetHash = e.topics[0];
-                    if (EventTranslate[evnetHash]) {
-                        const eResult = EventTranslate[evnetHash]({
+                    const eventHash = e.topics[0];
+                    if (EventTranslate[eventHash]) {
+                        const eResult = EventTranslate[eventHash]({
                             token: customInfo,
                             ...e,
                         });
