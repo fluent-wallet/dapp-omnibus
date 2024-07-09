@@ -295,7 +295,7 @@ export const switchChain = async (
 
 export const sendTransaction = async (params: TransactionParameters) => {
   checkAccountConnected();
-  const walletState = checkWalletState({ checkFunctionName: 'switchChain' });
+  const walletState = checkWalletState({ checkFunctionName: 'sendTransaction' });
   return walletState.provider.sendTransaction(params);
 };
 
