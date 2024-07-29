@@ -6,11 +6,12 @@ import {
   addChain,
   switchChain,
   typedSign,
-  Unit,
+  personalSign,
+  type Unit,
   startTrackBalance,
   stopTrackBalance,
 } from '@cfxjs/use-wallet-react/ethereum';
-import { Status, WalletProvider } from '../../AccountManage/types';
+import type { Status, WalletProvider } from '../../AccountManage/types';
 
 const walletProvider = {
   walletName: 'Ethereum',
@@ -52,6 +53,7 @@ const walletProvider = {
   addChain,
   switchChain,
   typedSign,
+  personalSign,
   getAccount: () => store.getState().accounts?.[0],
   getChainId: () => store.getState().chainId,
   getBalance: () => store.getState().balance,

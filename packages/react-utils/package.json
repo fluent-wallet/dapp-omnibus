@@ -26,7 +26,7 @@
     "@cfx-kit/utils": "workspace:*",
     "@cfxjs/use-wallet-react": "0.0.2-5",
     "@walletconnect/sign-client": "^2.9.0",
-    "@web3modal/standalone": "^2.4.3",
+    "@walletconnect/modal": "^2.6.2",
     "decimal.js": "^10.4.3",
     "localstorage-enhance": "^1.0.8",
     "lodash-es": "^4.17.21",

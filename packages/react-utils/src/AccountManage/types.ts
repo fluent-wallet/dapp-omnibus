@@ -90,6 +90,7 @@ export interface WalletProvider {
   addChain?: (chain: AddChainParameter) => Promise<unknown>;
   switchChain?: (chainId: string) => Promise<unknown>;
   typedSign?: (data: TypedSignParams) => Promise<string>;
+  personalSign?: (data: string) => Promise<string>;
   disconnect?: () => Promise<void> | void;
   startTrackBalance?: (interval?: number) => void;
   stopTrackBalance?: () => void;

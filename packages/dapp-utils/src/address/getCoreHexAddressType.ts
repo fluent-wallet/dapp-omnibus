@@ -1,5 +1,5 @@
 import { hexToBytes } from '@noble/hashes/utils';
-import { Base32AddressType } from './types';
+import type { Base32AddressType } from './types';
 import { InvalidCoreHexAddressError } from '../error/address';
 
 export { InvalidCoreHexAddressError };

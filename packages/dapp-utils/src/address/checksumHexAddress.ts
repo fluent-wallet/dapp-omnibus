@@ -1,4 +1,4 @@
-import { HexAddress } from './types';
+import type { HexAddress } from './types';
 import { keccak_256 } from '@noble/hashes/sha3';
 import { utf8ToBytes } from '@noble/hashes/utils';
 

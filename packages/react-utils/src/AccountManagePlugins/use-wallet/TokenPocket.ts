@@ -6,11 +6,12 @@ import {
   addChain,
   switchChain,
   typedSign,
-  Unit,
+  personalSign,
+  type Unit,
   startTrackBalance,
   stopTrackBalance,
 } from '@cfxjs/use-wallet-react/ethereum/TokenPocket';
-import { WalletProvider, Status } from '../../AccountManage/types';
+import type { WalletProvider, Status } from '../../AccountManage/types';
 
 const walletProvider = {
   walletName: 'TokenPocket',
