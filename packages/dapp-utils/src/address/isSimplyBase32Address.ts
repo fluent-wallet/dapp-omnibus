@@ -1,5 +1,5 @@
 import { isBase32Address } from './isBase32Address';
-import { Base32Address } from './types';
+import type { Base32Address } from './types';
 
 /**
  * check if address is simply base32 (without address type)
@@ -13,7 +13,7 @@ import { Base32Address } from './types';
  * ```
  */
 
-export function isSimplyBase32Address(address: Base32Address) {
+export function isSimplyBase32Address(address: string): address is Base32Address {
   const parts = address.split(':');
   // [type:string]
   if (parts.length !== 2) return false;

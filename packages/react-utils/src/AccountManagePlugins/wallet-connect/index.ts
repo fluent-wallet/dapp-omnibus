@@ -1,59 +1,86 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import SignClient from '@walletconnect/sign-client';
-import { Web3Modal } from '@web3modal/standalone';
-import { type SessionTypes } from '@walletconnect/types';
-import { TransactionParameters, WatchAssetParams, TypedSignParams, WalletProvider } from '../../AccountManage/types';
+import SignClient from "@walletconnect/sign-client";
+import { WalletConnectModal } from "@walletconnect/modal";
+import type { SessionTypes } from "@walletconnect/types";
+import type {
+  TransactionParameters,
+  TypedSignParams,
+  WalletProvider,
+  WatchAssetParams,
+} from "../../AccountManage/types";
+import {
+  ChainPrefix,
+  convertCipDataToEip,
+  convertCipMethodToEip,
+  convertEipDataToCip,
+  formatChainId,
+  parseNamespaceData,
+} from "./wc-helper";
 
-const createWalletConnectProvider = ({ projectId, targetChainId }: { projectId: string; targetChainId: string }) => {
-  const web3Modal = new Web3Modal({
-    walletConnectVersion: 2,
+const createWalletConnectProvider = ({
+  projectId,
+  targetChainId,
+  metadata,
+}: {
+  projectId: string;
+  targetChainId: Array<string> | string;
+  metadata: NonNullable<Parameters<typeof SignClient.init>[0]>["metadata"];
+}) => {
+  const chains = Array.isArray(targetChainId)
+    ? targetChainId.map((chainId) => formatChainId(chainId))
+    : [formatChainId(targetChainId)];
+
+  const web3Modal = new WalletConnectModal({
     projectId,
-    standaloneChains: [`eip155:${targetChainId}`],
+    chains,
   });
 
   let signClient: SignClient;
-  let session: ReturnType<SignClient['session']['getAll']>[number] | undefined;
-  let accountChangeCallback: ((account: string | undefined) => void) | undefined = undefined;
-  let chainIdChangeCallback: ((chainId: string | undefined) => void) | undefined = undefined;
+  let session: ReturnType<SignClient["session"]["getAll"]>[number] | undefined;
+  let accountChangeCallback:
+    | ((account: string | undefined) => void)
+    | undefined = undefined;
+  let chainIdChangeCallback:
+    | ((chainId: string | undefined) => void)
+    | undefined = undefined;
+  let accountsChangeCallback:
+    | ((account: string | undefined) => void)
+    | undefined = undefined;
+  let chainIdsChangeCallback:
+    | ((chainId: string | undefined) => void)
+    | undefined = undefined;
+  let connectedAccounts: Array<{
+    chainPrefix: string;
+    chainId: string;
+    address: string;
+  }> = [];
 
-  const getAccountAndChainIdFromSession = (_session: SessionTypes.Struct | undefined) => {
-    if (!_session || (_session?.expiry && _session.expiry * 1000 - Date.now() < 0)) {
-      return {
-        account: undefined,
-        chainId: undefined,
-      };
+  const getAccountsInfoFromSession = (
+    _session: SessionTypes.Struct | undefined,
+  ) => {
+    if (
+      !_session ||
+      (_session?.expiry && _session.expiry * 1000 - Date.now() < 0)
+    ) {
+      return [];
     }
-    const allNamespaceAccounts = Object.values(_session.namespaces)
-      .map((namespace) => namespace.accounts)
-      .flat();
-    const allNamespaceChainIds = Object.values(_session.namespaces)
-      .map((namespace) => namespace.chains)
-      .flat();
-    const _account = allNamespaceAccounts?.[0];
-    const _chainId = allNamespaceChainIds?.[0];
-    let account: string | undefined;
-    let chainId: string | undefined;
-    if (!_account || !_account.startsWith(`eip155:${targetChainId}:`)) {
-      account = undefined;
-    } else {
-      account = _account.split(`eip155:${targetChainId}:`)?.[1];
-    }
-    if (!_chainId || !_chainId.startsWith('eip155:')) {
-      chainId = undefined;
-    } else {
-      chainId = _chainId.split('eip155:')?.[1];
-    }
+    connectedAccounts = Object.values(_session.namespaces).flatMap(
+      (namespace) =>
+        namespace.accounts?.map(convertEipDataToCip).map(parseNamespaceData),
+    );
 
-    return {
-      account,
-      chainId,
-    };
+    return connectedAccounts;
   };
 
-  const handleSessionUpdate = async (_session: SessionTypes.Struct | undefined) => {
-    const { account, chainId } = getAccountAndChainIdFromSession(_session);
-    if (account) {
-      accountChangeCallback?.(account);
+  const handleSessionUpdate = async (
+    _session: SessionTypes.Struct | undefined,
+  ) => {
+    const accounts = getAccountsInfoFromSession(_session);
+    const account = accounts?.[0];
+    const { address, chainId } = account || {};
+
+    if (address) {
+      accountChangeCallback?.(address);
       if (chainId) {
         chainIdChangeCallback?.(chainId);
       }
@@ -72,7 +99,7 @@ const createWalletConnectProvider = ({ projectId, targetChainId }: { projectId: 
           topic: session?.topic,
           reason: {
             code: 12,
-            message: 'disconnect',
+            message: "disconnect",
           },
         });
         session = undefined;
@@ -80,15 +107,10 @@ const createWalletConnectProvider = ({ projectId, targetChainId }: { projectId: 
     }
   };
 
-  (async function () {
+  (async () => {
     const client = await SignClient.init({
       projectId,
-      metadata: {
-        name: 'Goledo',
-        description: 'Goledo is a lending and borrowing market built on Conflux eSpace. Lend your assets to begin earning and use them to collateralize loans.',
-        url: window.location.host,
-        icons: ['https://walletconnect.com/walletconnect-logo.png'],
-      },
+      metadata,
     });
     signClient = client;
     session = signClient.session.getAll()?.at(-1);
@@ -102,22 +124,63 @@ const createWalletConnectProvider = ({ projectId, targetChainId }: { projectId: 
       });
     }
 
-    signClient.on('session_update', ({ topic }) => {
+    signClient.on("session_update", ({ topic }) => {
       handleSessionUpdate(signClient.session.get(topic));
     });
 
-    signClient.on('session_delete', () => {
+    signClient.on("session_delete", () => {
       handleSessionUpdate(undefined);
     });
   })();
 
+  const getUsedAccountInfo = ({
+    targetNamespaceData,
+    method,
+  }: { targetNamespaceData?: string; method: string }) => {
+    const usedAccountInfo = targetNamespaceData
+      ? parseNamespaceData(targetNamespaceData)
+      : connectedAccounts[0];
+    if (
+      !usedAccountInfo.chainPrefix ||
+      !usedAccountInfo.chainId ||
+      !usedAccountInfo.address
+    ) {
+      throw new Error(
+        targetNamespaceData
+          ? "Invalid targetNamespaceData"
+          : "Invalid WalletConnect return data",
+      );
+    }
+
+    if (usedAccountInfo.chainPrefix === ChainPrefix.CIP) {
+      return {
+        chainId: convertCipDataToEip(
+          `${usedAccountInfo.chainPrefix}:${usedAccountInfo.chainId}`,
+        ),
+        from: usedAccountInfo.address,
+        method: convertCipMethodToEip(method),
+      };
+    }
+    return {
+      chainId: `${usedAccountInfo.chainPrefix}:${usedAccountInfo.chainId}`,
+      from: usedAccountInfo.address,
+      method,
+    };
+  };
+
   return {
-    walletName: 'WalletConnect',
+    walletName: "WalletConnect",
     subAccountChange: (callback: (account: string | undefined) => void) => {
       accountChangeCallback = callback;
     },
     subChainIdChange: (callback: (chainId: string | undefined) => void) => {
       chainIdChangeCallback = callback;
+    },
+    subAccountsChange: (callback: (account: string | undefined) => void) => {
+      accountsChangeCallback = callback;
+    },
+    subChainIdsChange: (callback: (chainId: string | undefined) => void) => {
+      chainIdsChangeCallback = callback;
     },
     connect: async () => {
       try {
@@ -128,19 +191,28 @@ const createWalletConnectProvider = ({ projectId, targetChainId }: { projectId: 
           // Provide the namespaces and chains (e.g. `eip155` for EVM-based chains) we want to use in this session.
           requiredNamespaces: {
             eip155: {
-              methods: ['eth_sendTransaction'],
-              chains: [`eip155:${targetChainId}`],
-              events: ['chainChanged', 'accountsChanged'],
+              methods: [
+                "eth_sendTransaction",
+                "personal_sign",
+                "eth_signTypedData_v4",
+                "eth_signTypedData",
+              ],
+              chains,
+              events: ["chainChanged", "accountsChanged"],
             },
           },
         });
         //如果返回URI，则打开QRCode模式(即我们没有连接现有的配对)。
         if (uri) {
-          web3Modal.openModal({ uri, standaloneChains: [`eip155:${targetChainId}`] });
+          web3Modal.openModal({
+            uri,
+            standaloneChains: [`eip155:${targetChainId}`],
+          });
         }
 
         // 等待钱包的会话批准。
         const newSession = await approval();
+
         if (newSession) {
           session = newSession;
           handleSessionUpdate(newSession);
@@ -155,47 +227,92 @@ const createWalletConnectProvider = ({ projectId, targetChainId }: { projectId: 
         web3Modal.closeModal();
       }
     },
-    sendTransaction: async (params: TransactionParameters): Promise<string> => {
+    sendTransaction: async (
+      params: TransactionParameters,
+      targetNamespaceData?: string,
+    ): Promise<string> => {
+      const { method, from, chainId } = getUsedAccountInfo({
+        targetNamespaceData,
+        method: "eth_sendTransaction",
+      });
       return signClient.request({
         topic: session!.topic,
-        chainId: `eip155:${targetChainId}`,
+        chainId,
         request: {
-          method: 'eth_sendTransaction',
-          params: [params],
+          method,
+          params: [{ ...params, from }],
         },
       });
     },
-    watchAsset: async (params: WatchAssetParams) => {
+    watchAsset: async (
+      params: WatchAssetParams,
+      targetNamespaceData?: string,
+    ) => {
+      const { method, from, chainId } = getUsedAccountInfo({
+        targetNamespaceData,
+        method: "wallet_watchAsset",
+      });
       return signClient.request({
         topic: session!.topic,
-        chainId: `eip155:${targetChainId}`,
+        chainId,
         request: {
-          method: 'wallet_watchAsset',
-          params: [params],
+          method,
+          params: [{ ...params, from }],
         },
       });
     },
-    typedSign: async (params: TypedSignParams): Promise<string> => {
-      const { account } = getAccountAndChainIdFromSession(session);
+    typedSign: async (
+      params: TypedSignParams,
+      targetNamespaceData?: string,
+    ): Promise<string> => {
+      const { method, from, chainId } = getUsedAccountInfo({
+        targetNamespaceData,
+        method: "eth_signTypedData",
+      });
       return signClient.request({
         topic: session!.topic,
-        chainId: `eip155:${targetChainId}`,
+        chainId,
         request: {
-          method: 'eth_signTypedData_v4',
-          params: [account, JSON.stringify(params)],
+          method,
+          params: [from, JSON.stringify(params)],
+        },
+      });
+    },
+    personalSign: async (
+      message: string,
+      targetNamespaceData?: string,
+    ): Promise<string> => {
+      const { method, from, chainId } = getUsedAccountInfo({
+        targetNamespaceData,
+        method: "personal_sign",
+      });
+      console.log(method);
+      return signClient.request({
+        topic: session!.topic,
+        chainId,
+        request: {
+          method,
+          params: [message, from],
         },
       });
     },
     getAccount: () => {
       if (!session) return undefined;
-      const { account } = getAccountAndChainIdFromSession(session);
-      return account;
+      return connectedAccounts?.[0]?.address;
     },
     getChainId: () => {
       if (!session) return undefined;
-      const { chainId } = getAccountAndChainIdFromSession(session);
-      return chainId;
+      return connectedAccounts?.[0]?.chainId;
     },
+    getAccounts: () => {
+      if (!session) return undefined;
+      return connectedAccounts?.map((account) => account.address);
+    },
+    getChainIds: () => {
+      if (!session) return undefined;
+      return connectedAccounts?.map((account) => account.chainId);
+    },
+    getConnecteds: () => connectedAccounts,
   } as WalletProvider;
 };
 
