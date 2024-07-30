@@ -53,6 +53,7 @@ const walletProvider = {
   addChain,
   switchChain,
   typedSign,
+  personalSign,
   getAccount: () => store.getState().accounts?.[0],
   getChainId: () => store.getState().chainId,
   getBalance: () => store.getState().balance,

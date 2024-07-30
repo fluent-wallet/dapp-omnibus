@@ -15,7 +15,7 @@ import type {
 	WalletProvider,
 	Status,
 } from "./types";
-import { Unit } from "@cfxjs/use-wallet-react/ethereum";
+import type { Unit } from "@cfxjs/use-wallet-react/ethereum";
 import { useEffect } from "react";
 export * from "./types";
 
