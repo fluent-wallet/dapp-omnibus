@@ -1,21 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import SignClient from "@walletconnect/sign-client";
-import { WalletConnectModal } from "@walletconnect/modal";
-import type { SessionTypes } from "@walletconnect/types";
-import type {
-  TransactionParameters,
-  TypedSignParams,
-  WalletProvider,
-  WatchAssetParams,
-} from "../../AccountManage/types";
-import {
-  ChainPrefix,
-  convertCipDataToEip,
-  convertCipMethodToEip,
-  convertEipDataToCip,
-  formatChainId,
-  parseNamespaceData,
-} from "./wc-helper";
+import SignClient from '@walletconnect/sign-client';
+import { WalletConnectModal } from '@walletconnect/modal';
+import type { SessionTypes } from '@walletconnect/types';
+import type { TransactionParameters, TypedSignParams, WalletProvider, WatchAssetParams } from '../../AccountManage/types';
+import { ChainPrefix, convertCipDataToEip, convertCipMethodToEip, convertEipDataToCip, formatChainId, parseNamespaceData } from '../../WalletConnectorHelper';
 
 const createWalletConnectProvider = ({
   projectId,
@@ -24,11 +12,9 @@ const createWalletConnectProvider = ({
 }: {
   projectId: string;
   targetChainId: Array<string> | string;
-  metadata: NonNullable<Parameters<typeof SignClient.init>[0]>["metadata"];
+  metadata: NonNullable<Parameters<typeof SignClient.init>[0]>['metadata'];
 }) => {
-  const chains = Array.isArray(targetChainId)
-    ? targetChainId.map((chainId) => formatChainId(chainId))
-    : [formatChainId(targetChainId)];
+  const chains = Array.isArray(targetChainId) ? targetChainId.map((chainId) => formatChainId(chainId)) : [formatChainId(targetChainId)];
 
   const web3Modal = new WalletConnectModal({
     projectId,
@@ -36,45 +22,25 @@ const createWalletConnectProvider = ({
   });
 
   let signClient: SignClient;
-  let session: ReturnType<SignClient["session"]["getAll"]>[number] | undefined;
-  let accountChangeCallback:
-    | ((account: string | undefined) => void)
-    | undefined = undefined;
-  let chainIdChangeCallback:
-    | ((chainId: string | undefined) => void)
-    | undefined = undefined;
-  let accountsChangeCallback:
-    | ((account: string | undefined) => void)
-    | undefined = undefined;
-  let chainIdsChangeCallback:
-    | ((chainId: string | undefined) => void)
-    | undefined = undefined;
+  let session: ReturnType<SignClient['session']['getAll']>[number] | undefined;
+  let accountChangeCallback: ((account: string | undefined) => void) | undefined = undefined;
+  let chainIdChangeCallback: ((chainId: string | undefined) => void) | undefined = undefined;
   let connectedAccounts: Array<{
     chainPrefix: string;
     chainId: string;
     address: string;
   }> = [];
 
-  const getAccountsInfoFromSession = (
-    _session: SessionTypes.Struct | undefined,
-  ) => {
-    if (
-      !_session ||
-      (_session?.expiry && _session.expiry * 1000 - Date.now() < 0)
-    ) {
+  const getAccountsInfoFromSession = (_session: SessionTypes.Struct | undefined) => {
+    if (!_session || (_session?.expiry && _session.expiry * 1000 - Date.now() < 0)) {
       return [];
     }
-    connectedAccounts = Object.values(_session.namespaces).flatMap(
-      (namespace) =>
-        namespace.accounts?.map(convertEipDataToCip).map(parseNamespaceData),
-    );
+    connectedAccounts = Object.values(_session.namespaces).flatMap((namespace) => namespace.accounts?.map(convertEipDataToCip).map(parseNamespaceData));
 
     return connectedAccounts;
   };
 
-  const handleSessionUpdate = async (
-    _session: SessionTypes.Struct | undefined,
-  ) => {
+  const handleSessionUpdate = async (_session: SessionTypes.Struct | undefined) => {
     const accounts = getAccountsInfoFromSession(_session);
     const account = accounts?.[0];
     const { address, chainId } = account || {};
@@ -99,7 +65,7 @@ const createWalletConnectProvider = ({
           topic: session?.topic,
           reason: {
             code: 12,
-            message: "disconnect",
+            message: 'disconnect',
           },
         });
         session = undefined;
@@ -124,39 +90,24 @@ const createWalletConnectProvider = ({
       });
     }
 
-    signClient.on("session_update", ({ topic }) => {
+    signClient.on('session_update', ({ topic }) => {
       handleSessionUpdate(signClient.session.get(topic));
     });
 
-    signClient.on("session_delete", () => {
+    signClient.on('session_delete', () => {
       handleSessionUpdate(undefined);
     });
   })();
 
-  const getUsedAccountInfo = ({
-    targetNamespaceData,
-    method,
-  }: { targetNamespaceData?: string; method: string }) => {
-    const usedAccountInfo = targetNamespaceData
-      ? parseNamespaceData(targetNamespaceData)
-      : connectedAccounts[0];
-    if (
-      !usedAccountInfo.chainPrefix ||
-      !usedAccountInfo.chainId ||
-      !usedAccountInfo.address
-    ) {
-      throw new Error(
-        targetNamespaceData
-          ? "Invalid targetNamespaceData"
-          : "Invalid WalletConnect return data",
-      );
+  const getUsedAccountInfo = ({ targetNamespaceData, method }: { targetNamespaceData?: string; method: string }) => {
+    const usedAccountInfo = targetNamespaceData ? parseNamespaceData(targetNamespaceData) : connectedAccounts[0];
+    if (!usedAccountInfo.chainPrefix || !usedAccountInfo.chainId || !usedAccountInfo.address) {
+      throw new Error(targetNamespaceData ? 'Invalid targetNamespaceData' : 'Invalid WalletConnect return data');
     }
 
     if (usedAccountInfo.chainPrefix === ChainPrefix.CIP) {
       return {
-        chainId: convertCipDataToEip(
-          `${usedAccountInfo.chainPrefix}:${usedAccountInfo.chainId}`,
-        ),
+        chainId: convertCipDataToEip(`${usedAccountInfo.chainPrefix}:${usedAccountInfo.chainId}`),
         from: usedAccountInfo.address,
         method: convertCipMethodToEip(method),
       };
@@ -169,18 +120,12 @@ const createWalletConnectProvider = ({
   };
 
   return {
-    walletName: "WalletConnect",
+    walletName: 'WalletConnect',
     subAccountChange: (callback: (account: string | undefined) => void) => {
       accountChangeCallback = callback;
     },
     subChainIdChange: (callback: (chainId: string | undefined) => void) => {
       chainIdChangeCallback = callback;
-    },
-    subAccountsChange: (callback: (account: string | undefined) => void) => {
-      accountsChangeCallback = callback;
-    },
-    subChainIdsChange: (callback: (chainId: string | undefined) => void) => {
-      chainIdsChangeCallback = callback;
     },
     connect: async () => {
       try {
@@ -191,14 +136,9 @@ const createWalletConnectProvider = ({
           // Provide the namespaces and chains (e.g. `eip155` for EVM-based chains) we want to use in this session.
           requiredNamespaces: {
             eip155: {
-              methods: [
-                "eth_sendTransaction",
-                "personal_sign",
-                "eth_signTypedData_v4",
-                "eth_signTypedData",
-              ],
+              methods: ['eth_sendTransaction', 'personal_sign', 'eth_signTypedData_v4', 'eth_signTypedData'],
               chains,
-              events: ["chainChanged", "accountsChanged"],
+              events: ['chainChanged', 'accountsChanged'],
             },
           },
         });
@@ -227,13 +167,10 @@ const createWalletConnectProvider = ({
         web3Modal.closeModal();
       }
     },
-    sendTransaction: async (
-      params: TransactionParameters,
-      targetNamespaceData?: string,
-    ): Promise<string> => {
+    sendTransaction: async (params: TransactionParameters, targetNamespaceData?: string): Promise<string> => {
       const { method, from, chainId } = getUsedAccountInfo({
         targetNamespaceData,
-        method: "eth_sendTransaction",
+        method: 'eth_sendTransaction',
       });
       return signClient.request({
         topic: session!.topic,
@@ -244,13 +181,10 @@ const createWalletConnectProvider = ({
         },
       });
     },
-    watchAsset: async (
-      params: WatchAssetParams,
-      targetNamespaceData?: string,
-    ) => {
+    watchAsset: async (params: WatchAssetParams, targetNamespaceData?: string) => {
       const { method, from, chainId } = getUsedAccountInfo({
         targetNamespaceData,
-        method: "wallet_watchAsset",
+        method: 'wallet_watchAsset',
       });
       return signClient.request({
         topic: session!.topic,
@@ -261,13 +195,10 @@ const createWalletConnectProvider = ({
         },
       });
     },
-    typedSign: async (
-      params: TypedSignParams,
-      targetNamespaceData?: string,
-    ): Promise<string> => {
+    typedSign: async (params: TypedSignParams, targetNamespaceData?: string): Promise<string> => {
       const { method, from, chainId } = getUsedAccountInfo({
         targetNamespaceData,
-        method: "eth_signTypedData",
+        method: 'eth_signTypedData',
       });
       return signClient.request({
         topic: session!.topic,
@@ -278,13 +209,10 @@ const createWalletConnectProvider = ({
         },
       });
     },
-    personalSign: async (
-      message: string,
-      targetNamespaceData?: string,
-    ): Promise<string> => {
+    personalSign: async (message: string, targetNamespaceData?: string): Promise<string> => {
       const { method, from, chainId } = getUsedAccountInfo({
         targetNamespaceData,
-        method: "personal_sign",
+        method: 'personal_sign',
       });
       console.log(method);
       return signClient.request({
