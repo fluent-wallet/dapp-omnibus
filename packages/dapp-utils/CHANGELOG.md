@@ -1,5 +1,11 @@
 # @cfx-kit/dapp-utils
 
+## 0.2.3
+
+### Patch Changes
+
+- export isAddressEqual
+
 ## 0.2.2
 
 ### Patch Changes

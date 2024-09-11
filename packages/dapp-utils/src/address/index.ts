@@ -18,3 +18,5 @@ export { isSimplyBase32Address } from './isSimplyBase32Address';
 export { isValidNetworkId } from './isValidNetworkId';
 
 export { getCoreHexAddressType, InvalidCoreHexAddressError } from './getCoreHexAddressType';
+
+export { isAddressEqual } from './isAddressEqual';
