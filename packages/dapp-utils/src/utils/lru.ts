@@ -13,7 +13,7 @@ export class LruMap<value = unknown> extends Map<string, value> {
 
   override set(key: string, value: value) {
     super.set(key, value);
-    if (this.maxSize && this.size > this.maxSize) this.delete(this.keys().next().value);
+    if (this.maxSize && this.size > this.maxSize) this.delete(this.keys().next().value!);
     return this;
   }
 }
