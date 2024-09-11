@@ -1,7 +1,7 @@
 import { InvalidAddressError } from '../error/address';
 import { isHexAddress } from './isHexAddress';
 
-interface Options<T> {
+export interface IsAddressEqualOptions<T> {
   /** default is isHexAddress(address, { strict: false }) */
   isAddress?: (address: T) => boolean;
 }
@@ -25,7 +25,7 @@ const _isHexAddress = (address: string) => isHexAddress(address, { strict: false
  *  }) // true
  * ```
  */
-export function isAddressEqual<T extends string>(a: T, b: T, options?: Options<T>) {
+export function isAddressEqual<T extends string>(a: T, b: T, options?: IsAddressEqualOptions<T>) {
   const { isAddress = _isHexAddress } = options ?? {};
   if (!isAddress(a)) throw new InvalidAddressError(`Address "${a}" is invalid.`);
   if (!isAddress(b)) throw new InvalidAddressError(`Address "${b}" is invalid.`);
