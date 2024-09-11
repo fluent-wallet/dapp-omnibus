@@ -1,5 +1,11 @@
 # @cfx-kit/dapp-utils
 
+## 0.2.2
+
+### Patch Changes
+
+- f10bcb6: add isAddressEqual util
+
 ## 0.2.1
 
 ### Patch Changes
