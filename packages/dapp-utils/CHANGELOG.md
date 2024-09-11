@@ -1,5 +1,11 @@
 # @cfx-kit/dapp-utils
 
+## 0.2.4
+
+### Patch Changes
+
+- export type
+
 ## 0.2.3
 
 ### Patch Changes
