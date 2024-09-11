@@ -1,7 +1,7 @@
 import { InvalidAddressError } from '../error/address';
 import { isHexAddress } from './isHexAddress';
 
-interface Options<T> {
+export interface Options<T> {
   /** default is isHexAddress(address, { strict: false }) */
   isAddress?: (address: T) => boolean;
 }
