@@ -1,6 +1,6 @@
 {
   "name": "@cfx-kit/react-utils",
-  "version": "0.0.38",
+  "version": "0.0.39",
   "type": "module",
   "keywords": [
     "react",
@@ -24,7 +24,7 @@
   "dependencies": {
     "@cfx-kit/dapp-utils": "workspace:*",
     "@cfx-kit/utils": "workspace:*",
-    "@cfxjs/use-wallet-react": "0.0.2-5",
+    "@cfxjs/use-wallet-react": "^0.0.2-6",
     "@walletconnect/sign-client": "^2.9.0",
     "@walletconnect/modal": "^2.6.2",
     "decimal.js": "^10.4.3",
