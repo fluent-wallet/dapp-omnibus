@@ -1,5 +1,11 @@
 # @cfx-kit/react-utils
 
+## 0.0.39
+
+### Patch Changes
+
+- update @cfxjs/use-wallet-react version
+
 ## 0.0.38
 
 ### Patch Changes
