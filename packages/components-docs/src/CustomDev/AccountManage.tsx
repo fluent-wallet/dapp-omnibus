@@ -1,8 +1,9 @@
 import type { FC } from 'react';
-import { registerWallet, useCurrentWalletName, connect, useAccount, useChainId, useBalance, sendTransaction, typedSign, personalSign } from '@cfx-kit/react-utils/src/AccountManage';
+import { registerWallet, useCurrentWalletName, connect, useAccount, useChainId, useBalance, sendTransaction, typedSign, personalSign, useRegisteredWallets } from '@cfx-kit/react-utils/src/AccountManage';
 import {
   MetaMaskProvider,
   FluentEthereumProvider,
+  CoinbaseProvider,
   createWalletConnectProvider,
 } from '@cfx-kit/react-utils/src/AccountManagePlugins';
 import { Unit } from '@cfxjs/use-wallet-react/ethereum';
@@ -17,6 +18,7 @@ const WalletConnectProvider = createWalletConnectProvider({
     icons: ["https://walletconnect.com/walletconnect-logo.png"],
   },
 });
+registerWallet(CoinbaseProvider);
 registerWallet(MetaMaskProvider);
 registerWallet(FluentEthereumProvider);
 registerWallet(WalletConnectProvider);
@@ -31,14 +33,18 @@ const App: FC = () => {
   const chainId = useChainId();
   const balance = useBalance();
   const currentWalletName = useCurrentWalletName();
+  const wallets = useRegisteredWallets();
+  console.log('wallets', wallets.map((wallet) => wallet.status));
 
   return (
     <>
       {/* for balance auto refresh test */}
       <BalanceTest />
-      <button onClick={() => connect(MetaMaskProvider.walletName)}>Connect MetaMask</button>
-      <button onClick={() => connect(FluentEthereumProvider.walletName)}>Connect Fluent</button>
-      <button onClick={() => connect(WalletConnectProvider.walletName)}>Connect WalletConnect</button>
+      <>
+        {wallets.map((wallet) => (
+          <button key={wallet.walletName} onClick={() => connect(wallet.walletName)}>Connect {wallet.walletName} ({wallet.status})</button>
+        ))}
+      </>
 
       <div>
         <div>Current Wallet: {currentWalletName}</div>

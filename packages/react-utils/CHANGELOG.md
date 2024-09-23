@@ -1,5 +1,11 @@
 # @cfx-kit/react-utils
 
+## 0.0.40
+
+### Patch Changes
+
+- (AccountManage): add useRegisteredWallets method
+
 ## 0.0.39
 
 ### Patch Changes
