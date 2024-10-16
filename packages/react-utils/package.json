@@ -1,6 +1,6 @@
 {
   "name": "@cfx-kit/react-utils",
-  "version": "0.0.40",
+  "version": "0.0.41",
   "type": "module",
   "keywords": [
     "react",
@@ -25,8 +25,8 @@
     "@cfx-kit/dapp-utils": "workspace:*",
     "@cfx-kit/utils": "workspace:*",
     "@cfxjs/use-wallet-react": "^0.0.2-6",
-    "@walletconnect/sign-client": "^2.9.0",
-    "@walletconnect/modal": "^2.6.2",
+    "@walletconnect/sign-client": "^2.17.1",
+    "@walletconnect/modal": "^2.7.0",
     "decimal.js": "^10.4.3",
     "localstorage-enhance": "^1.0.8",
     "lodash-es": "^4.17.21",
@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@types/react": "latest",
-    "@walletconnect/types": "^2.9.0",
+    "@walletconnect/types": "^2.17.1",
     "tsconfig": "workspace:*"
   },
   "peerDependencies": {
