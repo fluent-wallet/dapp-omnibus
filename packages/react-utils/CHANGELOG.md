@@ -1,5 +1,11 @@
 # @cfx-kit/react-utils
 
+## 0.0.41
+
+### Patch Changes
+
+- Update wallet-connect version
+
 ## 0.0.40
 
 ### Patch Changes
