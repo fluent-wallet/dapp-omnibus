@@ -24,7 +24,7 @@
   "dependencies": {
     "@cfx-kit/dapp-utils": "workspace:*",
     "@cfx-kit/utils": "workspace:*",
-    "@cfxjs/use-wallet-react": "^0.0.2-7",
+    "@cfxjs/use-wallet-react": "^0.0.3",
     "@walletconnect/sign-client": "^2.17.1",
     "@walletconnect/modal": "^2.7.0",
     "decimal.js": "^10.4.3",
