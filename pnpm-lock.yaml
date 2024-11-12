@@ -84,8 +84,8 @@ importers:
         specifier: workspace:*
         version: link:../utils
       '@cfxjs/use-wallet-react':
-        specifier: ^0.0.2-7
-        version: 0.0.2-7(decimal.js@10.4.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(zustand@4.3.9(immer@9.0.21)(react@18.2.0))
+        specifier: ^0.0.3
+        version: 0.0.3(decimal.js@10.4.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(zustand@4.3.9(immer@9.0.21)(react@18.2.0))
       '@walletconnect/modal':
         specifier: ^2.6.2
         version: 2.6.2(@types/react@18.2.14)(react@18.2.0)
@@ -234,8 +234,8 @@ importers:
         specifier: workspace:*
         version: link:../utils
       '@cfxjs/use-wallet-react':
-        specifier: ^0.0.2-7
-        version: 0.0.2-7(decimal.js@10.4.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(zustand@4.3.9(immer@9.0.21)(react@18.2.0))
+        specifier: ^0.0.3
+        version: 0.0.3(decimal.js@10.4.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(zustand@4.3.9(immer@9.0.21)(react@18.2.0))
       '@walletconnect/modal':
         specifier: ^2.7.0
         version: 2.7.0(@types/react@18.3.12)(react@18.2.0)
@@ -1290,8 +1290,8 @@ packages:
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
 
-  '@cfxjs/use-wallet-react@0.0.2-7':
-    resolution: {integrity: sha512-+JNfHxVBewRucOsKFQdijhUvSE64SrHmZ0FIucjMe5Fhj2zk9BslyJRbouLtRO/Podbj2ac1VN/TlgHjdn47oA==}
+  '@cfxjs/use-wallet-react@0.0.3':
+    resolution: {integrity: sha512-Yookio9AYjFeuCrq7p6bJb2LJ8VjpXSP2ct2w03kKcD7NSJtpwHs6su5j6OBxbv6HuCNl1dxFeFPBMkWkBMj5Q==}
     peerDependencies:
       decimal.js: ^10.3.1
       react: '>=16.8'
@@ -11020,7 +11020,7 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@cfxjs/use-wallet-react@0.0.2-7(decimal.js@10.4.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(zustand@4.3.9(immer@9.0.21)(react@18.2.0))':
+  '@cfxjs/use-wallet-react@0.0.3(decimal.js@10.4.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(zustand@4.3.9(immer@9.0.21)(react@18.2.0))':
     dependencies:
       decimal.js: 10.4.3
       react: 18.2.0
