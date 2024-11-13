@@ -61,14 +61,18 @@ const createWalletConnectProvider = ({
         });
       }
       if (session) {
-        await signClient.disconnect({
-          topic: session?.topic,
-          reason: {
-            code: 12,
-            message: 'disconnect',
-          },
-        });
-        session = undefined;
+        try {
+          await signClient.disconnect({
+            topic: session.topic,
+            reason: {
+              code: 6000,
+              message: 'User disconnected'
+            },
+          });
+        } catch (error) {
+        } finally {
+          session = undefined;
+        }
       }
     }
   };
