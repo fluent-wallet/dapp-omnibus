@@ -1,5 +1,11 @@
 # @cfx-kit/react-utils
 
+## 0.0.44
+
+### Patch Changes
+
+- fix(wallet-connect): should set session to undefined while user disconnect in wallet
+
 ## 0.0.43
 
 ### Patch Changes
