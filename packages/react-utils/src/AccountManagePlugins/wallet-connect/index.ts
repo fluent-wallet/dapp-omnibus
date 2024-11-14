@@ -70,6 +70,7 @@ const createWalletConnectProvider = ({
             },
           });
         } catch (error) {
+          console.error(error);
         } finally {
           session = undefined;
         }
