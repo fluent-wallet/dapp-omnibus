@@ -1,5 +1,11 @@
 # @cfx-kit/react-utils
 
+## 0.0.46
+
+### Patch Changes
+
+- AccountManage allow disconnect provider
+
 ## 0.0.45
 
 ### Patch Changes
