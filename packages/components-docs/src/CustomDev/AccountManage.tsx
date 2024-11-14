@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { registerWallet, useCurrentWalletName, connect, useAccount, useChainId, useBalance, sendTransaction, typedSign, personalSign, useRegisteredWallets } from '@cfx-kit/react-utils/src/AccountManage';
+import { registerWallet, useCurrentWalletName, connect, useAccount, useChainId, useBalance, sendTransaction, typedSign, personalSign, useRegisteredWallets, disconnect } from '@cfx-kit/react-utils/src/AccountManage';
 import {
   MetaMaskProvider,
   FluentEthereumProvider,
@@ -9,7 +9,7 @@ import {
 import { Unit } from '@cfxjs/use-wallet-react/ethereum';
 
 const WalletConnectProvider = createWalletConnectProvider({
-  projectId: 'ecd29726bdb28aef6ceded6a6c4319f6', targetChainId: 'cip155:1',
+  projectId: 'ecd29726bdb28aef6ceded6a6c4319f6', targetChainId: 'eip155:1030',
   metadata: {
     name: "Goledo",
     description:
@@ -50,6 +50,7 @@ const App: FC = () => {
         <div>Current Wallet: {currentWalletName}</div>
         <div>Account: {account}</div>
         <div>ChainId: {chainId}</div>
+        {currentWalletName && <button onClick={() => disconnect()}>Disconnect</button>}
         <button
           onClick={() =>
             sendTransaction({
