@@ -246,6 +246,7 @@ const createWalletConnectProvider = ({
       return connectedAccounts?.map((account) => account.chainId);
     },
     getConnecteds: () => connectedAccounts,
+    disconnect: () => handleSessionUpdate(undefined),
   } as WalletProvider;
 };
 

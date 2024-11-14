@@ -311,11 +311,13 @@ export const connect = async (walletName: string) => {
   }
 };
 
-export const disconnect = async () => {
+export const disconnect = async (disconnectProvider?: boolean) => {
   checkAccountConnected();
   const walletState = checkWalletState({ checkFunctionName: 'connect' });
   try {
-    await walletState.provider.disconnect?.();
+    if (disconnectProvider) {
+      await walletState.provider.disconnect?.();
+    }
     store.setState({ currentWalletName: null });
   } catch (err) {
     console.error('Disconnect error: ', err);
