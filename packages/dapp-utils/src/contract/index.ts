@@ -16,8 +16,8 @@ type OutputTypes<T extends Abi, N extends FunctionNames<T>> = AbiParametersToPri
 
 export const Provider = new JsonRpcProvider('https://evmtestnet.confluxrpc.com');
 
-export const createContract = <T extends Abi>({ address, ABI }: { address: string; ABI: T }) => {
-  const contract = new Contract(address, ABI as InterfaceAbi, Provider);
+export const createContract = <T extends Abi>({ address, ABI, rpcUrl }: { address: string; ABI: T; rpcUrl?: string }) => {
+  const contract = new Contract(address, ABI as InterfaceAbi, rpcUrl ? new JsonRpcProvider(rpcUrl) : Provider);
   return {
     contract,
     encodeFunctionData: contract.interface.encodeFunctionData.bind(contract.interface) as unknown as <F extends FunctionNames<T>>(

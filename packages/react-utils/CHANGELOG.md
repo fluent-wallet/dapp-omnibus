@@ -1,5 +1,12 @@
 # @cfx-kit/react-utils
 
+## 0.0.47
+
+### Patch Changes
+
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.2.5
+
 ## 0.0.46
 
 ### Patch Changes

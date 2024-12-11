@@ -1,5 +1,11 @@
 # @cfx-kit/dapp-utils
 
+## 0.2.5
+
+### Patch Changes
+
+- createContract add rpcUrl param
+
 ## 0.2.4
 
 ### Patch Changes
