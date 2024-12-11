@@ -22,7 +22,7 @@
     "url": "https://github.com/Conflux-Chain/dapp-omnibus/issues"
   },
   "devDependencies": {
-    "@types/react": "latest",
+    "@types/react": "^18.0.37",
     "tsconfig": "workspace:*"
   },
   "peerDependencies": {
