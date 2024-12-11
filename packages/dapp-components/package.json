@@ -25,7 +25,7 @@
     "@cfx-kit/dapp-utils": "workspace:*"
   },
   "devDependencies": {
-    "@types/react": "latest",
+    "@types/react": "^18.0.37",
     "tsconfig": "workspace:*"
   },
   "peerDependencies": {
