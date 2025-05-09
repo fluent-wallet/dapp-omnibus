@@ -1,4 +1,5 @@
 import type { Unit, useStatus } from '@cfxjs/use-wallet-react/ethereum';
+import type { EIP6963ProviderInfo } from '@cfxjs/use-wallet-react/ethereum/type';
 
 export interface AddChainParameter {
   chainId: string; // A 0x-prefixed hexadecimal string
@@ -76,6 +77,7 @@ export type Status = ReturnType<typeof useStatus>;
 
 export interface WalletProvider {
   walletName: string;
+  walletIcon?: string;
   subAccountChange: (callback: (account: string | undefined) => void) => void;
   subChainIdChange: (callback: (chainId: string | undefined) => void) => void;
   subBalanceChange?: (callback: (balance: Unit | undefined) => void) => void;
@@ -94,4 +96,5 @@ export interface WalletProvider {
   disconnect?: () => Promise<void> | void;
   startTrackBalance?: (interval?: number) => void;
   stopTrackBalance?: () => void;
+  eip6963Info?: EIP6963ProviderInfo;
 }

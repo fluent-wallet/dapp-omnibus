@@ -1,5 +1,11 @@
 # @cfx-kit/react-utils
 
+## 0.0.48
+
+### Patch Changes
+
+- AccountManage support register 6963 wallet
+
 ## 0.0.47
 
 ### Patch Changes
