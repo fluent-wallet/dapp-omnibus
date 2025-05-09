@@ -7,3 +7,4 @@ export { default as MetaMaskProvider } from "./use-wallet/MetaMask";
 export { default as OKXProvider } from "./use-wallet/OKX";
 export { default as TokenPocketProvider } from "./use-wallet/TokenPocket";
 export { default as createWalletConnectProvider } from "./wallet-connect";
+export { default as register6963Wallet } from "./6963Wallet";

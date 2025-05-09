@@ -44,16 +44,73 @@ export const getRegisteredWallets = () =>
   Array.from(walletsStateMap.values()).map((wallet) => ({
     ...wallet,
     walletName: wallet.provider.walletName,
+    walletIcon: wallet.provider.walletIcon,
     status: wallet.walletStore.getState().status,
   }));
 export const getRegisteredWalletsName = () => getRegisteredWallets().map((wallet) => wallet.provider.walletName);
 
-export const useRegisteredWallets = () => {
-  const [wallets, setWallets] = useState(getRegisteredWallets);
+export type WalletItem = ReturnType<typeof getRegisteredWallets>[number];
+export type WalletSorter = (a: WalletItem, b: WalletItem) => number;
+export const createPrioritySorter = (priorityList: string[] = []): WalletSorter => {
+  return (a, b) => {
+    const aRdns = a.provider?.eip6963Info?.rdns;
+    const bRdns = b.provider?.eip6963Info?.rdns;
+    const aName = a.walletName;
+    const bName = b.walletName;
+
+    const aIdx = priorityList.findIndex(
+      (item) => item === aRdns || item === aName
+    );
+    const bIdx = priorityList.findIndex(
+      (item) => item === bRdns || item === bName
+    );
+
+    if (aIdx !== -1 && bIdx !== -1) return aIdx - bIdx;
+    if (aIdx !== -1) return -1;
+    if (bIdx !== -1) return 1;
+    return aName.localeCompare(bName);
+  };
+};
+
+const dedupAndSort = (wallets: WalletItem[], sorter: WalletSorter): WalletItem[] => {
+  const seenRdns = new Set<string>();
+  const seenWalletName = new Set<string>();
+  const withRdns = wallets.filter(wallet => {
+    const rdns = wallet.provider?.eip6963Info?.rdns;
+    if (!rdns) return false;
+    if (seenRdns.has(rdns)) return false;
+    seenRdns.add(rdns);
+    seenWalletName.add(wallet.walletName);
+    return true;
+  });
+
+  const withoutRdns = wallets.filter(wallet => {
+    const rdns = wallet.provider?.eip6963Info?.rdns;
+    if (rdns) return false;
+    if (seenWalletName.has(wallet.walletName)) return false;
+    seenWalletName.add(wallet.walletName);
+    return true;
+  });
+  return [...withRdns, ...withoutRdns].sort(sorter);
+}
+
+const defaultSorter = createPrioritySorter(['Fluent']);
+export const useRegisteredWallets = (sorter: WalletSorter = defaultSorter) => {
+  const [wallets, setWallets] = useState(() => {
+    const raw = getRegisteredWallets();
+    return dedupAndSort(raw, sorter);
+  });
 
   useEffect(() => {
-    const updateWallets = (newWallets: Array<MappedWallet>) =>
-      setWallets(newWallets.map((wallet) => ({ ...wallet, walletName: wallet.provider.walletName, status: wallet.walletStore.getState().status })));
+    const updateWallets = (newWallets: Array<MappedWallet>) => {
+      const mapped = newWallets.map((wallet) => ({
+        ...wallet,
+        walletName: wallet.provider.walletName,
+        walletIcon: wallet.provider.walletIcon,
+        status: wallet.walletStore.getState().status,
+      }));
+      setWallets(dedupAndSort(mapped, sorter));
+    };
 
     listeners.push(updateWallets);
 
@@ -71,7 +128,12 @@ export const useRegisteredWallets = () => {
         (state) => state.status,
         (newStatus) => {
           setWallets((prevWallets) =>
-            prevWallets.map((prevWallet, indexIner) => (indexOuter === indexIner ? { ...prevWallet, status: newStatus } : prevWallet)),
+            dedupAndSort(
+              prevWallets.map((prevWallet, indexIner) =>
+                indexOuter === indexIner ? { ...prevWallet, status: newStatus } : prevWallet
+              ),
+              sorter
+            )
           );
         },
       ),
@@ -165,6 +227,7 @@ export const registerWallet = (walletProvider: WalletProvider, { persistFirst }:
   }
 };
 
+
 interface State {
   currentWalletName: string | null;
   account: string | undefined;
@@ -172,6 +235,7 @@ interface State {
   status: Status | undefined;
   balance?: Unit | undefined;
 }
+
 export const store = create(
   subscribeWithSelector(
     persist<State>(

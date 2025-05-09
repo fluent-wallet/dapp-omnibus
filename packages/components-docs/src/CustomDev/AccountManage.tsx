@@ -1,10 +1,11 @@
 import type { FC } from 'react';
-import { registerWallet, useCurrentWalletName, connect, useAccount, useChainId, useBalance, sendTransaction, typedSign, personalSign, useRegisteredWallets, disconnect } from '@cfx-kit/react-utils/src/AccountManage';
+import { registerWallet, useCurrentWalletName, connect, useAccount, useChainId, useBalance, sendTransaction, typedSign, personalSign, useRegisteredWallets, disconnect, createPrioritySorter } from '@cfx-kit/react-utils/src/AccountManage';
 import {
   MetaMaskProvider,
   FluentEthereumProvider,
   CoinbaseProvider,
   createWalletConnectProvider,
+  register6963Wallet,
 } from '@cfx-kit/react-utils/src/AccountManagePlugins';
 import { Unit } from '@cfxjs/use-wallet-react/ethereum';
 
@@ -18,10 +19,14 @@ const WalletConnectProvider = createWalletConnectProvider({
     icons: ["https://walletconnect.com/walletconnect-logo.png"],
   },
 });
+
+register6963Wallet();
 registerWallet(CoinbaseProvider);
 registerWallet(MetaMaskProvider);
-registerWallet(FluentEthereumProvider);
+// registerWallet(FluentEthereumProvider);
 registerWallet(WalletConnectProvider);
+
+const prioritySorter = createPrioritySorter(['Fluent', 'WalletConnect', 'Rabby Wallet']);
 
 const BalanceTest: FC = () => {
   useBalance();
@@ -33,8 +38,8 @@ const App: FC = () => {
   const chainId = useChainId();
   const balance = useBalance();
   const currentWalletName = useCurrentWalletName();
-  const wallets = useRegisteredWallets();
-  console.log('wallets', wallets.map((wallet) => wallet.status));
+  const wallets = useRegisteredWallets(prioritySorter);
+  console.log('wallets', wallets);
 
   return (
     <>
@@ -42,7 +47,11 @@ const App: FC = () => {
       <BalanceTest />
       <>
         {wallets.map((wallet) => (
-          <button key={wallet.walletName} onClick={() => connect(wallet.walletName)}>Connect {wallet.walletName} ({wallet.status})</button>
+          <button key={wallet.walletName} onClick={() => connect(wallet.walletName)}>
+            Connect {wallet.walletName} 
+            <img src={wallet.walletIcon} alt={wallet.walletName} />
+            ({wallet.status})
+          </button>
         ))}
       </>
 
