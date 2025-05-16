@@ -1,5 +1,11 @@
 # @cfx-kit/react-utils
 
+## 0.0.49
+
+### Patch Changes
+
+- AccountManage add state:accounts
+
 ## 0.0.48
 
 ### Patch Changes

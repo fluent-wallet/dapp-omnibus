@@ -17,6 +17,7 @@ export * from './types';
 
 interface WalletState {
   account: string | undefined;
+  accounts: Array<string> | undefined;
   chainId: string | undefined;
   status: Status | undefined;
   balance?: Unit;
@@ -152,6 +153,7 @@ export const registerWallet = (walletProvider: WalletProvider, { persistFirst }:
     walletStore = create(
       subscribeWithSelector<WalletState>(() => ({
         account: undefined,
+        accounts: undefined,
         chainId: undefined,
         status: undefined,
         balance: undefined,
@@ -163,6 +165,7 @@ export const registerWallet = (walletProvider: WalletProvider, { persistFirst }:
         persist<WalletState>(
           () => ({
             account: undefined,
+            accounts: undefined,
             chainId: undefined,
             status: undefined,
             balance: undefined,
@@ -178,8 +181,9 @@ export const registerWallet = (walletProvider: WalletProvider, { persistFirst }:
   }
 
   walletProvider.subAccountChange((account) => {
-    walletStore.setState({ account });
+    walletStore.setState({ account, accounts: account ? [account] : undefined });
   });
+
   walletProvider.subChainIdChange((chainId) => {
     walletStore.setState({ chainId });
   });
@@ -200,7 +204,7 @@ export const registerWallet = (walletProvider: WalletProvider, { persistFirst }:
       const persistedBalance = walletStore.getState().balance;
       const persistedStatus = walletStore.getState().status;
       if (persistedAccount !== currentWalletAccount) {
-        walletStore.setState({ account: currentWalletAccount });
+        walletStore.setState({ account: currentWalletAccount, accounts: currentWalletAccount ? [currentWalletAccount] : undefined });
       }
       if (persistedChainId !== currentWalletChainId) {
         walletStore.setState({ chainId: currentWalletChainId });
@@ -213,8 +217,10 @@ export const registerWallet = (walletProvider: WalletProvider, { persistFirst }:
       }
     }, 150);
   } else {
+    const account = walletProvider.getAccount?.();
     walletStore.setState({
-      account: walletProvider.getAccount?.(),
+      account,
+      accounts: account ? [account] : undefined,
       chainId: walletProvider.getChainId?.(),
       balance: walletProvider.getBalance?.(),
       status: walletProvider.getStatus?.(),
@@ -231,6 +237,7 @@ export const registerWallet = (walletProvider: WalletProvider, { persistFirst }:
 interface State {
   currentWalletName: string | null;
   account: string | undefined;
+  accounts: Array<string> | undefined;
   chainId: string | undefined;
   status: Status | undefined;
   balance?: Unit | undefined;
@@ -242,6 +249,7 @@ export const store = create(
       () => ({
         currentWalletName: null,
         account: undefined,
+        accounts: undefined,
         chainId: undefined,
         status: undefined,
         balance: undefined,
@@ -279,6 +287,7 @@ const subWallet = (currentWalletName: string | null) => {
   if (!currentWalletName) {
     store.setState({
       account: undefined,
+      accounts: undefined,
       chainId: undefined,
       balance: undefined,
       status: undefined,
@@ -288,6 +297,7 @@ const subWallet = (currentWalletName: string | null) => {
     if (!walletState) {
       store.setState({
         account: undefined,
+        accounts: undefined,
         chainId: undefined,
         balance: undefined,
         status: undefined,
@@ -295,7 +305,7 @@ const subWallet = (currentWalletName: string | null) => {
     } else {
       unsubAccount = walletState.walletStore.subscribe(
         (state) => state.account,
-        (account) => store.setState({ account }),
+        (account) => store.setState({ account, accounts: account ? [account] : undefined }),
         { fireImmediately: true },
       );
       unsubChainId = walletState.walletStore.subscribe(
@@ -322,6 +332,7 @@ store.subscribe((state) => state.currentWalletName, subWallet, {
 
 export const selectors = {
   currentWalletName: (state: State) => state.currentWalletName,
+  accounts: (state: State) => state.accounts,
   account: (state: State) => state.account,
   chainId: (state: State) => state.chainId,
   balance: (state: State) => state.balance,
