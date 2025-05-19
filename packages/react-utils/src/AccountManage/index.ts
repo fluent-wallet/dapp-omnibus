@@ -236,6 +236,7 @@ export const registerWallet = (walletProvider: WalletProvider, { persistFirst }:
 
 interface State {
   currentWalletName: string | null;
+  currentWalletIcon: string | null;
   account: string | undefined;
   accounts: Array<string> | undefined;
   chainId: string | undefined;
@@ -248,6 +249,7 @@ export const store = create(
     persist<State>(
       () => ({
         currentWalletName: null,
+        currentWalletIcon: null,
         account: undefined,
         accounts: undefined,
         chainId: undefined,
@@ -332,6 +334,7 @@ store.subscribe((state) => state.currentWalletName, subWallet, {
 
 export const selectors = {
   currentWalletName: (state: State) => state.currentWalletName,
+  currentWalletIcon: (state: State) => state.currentWalletIcon,
   accounts: (state: State) => state.accounts,
   account: (state: State) => state.account,
   chainId: (state: State) => state.chainId,
@@ -351,6 +354,19 @@ export const useCurrentWalletName = () => {
   return account ? currentWalletName : null;
 };
 export const getCurrentWalletName = () => store.getState().currentWalletName;
+export const useCurrentWalletIcon = () => {
+  const currentWalletName = useCurrentWalletName();
+  const currentWalletIcon = store(selectors.currentWalletIcon);
+  return currentWalletName ? currentWalletIcon : null;
+};
+export const getCurrentWalletIcon = () => store.getState().currentWalletIcon;
+export const useCurrentWallet = () => {
+  const account = useAccount();
+  const currentWalletName = store(selectors.currentWalletName);
+  const walletName = account ? currentWalletName : null;
+  const walletIcon = walletName ? store(selectors.currentWalletIcon) : null;
+  return walletName ? { name: walletName, icon: walletIcon } : null;
+};
 
 let referenceCount = 0;
 export const useBalance = () => {
@@ -379,7 +395,7 @@ export const connect = async (walletName: string) => {
   });
   try {
     await walletState.provider.connect();
-    store.setState({ currentWalletName: walletName });
+    store.setState({ currentWalletName: walletName, currentWalletIcon: walletState.provider.walletIcon });
   } catch (err) {
     console.error(`Connect to ${walletName} error: `, err);
     throw err;
@@ -393,7 +409,7 @@ export const disconnect = async (disconnectProvider?: boolean) => {
     if (disconnectProvider) {
       await walletState.provider.disconnect?.();
     }
-    store.setState({ currentWalletName: null });
+    store.setState({ currentWalletName: null, currentWalletIcon: null });
   } catch (err) {
     console.error('Disconnect error: ', err);
     throw err;

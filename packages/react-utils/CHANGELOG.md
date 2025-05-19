@@ -1,5 +1,11 @@
 # @cfx-kit/react-utils
 
+## 0.0.50
+
+### Patch Changes
+
+- feat: AccountManage support useWalletIcon
+
 ## 0.0.49
 
 ### Patch Changes
