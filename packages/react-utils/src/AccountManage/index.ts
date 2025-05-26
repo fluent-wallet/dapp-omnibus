@@ -136,9 +136,9 @@ export const useRegisteredWallets = (sorter: WalletSorter = defaultSorter) => {
               sorter
             )
           );
-        },
+        }
       ),
-    );
+     );
 
     return () => {
       unsubs.forEach((unsub) => unsub());
@@ -212,7 +212,7 @@ export const registerWallet = (walletProvider: WalletProvider, { persistFirst }:
       if (persistedBalance !== currentBalance) {
         walletStore.setState({ balance: currentBalance });
       }
-      if (persistedStatus !== currentBalance) {
+      if (persistedStatus !== currentStatus) {
         walletStore.setState({ status: currentStatus });
       }
     }, 150);
@@ -363,8 +363,9 @@ export const getCurrentWalletIcon = () => store.getState().currentWalletIcon;
 export const useCurrentWallet = () => {
   const account = useAccount();
   const currentWalletName = store(selectors.currentWalletName);
+  const currentWalletIcon = store(selectors.currentWalletIcon);
   const walletName = account ? currentWalletName : null;
-  const walletIcon = walletName ? store(selectors.currentWalletIcon) : null;
+  const walletIcon = walletName ? currentWalletIcon : null;
   return walletName ? { name: walletName, icon: walletIcon } : null;
 };
 

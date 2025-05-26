@@ -2,7 +2,7 @@
 import SignClient from '@walletconnect/sign-client';
 import { WalletConnectModal } from '@walletconnect/modal';
 import type { SessionTypes } from '@walletconnect/types';
-import type { TransactionParameters, TypedSignParams, WalletProvider, WatchAssetParams } from '../../AccountManage/types';
+import type { TransactionParameters, TypedSignParams, WalletProvider, WatchAssetParams, Status } from '../../AccountManage/types';
 import { ChainPrefix, convertCipDataToEip, convertCipMethodToEip, convertEipDataToCip, formatChainId, parseNamespaceData } from '../../WalletConnectorHelper';
 
 const createWalletConnectProvider = ({
@@ -25,6 +25,7 @@ const createWalletConnectProvider = ({
   let session: ReturnType<SignClient['session']['getAll']>[number] | undefined;
   let accountChangeCallback: ((account: string | undefined) => void) | undefined = undefined;
   let chainIdChangeCallback: ((chainId: string | undefined) => void) | undefined = undefined;
+  let statusChangeCallback: ((status: Status | undefined) => void) | undefined = undefined;
   let connectedAccounts: Array<{
     chainPrefix: string;
     chainId: string;
@@ -47,12 +48,14 @@ const createWalletConnectProvider = ({
 
     if (address) {
       accountChangeCallback?.(address);
+      statusChangeCallback?.('active');
       if (chainId) {
         chainIdChangeCallback?.(chainId);
       }
     } else {
       accountChangeCallback?.(undefined);
       chainIdChangeCallback?.(undefined);
+      statusChangeCallback?.('not-active');
 
       const lastTopic = signClient.core.pairing.getPairings()?.at(-1);
       if (lastTopic) {
@@ -133,9 +136,15 @@ const createWalletConnectProvider = ({
     subChainIdChange: (callback: (chainId: string | undefined) => void) => {
       chainIdChangeCallback = callback;
     },
+    subStatusChange: (callback: (status: Status | undefined) => void) => {
+      statusChangeCallback = callback;
+      callback('not-active');
+    },
     connect: async () => {
+      let unsub: VoidFunction | null = () => {};
       try {
         if (session) return;
+        statusChangeCallback?.('in-activating');
         const { uri, approval } = await signClient.connect({
           // Optionally: pass a known prior pairing (e.g. from `signClient.core.pairing.getPairings()`) to skip the `uri` step.
           pairingTopic: signClient.core.pairing.getPairings()?.at(-1)?.topic,
@@ -154,6 +163,13 @@ const createWalletConnectProvider = ({
             uri,
             standaloneChains: [`eip155:${targetChainId}`],
           });
+
+          unsub = web3Modal.subscribeModal((evt) => {
+            if (!evt.open) {
+              statusChangeCallback?.('not-active');
+              unsub?.();
+            }
+          });
         }
 
         // 等待钱包的会话批准。
@@ -171,6 +187,7 @@ const createWalletConnectProvider = ({
       } finally {
         // 关闭QRCode模式，以防它是打开的。
         web3Modal.closeModal();
+        unsub?.();
       }
     },
     sendTransaction: async (params: TransactionParameters, targetNamespaceData?: string): Promise<string> => {
@@ -220,7 +237,6 @@ const createWalletConnectProvider = ({
         targetNamespaceData,
         method: 'personal_sign',
       });
-      console.log(method);
       return signClient.request({
         topic: session!.topic,
         chainId,
@@ -245,6 +261,10 @@ const createWalletConnectProvider = ({
     getChainIds: () => {
       if (!session) return undefined;
       return connectedAccounts?.map((account) => account.chainId);
+    },
+    getStatus: () => {
+      if (!session) return 'not-active';
+      return connectedAccounts?.[0]?.address ? 'active' : 'not-active';
     },
     getConnecteds: () => connectedAccounts,
     disconnect: () => handleSessionUpdate(undefined),
