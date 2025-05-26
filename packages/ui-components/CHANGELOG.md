@@ -1,5 +1,11 @@
 # @cfx-kit/ui-components
 
+## 0.0.18
+
+### Patch Changes
+
+- tooltip support portalled
+
 ## 0.0.17
 
 ### Patch Changes

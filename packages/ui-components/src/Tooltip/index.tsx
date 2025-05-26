@@ -1,6 +1,6 @@
-import { useEffect, useId, isValidElement, cloneElement, Children, type HTMLAttributes, type ReactNode } from 'react';
+import { useEffect, useId, isValidElement, cloneElement, Children, Fragment, type HTMLAttributes, type ReactNode } from 'react';
 import { machine, connect, type PositioningOptions } from '@zag-js/tooltip';
-import { useMachine, normalizeProps } from '@zag-js/react';
+import { useMachine, normalizeProps, Portal } from '@zag-js/react';
 import './index.css';
 
 interface Props {
@@ -13,6 +13,7 @@ interface Props {
   arrow?: boolean;
   interactive?: boolean;
   positioning?: PositioningOptions;
+  portalled?: boolean;
   onOpen?: VoidFunction;
   onClose?: VoidFunction;
   containerClassName?: string;
@@ -30,8 +31,10 @@ const Tooltip: React.FC<Props> = ({
   children,
   containerClassName,
   trigger,
+  portalled = false,
   ...props
 }) => {
+  const Wrapper = portalled ? Portal : Fragment;
   const uniqueId = useId();
   const [state, send] = useMachine(machine({ id: id ?? uniqueId, openDelay, closeDelay, positioning, ...props }));
   const api = connect(state, send, normalizeProps);
@@ -49,21 +52,23 @@ const Tooltip: React.FC<Props> = ({
     <>
       {typeof trigger === 'function' ? trigger({ triggerProps: api.triggerProps }) : null}
       {api.isOpen && (
-        <div className={`ui-tooltip${containerClassName ? ` ${containerClassName}` : ''}`} {...api.positionerProps}>
-          {arrow && (
-            <div {...api.arrowProps}>
-              <div {...api.arrowTipProps} />
-            </div>
-          )}
-          {typeof children === 'function' && children({ contentProps: api.contentProps })}
-          {typeof children !== 'function' ? (
-            Children.count(children) === 1 && isValidElement(children) ? (
-              cloneElement(children, { ...api.contentProps })
-            ) : (
-              <div {...api.contentProps}>{children}</div>
-            )
-          ) : null}
-        </div>
+        <Wrapper>
+          <div className={`ui-tooltip${containerClassName ? ` ${containerClassName}` : ''}`} {...api.positionerProps}>
+            {arrow && (
+              <div {...api.arrowProps}>
+                <div {...api.arrowTipProps} />
+              </div>
+            )}
+            {typeof children === 'function' && children({ contentProps: api.contentProps })}
+            {typeof children !== 'function' ? (
+              Children.count(children) === 1 && isValidElement(children) ? (
+                cloneElement(children, { ...api.contentProps })
+              ) : (
+                <div {...api.contentProps}>{children}</div>
+              )
+            ) : null}
+          </div>
+        </Wrapper>
       )}
     </>
   );
