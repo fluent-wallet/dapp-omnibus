@@ -45,7 +45,6 @@ const createWalletConnectProvider = ({
     const accounts = getAccountsInfoFromSession(_session);
     const account = accounts?.[0];
     const { address, chainId } = account || {};
-
     if (address) {
       accountChangeCallback?.(address);
       statusChangeCallback?.('active');
@@ -138,7 +137,6 @@ const createWalletConnectProvider = ({
     },
     subStatusChange: (callback: (status: Status | undefined) => void) => {
       statusChangeCallback = callback;
-      callback('not-active');
     },
     connect: async () => {
       let unsub: VoidFunction | null = () => {};
