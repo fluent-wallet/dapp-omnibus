@@ -84,8 +84,8 @@ importers:
         specifier: workspace:*
         version: link:../utils
       '@cfxjs/use-wallet-react':
-        specifier: ^0.0.5
-        version: 0.0.5(decimal.js@10.5.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(zustand@4.5.6(@types/react@18.0.37)(immer@9.0.21)(react@18.3.1))
+        specifier: ^0.0.6
+        version: 0.0.6(decimal.js@10.5.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(zustand@4.5.6(@types/react@18.0.37)(immer@9.0.21)(react@18.3.1))
       '@walletconnect/modal':
         specifier: ^2.6.2
         version: 2.7.0(@types/react@18.0.37)(react@18.3.1)
@@ -234,8 +234,8 @@ importers:
         specifier: workspace:*
         version: link:../utils
       '@cfxjs/use-wallet-react':
-        specifier: ^0.0.5
-        version: 0.0.5(decimal.js@10.5.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(zustand@4.5.6(@types/react@18.0.37)(immer@9.0.21)(react@18.3.1))
+        specifier: ^0.0.6
+        version: 0.0.6(decimal.js@10.5.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(zustand@4.5.6(@types/react@18.0.37)(immer@9.0.21)(react@18.3.1))
       '@walletconnect/modal':
         specifier: ^2.7.0
         version: 2.7.0(@types/react@18.0.37)(react@18.3.1)
@@ -1344,8 +1344,8 @@ packages:
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
 
-  '@cfxjs/use-wallet-react@0.0.5':
-    resolution: {integrity: sha512-XUC2lzts+QeXrF43eOgGH+EpXaxKKuih1J9GHefQ57bSWzTgXN8gQZ5bLJ9Nw006Fhtr8JYBflUmvvKYOJ9TaA==}
+  '@cfxjs/use-wallet-react@0.0.6':
+    resolution: {integrity: sha512-CVpWrDT0I+IcReylXOblT1kIynJu93KJ2vSPUTkSXRkJKkeP61SG/XPIVTLsdz3ThXjjEhCcvNfT46NYbII9yw==}
     peerDependencies:
       decimal.js: ^10.3.1
       react: '>=16.8'
@@ -3358,6 +3358,7 @@ packages:
 
   '@walletconnect/modal@2.7.0':
     resolution: {integrity: sha512-RQVt58oJ+rwqnPcIvRFeMGKuXb9qkgSmwz4noF8JZGUym3gUAzVs+uW2NQ1Owm9XOJAV+sANrtJ+VoVq1ftElw==}
+    deprecated: Please follow the migration guide on https://docs.reown.com/appkit/upgrade/wcm
 
   '@walletconnect/relay-api@1.0.11':
     resolution: {integrity: sha512-tLPErkze/HmC9aCmdZOhtVmYZq1wKfWTJtygQHoWtgg722Jd4homo54Cs4ak2RUFUZIGO2RsOpIcWipaua5D5Q==}
@@ -10989,7 +10990,7 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@cfxjs/use-wallet-react@0.0.5(decimal.js@10.5.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(zustand@4.5.6(@types/react@18.0.37)(immer@9.0.21)(react@18.3.1))':
+  '@cfxjs/use-wallet-react@0.0.6(decimal.js@10.5.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(zustand@4.5.6(@types/react@18.0.37)(immer@9.0.21)(react@18.3.1))':
     dependencies:
       decimal.js: 10.5.0
       react: 18.3.1

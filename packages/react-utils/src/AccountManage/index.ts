@@ -215,7 +215,7 @@ export const registerWallet = (walletProvider: WalletProvider, { persistFirst }:
       if (persistedStatus !== currentStatus) {
         walletStore.setState({ status: currentStatus });
       }
-    }, 150);
+    }, walletProvider.walletName === 'WalletConnect' ? 3000 : 150);
   } else {
     const account = walletProvider.getAccount?.();
     walletStore.setState({
@@ -240,7 +240,7 @@ interface State {
   account: string | undefined;
   accounts: Array<string> | undefined;
   chainId: string | undefined;
-  status: Status | undefined;
+  status: Omit<Status, 'in-detecting'>;
   balance?: Unit | undefined;
 }
 
@@ -253,7 +253,7 @@ export const store = create(
         account: undefined,
         accounts: undefined,
         chainId: undefined,
-        status: undefined,
+        status: 'not-active',
         balance: undefined,
       }),
       {
@@ -292,7 +292,7 @@ const subWallet = (currentWalletName: string | null) => {
       accounts: undefined,
       chainId: undefined,
       balance: undefined,
-      status: undefined,
+      status: 'not-active',
     });
   } else {
     const walletState = walletsStateMap.get(currentWalletName);
@@ -302,12 +302,14 @@ const subWallet = (currentWalletName: string | null) => {
         accounts: undefined,
         chainId: undefined,
         balance: undefined,
-        status: undefined,
+        status: 'not-active',
       });
     } else {
       unsubAccount = walletState.walletStore.subscribe(
         (state) => state.account,
-        (account) => store.setState({ account, accounts: account ? [account] : undefined }),
+        (account) => {
+          store.setState({ account, accounts: account ? [account] : undefined });
+        },
         { fireImmediately: true },
       );
       unsubChainId = walletState.walletStore.subscribe(

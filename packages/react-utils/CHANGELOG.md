@@ -1,5 +1,11 @@
 # @cfx-kit/react-utils
 
+## 0.0.53
+
+### Patch Changes
+
+- fix: AccountManage wallet-connect status
+
 ## 0.0.52
 
 ### Patch Changes
