@@ -1,5 +1,11 @@
 # @cfx-kit/react-utils
 
+## 0.0.54
+
+### Patch Changes
+
+- fix: AccountManage register keplar
+
 ## 0.0.53
 
 ### Patch Changes
