@@ -51,5 +51,3 @@ package-lock.json
 *.sln
 *.sw?
 *.local
-
-pnpm-lock.yaml
