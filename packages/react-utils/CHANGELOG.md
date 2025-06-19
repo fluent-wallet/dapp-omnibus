@@ -1,5 +1,11 @@
 # @cfx-kit/react-utils
 
+## 0.0.56
+
+### Patch Changes
+
+- fix MetaMask wallet-connect bug
+
 ## 0.0.55
 
 ### Patch Changes
