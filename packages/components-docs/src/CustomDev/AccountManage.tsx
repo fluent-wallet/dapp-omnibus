@@ -91,7 +91,7 @@ const App: FC = () => {
           onClick={() =>
             sendTransaction({
               from: account,
-              to: 'cfxtest:aasbpwfcd78mr02g2ya53dh05tgveaawdp3w8y3zae',
+              to: account,
               value: Unit.fromStandardUnit(1).toHexMinUnit(),
               // maxFeePerGas: Unit.fromMinUnit(12).mul(1e9).toHexMinUnit(),
               // gasLimit:  Unit.fromMinUnit(20000).toHexMinUnit(),
