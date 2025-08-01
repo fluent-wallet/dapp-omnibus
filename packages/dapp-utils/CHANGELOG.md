@@ -1,5 +1,11 @@
 # @cfx-kit/dapp-utils
 
+## 0.2.6
+
+### Patch Changes
+
+- feat(dapp-utils): add getMappedESpaceAddress
+
 ## 0.2.5
 
 ### Patch Changes

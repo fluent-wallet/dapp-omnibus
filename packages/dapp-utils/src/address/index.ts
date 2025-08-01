@@ -20,3 +20,5 @@ export { isValidNetworkId } from './isValidNetworkId';
 export { getCoreHexAddressType, InvalidCoreHexAddressError } from './getCoreHexAddressType';
 
 export { isAddressEqual } from './isAddressEqual';
+
+export { getMappedESpaceAddress } from './getMappedESpaceAddress';
