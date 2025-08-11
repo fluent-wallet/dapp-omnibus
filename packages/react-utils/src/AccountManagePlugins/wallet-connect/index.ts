@@ -7,7 +7,7 @@ import { ChainPrefix, convertCipDataToEip, convertCipMethodToEip, convertEipData
 import icon from './icon';
 
 
-const createWalletConnectProvider = ({
+export const createWalletConnectProvider = ({
   projectId,
   targetChainId,
   metadata,
@@ -278,5 +278,3 @@ const createWalletConnectProvider = ({
     disconnect: () => handleSessionUpdate(undefined),
   } as WalletProvider;
 };
-
-export default createWalletConnectProvider;
