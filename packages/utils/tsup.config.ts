@@ -17,5 +17,5 @@ export const allUtilsEntry = readdirSync('./src').reduce(
 
 export default defineConfig({
   entry: allUtilsEntry,
-  format: 'esm',
+  format: 'esm'
 });

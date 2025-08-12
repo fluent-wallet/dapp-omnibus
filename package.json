@@ -11,8 +11,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "changeset": "changeset",
     "version": "changeset version",
-    "release": "pnpm build:lib && pnpm release:only",
-    "release:only": "changeset publish --registry=https://registry.npmjs.com/",
+    "release": "pnpm build:lib && node scripts/publish-with-exports.js",
+    "release:only": "node scripts/publish-with-exports.js",
     "test": "vitest test"
   },
   "devDependencies": {

@@ -1,5 +1,35 @@
 # @cfx-kit/utils
 
+## 0.0.10
+
+### Patch Changes
+
+- compatible for dist
+
+## 0.0.9
+
+### Patch Changes
+
+- change build method
+
+## 0.0.8
+
+### Patch Changes
+
+- update package.json
+
+## 0.0.7
+
+### Patch Changes
+
+- update publishConfig
+
+## 0.0.6
+
+### Patch Changes
+
+- add exports in package.json
+
 ## 0.0.5
 
 ### Patch Changes

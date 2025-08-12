@@ -18,5 +18,5 @@ export const allUtilsEntry = readdirSync('./src').reduce(
 export default defineConfig({
   entry: allUtilsEntry,
   format: 'esm',
-  noExternal: ['@cfx-kit/utils', 'ky', 'abitype', 'mersenne-twister', 'jsbi']
+  noExternal: ['@cfx-kit/utils', 'ky', 'abitype', 'mersenne-twister', 'jsbi'],
 });

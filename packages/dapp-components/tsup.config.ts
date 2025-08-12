@@ -18,5 +18,5 @@ export const allComponentsEntry = readdirSync('./src').reduce(
 export default defineConfig({
   entry: allComponentsEntry,
   format: 'esm',
-  noExternal: ['@cfx-kit/utils', '@cfx-kit/dapp-utils']
+  noExternal: ['@cfx-kit/utils', '@cfx-kit/dapp-utils'],
 });
