@@ -1,5 +1,11 @@
 # @cfx-kit/dapp-utils
 
+## 0.2.7
+
+### Patch Changes
+
+- createContract use viem instead of ethers
+
 ## 0.2.6
 
 ### Patch Changes

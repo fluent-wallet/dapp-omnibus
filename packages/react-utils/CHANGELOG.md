@@ -1,5 +1,13 @@
 # @cfx-kit/react-utils
 
+## 0.0.59
+
+### Patch Changes
+
+- createContract use viem instead of ethers
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.2.7
+
 ## 0.0.58
 
 ### Patch Changes

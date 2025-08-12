@@ -189,7 +189,7 @@ export const fetchChainMulticall = <T extends Array<Data> | Record<string, Data>
       _method === 'cfx_call' ? 'latest_state' : 'latest',
     ],
   }).then((_res) => {
-    const res = multicallContract.decodeFunctionResult('aggregate', _res as string) as [bigint, string[]];
+    const res = multicallContract.decodeFunctionResult('aggregate', _res as `0x${string}`) as [bigint, string[]];
     const result = res?.[1]?.map((item, index) => {
       const itemRes = typeof _data[index]?.decodeFunc === 'function' ? _data[index]?.decodeFunc?.(item) : item;
       if (Array.isArray(itemRes) && itemRes.length === 1) {

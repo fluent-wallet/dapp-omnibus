@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { BigNumber } from '@ethersproject/bignumber';
+import type { BigNumber } from '@ethersproject/bignumber';
 
 export interface AddressNameTagContainerProps {
   value: string;
