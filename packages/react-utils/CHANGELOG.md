@@ -1,5 +1,41 @@
 # @cfx-kit/react-utils
 
+## 0.0.64
+
+### Patch Changes
+
+- compatible for dist
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.2.12
+  - @cfx-kit/utils@0.0.10
+
+## 0.0.63
+
+### Patch Changes
+
+- change build method
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.2.11
+  - @cfx-kit/utils@0.0.9
+
+## 0.0.62
+
+### Patch Changes
+
+- update package.json
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.2.10
+  - @cfx-kit/utils@0.0.8
+
+## 0.0.61
+
+### Patch Changes
+
+- update publishConfig
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.2.9
+  - @cfx-kit/utils@0.0.7
+
 ## 0.0.60
 
 ### Patch Changes

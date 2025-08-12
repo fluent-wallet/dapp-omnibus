@@ -1,5 +1,37 @@
 # @cfx-kit/dapp-components
 
+## 0.0.46
+
+### Patch Changes
+
+- compatible for dist
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.2.12
+
+## 0.0.45
+
+### Patch Changes
+
+- change build method
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.2.11
+
+## 0.0.44
+
+### Patch Changes
+
+- update package.json
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.2.10
+
+## 0.0.43
+
+### Patch Changes
+
+- update publishConfig
+- Updated dependencies
+  - @cfx-kit/dapp-utils@0.2.9
+
 ## 0.0.42
 
 ### Patch Changes

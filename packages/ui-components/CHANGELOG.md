@@ -1,5 +1,29 @@
 # @cfx-kit/ui-components
 
+## 0.0.23
+
+### Patch Changes
+
+- compatible for dist
+
+## 0.0.22
+
+### Patch Changes
+
+- change build method
+
+## 0.0.21
+
+### Patch Changes
+
+- update package.json
+
+## 0.0.20
+
+### Patch Changes
+
+- update publishConfig
+
 ## 0.0.19
 
 ### Patch Changes
