@@ -59,7 +59,7 @@ const create6963WalletProvider = (params: EIP6963ProviderDetail) => {
 }
 
 
-const register6963Wallet = ({ persistFirst }: { persistFirst: boolean } = { persistFirst: true }) => {
+export const register6963Wallet = ({ persistFirst }: { persistFirst: boolean } = { persistFirst: true }) => {
   window.addEventListener(
     "eip6963:announceProvider",
     (event: Event) => {
@@ -72,6 +72,3 @@ const register6963Wallet = ({ persistFirst }: { persistFirst: boolean } = { pers
   // Wallets' code that had run earlier
   window.dispatchEvent(new Event("eip6963:requestProvider"));
 };
-
-
-export default register6963Wallet;

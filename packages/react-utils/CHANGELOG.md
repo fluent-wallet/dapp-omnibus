@@ -1,5 +1,11 @@
 # @cfx-kit/react-utils
 
+## 0.0.58
+
+### Patch Changes
+
+- AccountManagePlugin add split builds
+
 ## 0.0.57
 
 ### Patch Changes

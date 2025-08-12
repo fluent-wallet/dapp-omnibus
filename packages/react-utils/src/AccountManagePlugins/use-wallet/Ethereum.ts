@@ -13,7 +13,7 @@ import {
 } from '@cfxjs/use-wallet-react/ethereum';
 import type { Status, WalletProvider } from '../../AccountManage/types';
 
-const walletProvider = {
+export const walletProvider = {
   walletName: 'Ethereum',
   subAccountChange: (callback: (account: string | undefined) => void) => {
     store.subscribe(
@@ -62,4 +62,3 @@ const walletProvider = {
   stopTrackBalance,
 } as WalletProvider;
 
-export default walletProvider;
