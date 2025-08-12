@@ -91,7 +91,7 @@ const getTokenURIBy721Contract = async <T>(options: MetadataOptions<T>) => {
       method,
       params: [{ data: contract.encodeFunctionData('tokenURI', [BigInt(tokenId)]), to: contract.address }],
     });
-    const tokenURI = contract.decodeFunctionResult('tokenURI', fetchRes)[0];
+    const tokenURI = contract.decodeFunctionResult('tokenURI', fetchRes as `0x${string}`)[0];
     return tokenURI;
   } catch (error) {
     console.error('fetch 721 contract token uri error: ', error);
@@ -107,7 +107,7 @@ const getTokenURIBy1155Contract = async <T>(options: MetadataOptions<T>) => {
       method,
       params: [{ data: contract.encodeFunctionData('uri', [BigInt(tokenId)]), to: contract.address }],
     });
-    const tokenURI = contract.decodeFunctionResult('uri', fetchRes)[0];
+    const tokenURI = contract.decodeFunctionResult('uri', fetchRes as `0x${string}`)[0];
     return tokenURI;
   } catch (error) {
     console.error('fetch 1155 contract token uri error: ', error);

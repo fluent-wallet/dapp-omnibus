@@ -24,7 +24,7 @@ const fetchAllowance = async ({
       'latest',
     ],
   });
-  const allowance = tokenContract.decodeFunctionResult('allowance', fetchRes)?.[0];
+  const allowance = tokenContract.decodeFunctionResult('allowance', fetchRes as `0x${string}`)?.[0];
   return allowance || BigInt(0);
 };
 

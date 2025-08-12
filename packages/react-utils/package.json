@@ -1,6 +1,6 @@
 {
   "name": "@cfx-kit/react-utils",
-  "version": "0.0.58",
+  "version": "0.0.59",
   "type": "module",
   "keywords": [
     "react",
@@ -40,7 +40,6 @@
     "tsconfig": "workspace:*"
   },
   "peerDependencies": {
-    "ethers": "^6.6.4",
     "react": "^18.0.0"
   },
   "scripts": {

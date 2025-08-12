@@ -1,4 +1,5 @@
-import { Contract, JsonRpcProvider, type InterfaceAbi, type BytesLike } from 'ethers';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { encodeFunctionData as viemEncodeFunctionData, decodeFunctionResult as viemDecodeFunctionResult } from 'viem';
 import ERC20ABI from './abis/ERC20';
 import EnhanceERC20ABI from './abis/EnhanceERC20';
 import ERC721ABI from './abis/ERC721';
@@ -13,22 +14,32 @@ type FunctionNames<T extends Abi> = ExtractAbiFunctionNames<T, 'pure' | 'view' |
 type InputTypes<T extends Abi, N extends FunctionNames<T>> = AbiParametersToPrimitiveTypes<ExtractAbiFunction<T, N>['inputs'], 'inputs'>;
 type OutputTypes<T extends Abi, N extends FunctionNames<T>> = AbiParametersToPrimitiveTypes<ExtractAbiFunction<T, N>['outputs'], 'outputs'>;
 
-
-export const Provider = new JsonRpcProvider('https://evmtestnet.confluxrpc.com');
-
-export const createContract = <T extends Abi>({ address, ABI, rpcUrl }: { address: string; ABI: T; rpcUrl?: string }) => {
-  const contract = new Contract(address, ABI as InterfaceAbi, rpcUrl ? new JsonRpcProvider(rpcUrl) : Provider);
+export const createContract = <T extends Abi>({ address, ABI }: { address: string; ABI: T }) => {
   return {
-    contract,
-    encodeFunctionData: contract.interface.encodeFunctionData.bind(contract.interface) as unknown as <F extends FunctionNames<T>>(
+    encodeFunctionData: <F extends FunctionNames<T>>(
       functionName: F,
-      values: InputTypes<T, F>,
-    ) => string,
-    decodeFunctionResult: contract.interface.decodeFunctionResult.bind(contract.interface) as unknown as <F extends FunctionNames<T>>(
+      args: InputTypes<T, F>,
+    ): `0x${string}` => {
+      return (viemEncodeFunctionData as any)({
+        abi: ABI,
+        functionName,
+        args,
+      });
+    },
+    decodeFunctionResult: <F extends FunctionNames<T>>(
       functionName: F,
-      data: BytesLike,
-    ) => OutputTypes<T, F>,
+      data: `0x${string}`,
+    ): OutputTypes<T, F> => {
+      const result = viemDecodeFunctionResult({
+        abi: ABI as any,
+        functionName: functionName as any,
+        data,
+      } as any);
+      
+      return (Array.isArray(result) ? result : [result]) as OutputTypes<T, F>;
+    },
     address,
+    abi: ABI,
   } as const;
 };
 
