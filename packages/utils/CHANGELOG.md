@@ -1,5 +1,11 @@
 # @cfx-kit/utils
 
+## 0.0.6
+
+### Patch Changes
+
+- add exports in package.json
+
 ## 0.0.5
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @cfx-kit/ui-components
 
+## 0.0.19
+
+### Patch Changes
+
+- add exports in package.json
+
 ## 0.0.18
 
 ### Patch Changes

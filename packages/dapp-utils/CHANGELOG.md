@@ -1,5 +1,13 @@
 # @cfx-kit/dapp-utils
 
+## 0.2.8
+
+### Patch Changes
+
+- add exports in package.json
+- Updated dependencies
+  - @cfx-kit/utils@0.0.6
+
 ## 0.2.7
 
 ### Patch Changes

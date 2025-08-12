@@ -1,5 +1,6 @@
 import { defineConfig } from 'tsup';
-import { readdirSync, statSync } from 'fs';
+import { readdirSync, statSync, writeFileSync, readFileSync } from 'fs';
+import { resolve } from 'path';
 
 export const allUtilsEntry = readdirSync('./src').reduce(
   (allUtils, util) => {
@@ -50,5 +51,28 @@ export default defineConfig({
   target: 'es2022',
   noExternal: ['@cfx-kit/utils', '@cfx-kit/dapp-utils'],
   treeshake: true,
-  external: ['@cfxjs/use-wallet-react']
+  external: ['@cfxjs/use-wallet-react'],
+  onSuccess: async () => {
+    const pkgPath = resolve('./dist/package.json');
+    const originalPkgPath = resolve('./package.json');
+    const originalPkg = JSON.parse(readFileSync(originalPkgPath, 'utf-8'));
+    
+    const exports = {
+      ".": {
+        "types": "./index.d.ts",
+        "import": "./index.js"
+      },
+      "./*": {
+        "types": "./*.d.ts",
+        "import": "./*.js"
+      }
+    };
+    
+    const distPkg = {
+      ...originalPkg,
+      exports
+    };
+    
+    writeFileSync(pkgPath, JSON.stringify(distPkg, null, 2));
+  }
 });
