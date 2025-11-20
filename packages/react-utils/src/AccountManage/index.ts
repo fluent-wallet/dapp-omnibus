@@ -371,6 +371,20 @@ export const useCurrentWallet = () => {
   return walletName ? { name: walletName, icon: walletIcon } : null;
 };
 
+export const useWalletProvider = (_walletName?: string) => {
+  const currentWalletName = useCurrentWalletName();
+  const walletName = _walletName || currentWalletName;
+  const walletState = walletName ? walletsStateMap.get(walletName) : null;
+  const provider = walletState?.provider;
+  return provider;
+};
+export const getWalletProvider = (_walletName?: string) => {
+  const walletName = _walletName || getCurrentWalletName();
+  const walletState = walletName ? walletsStateMap.get(walletName) : null;
+  const provider = walletState?.provider;
+  return provider;
+};
+
 let referenceCount = 0;
 export const useBalance = () => {
   const currentWalletName = useCurrentWalletName();
