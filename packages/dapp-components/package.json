@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@types/react": "^18.0.37",
+    "@types/minimatch": "^5.1.2",
     "tsconfig": "workspace:*"
   },
   "peerDependencies": {
