@@ -1,5 +1,11 @@
 # @cfx-kit/react-utils
 
+## 0.0.65
+
+### Patch Changes
+
+- add useWalletProvider hook
+
 ## 0.0.64
 
 ### Patch Changes
