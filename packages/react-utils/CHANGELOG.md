@@ -1,5 +1,11 @@
 # @cfx-kit/react-utils
 
+## 0.0.66
+
+### Patch Changes
+
+- AccountManage addChain util
+
 ## 0.0.65
 
 ### Patch Changes
