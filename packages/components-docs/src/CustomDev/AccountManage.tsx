@@ -30,7 +30,7 @@ const WalletConnectProvider = createWalletConnectProvider({
   metadata: {
     name: 'Goledo',
     description: 'Goledo is a lending and borrowing market built on Conflux eSpace. Lend your assets to begin earning and use them to collateralize loans.',
-    url: window.location.host,
+    url: window.location.origin,
     icons: ['https://walletconnect.com/walletconnect-logo.png'],
   },
 });
