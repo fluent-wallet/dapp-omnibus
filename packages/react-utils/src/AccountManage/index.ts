@@ -500,6 +500,12 @@ export const watchAsset = (params: WatchAssetParams) => {
   return walletState.provider.watchAsset?.(params);
 };
 
+export const addChain = async (params: AddChainParameter) => {
+  checkAccountConnected();
+  const walletState = checkWalletState({ checkFunctionName: 'addChain' });
+  return walletState.provider.addChain?.(params);
+};
+
 function checkAccountConnected() {
   const currentWalletName = getCurrentWalletName();
   if (!currentWalletName) {
