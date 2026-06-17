@@ -1,5 +1,11 @@
 # @cfx-kit/utils
 
+## 0.0.11
+
+### Patch Changes
+
+- 1481271: Update package metadata URLs and adjust workflow permissions for npm OIDC publishing
+
 ## 0.0.10
 
 ### Patch Changes

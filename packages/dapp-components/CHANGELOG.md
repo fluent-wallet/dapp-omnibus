@@ -1,5 +1,13 @@
 # @cfx-kit/dapp-components
 
+## 0.0.48
+
+### Patch Changes
+
+- 1481271: Update package metadata URLs and adjust workflow permissions for npm OIDC publishing
+- Updated dependencies [1481271]
+  - @cfx-kit/dapp-utils@0.2.14
+
 ## 0.0.47
 
 ### Patch Changes
