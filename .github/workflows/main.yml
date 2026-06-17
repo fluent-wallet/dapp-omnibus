@@ -44,6 +44,6 @@ jobs:
           commit: '[ci] release'
           title: '[ci] release'
         env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
           # Use OIDC for npm authentication instead of NPM_TOKEN
           NPM_TOKEN: "" # https://github.com/changesets/changesets/issues/1152#issuecomment-3190884868
