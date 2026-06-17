@@ -6,4 +6,4 @@
 '@cfx-kit/utils': patch
 ---
 
-change to npm OIDC publish
+Update package metadata URLs and adjust workflow permissions for npm OIDC publishing
