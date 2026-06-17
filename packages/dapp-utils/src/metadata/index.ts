@@ -142,7 +142,7 @@ const fetchMetadataByContract = async <T>(options: MetadataOptions<T>): Promise<
         try {
           ipfsGateway = await getIPFSGateway();
         } catch (error) {
-          console.warn('getIPFSGateway error: ', error);
+          console.warn('get IPFS gateway failed, will fall back to default gateway: ', error);
         }
       }
       if (!ipfsGateway) {
