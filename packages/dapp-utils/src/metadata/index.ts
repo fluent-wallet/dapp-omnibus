@@ -13,10 +13,10 @@ interface MetadataOptions<T> {
   /** default for https://nftstorage.link/ */
   ipfsGateway?: string;
   /**
-   * Optional async resolver for an IPFS gateway URL. Used when `ipfsGateway` is not provided.
-   * If it rejects/throws, metadata fetching will fall back to the default gateway.
+   * Optional resolver for an IPFS gateway URL. Used when `ipfsGateway` is not provided.
+   * If it failed, metadata fetching will fall back to the default gateway.
    */
-  getIPFSGateway?: () => Promise<string>;
+  getIPFSGateway?: () => string | undefined | Promise<string | undefined>;
   formatContractMetadata?: (metadata: object) => T;
 }
 interface ServerOptions<T, P> extends Partial<MetadataOptions<P>> {
@@ -137,11 +137,19 @@ const fetchMetadataByContract = async <T>(options: MetadataOptions<T>): Promise<
     return undefined;
   } else {
     try {
-      const ipfsGateway = _ipfsGateway || (getIPFSGateway ? await getIPFSGateway?.().catch(() => undefined) : undefined) || DefaultIPFSGateway;
+      let ipfsGateway = _ipfsGateway;
+      if (!ipfsGateway && getIPFSGateway) {
+        try {
+          ipfsGateway = await getIPFSGateway();
+        } catch (error) {
+          console.warn('get IPFS gateway failed, will fall back to default gateway: ', error);
+        }
+      }
+      if (!ipfsGateway) {
+        ipfsGateway = DefaultIPFSGateway;
+      }
       const tokenURI = (tokenURIResponse as PromiseFulfilledResult<string>).value;
-      console.log('tokenURI', tokenURI);
       const rawURI = tokenURI.replace('{id}', paddingId(tokenId));
-      console.log('rawURI', rawURI);
       const metadata = await getMetadataByURI(rawURI, ipfsGateway);
       return formatContractMetadata ? formatContractMetadata(metadata) : (metadata as T);
     } catch (error) {
