@@ -1,5 +1,14 @@
 # @cfx-kit/react-utils
 
+## 0.0.68
+
+### Patch Changes
+
+- 1481271: Update package metadata URLs and adjust workflow permissions for npm OIDC publishing
+- Updated dependencies [1481271]
+  - @cfx-kit/dapp-utils@0.2.14
+  - @cfx-kit/utils@0.0.11
+
 ## 0.0.67
 
 ### Patch Changes

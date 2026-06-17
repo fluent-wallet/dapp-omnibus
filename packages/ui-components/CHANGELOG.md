@@ -1,5 +1,11 @@
 # @cfx-kit/ui-components
 
+## 0.0.24
+
+### Patch Changes
+
+- 1481271: Update package metadata URLs and adjust workflow permissions for npm OIDC publishing
+
 ## 0.0.23
 
 ### Patch Changes
