@@ -1,5 +1,11 @@
 # @cfx-kit/dapp-utils
 
+## 0.2.13
+
+### Patch Changes
+
+- feat: optimize nft metadata ipfs gateway
+
 ## 0.2.12
 
 ### Patch Changes
