@@ -12,6 +12,10 @@ interface MetadataOptions<T> {
   tokenId: string | number | bigint;
   /** default for https://nftstorage.link/ */
   ipfsGateway?: string;
+  /**
+   * Optional async resolver for an IPFS gateway URL. Used when `ipfsGateway` is not provided.
+   * If it rejects/throws, metadata fetching will fall back to the default gateway.
+   */
   getIPFSGateway?: () => Promise<string>;
   formatContractMetadata?: (metadata: object) => T;
 }
