@@ -1,5 +1,11 @@
 # @cfx-kit/dapp-utils
 
+## 0.2.15
+
+### Patch Changes
+
+- ad717fd: feat: optimize getIPFSGateway type
+
 ## 0.2.14
 
 ### Patch Changes
