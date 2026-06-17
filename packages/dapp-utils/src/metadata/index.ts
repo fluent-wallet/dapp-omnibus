@@ -1,6 +1,8 @@
 import { createERC721Contract, createERC1155Contract } from '../contract';
 import { fetchChain, createFetchServer } from '../fetch';
 
+const DefaultIPFSGateway = 'https://nftstorage.link/';
+
 interface MetadataOptions<T> {
   /** default for unknown: call 721 and 1155 contract to get metadata */
   contractType?: 'unknown' | '721' | '1155';
@@ -10,6 +12,7 @@ interface MetadataOptions<T> {
   tokenId: string | number | bigint;
   /** default for https://nftstorage.link/ */
   ipfsGateway?: string;
+  getIPFSGateway?: () => Promise<string>;
   formatContractMetadata?: (metadata: object) => T;
 }
 interface ServerOptions<T, P> extends Partial<MetadataOptions<P>> {
@@ -115,7 +118,7 @@ const getTokenURIBy1155Contract = async <T>(options: MetadataOptions<T>) => {
   }
 };
 const fetchMetadataByContract = async <T>(options: MetadataOptions<T>): Promise<T | undefined> => {
-  const { contractType = 'unknown', tokenId, ipfsGateway = 'https://nftstorage.link/', formatContractMetadata } = options;
+  const { contractType = 'unknown', tokenId, ipfsGateway: _ipfsGateway, getIPFSGateway, formatContractMetadata } = options;
   const promises: Promise<string>[] = [];
   if (contractType === 'unknown' || contractType === '721') {
     promises.push(getTokenURIBy721Contract(options));
@@ -130,6 +133,7 @@ const fetchMetadataByContract = async <T>(options: MetadataOptions<T>): Promise<
     return undefined;
   } else {
     try {
+      const ipfsGateway = _ipfsGateway || (getIPFSGateway ? await getIPFSGateway?.().catch(() => undefined) : undefined) || DefaultIPFSGateway;
       const tokenURI = (tokenURIResponse as PromiseFulfilledResult<string>).value;
       console.log('tokenURI', tokenURI);
       const rawURI = tokenURI.replace('{id}', paddingId(tokenId));
